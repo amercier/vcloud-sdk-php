@@ -17,11 +17,11 @@
   },
   "autoload": {
     "psr-0": {
-      "VMware_": "library/"
+      "VMware\\": "src/"
     }
   },
   "include-path": [
-    "library/"
+    "src/"
   ],
   "repositories": [
     {
@@ -30,7 +30,8 @@
     }
   ],
   "require-dev": {
-    "vmware/vcloud-sdk": "5.1.2",
-    "pear-pear/HTTP_Request2": "*"
+    "vmware/vcloud-sdk-patched": "512.0.0",
+    "pear-pear/HTTP_Request2": "*",
+    "phpunit/phpunit": "3.*"
   }
 }

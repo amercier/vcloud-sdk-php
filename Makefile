@@ -1,4 +1,5 @@
 
+.PHONY: docs
 
 SRC = vendor/vmware/vcloud-sdk/library/
 OUT = library/
@@ -19,3 +20,6 @@ install: composer.phar
 
 update: composer.phar
 	php composer.phar update
+
+docs:
+	cd docs && make
