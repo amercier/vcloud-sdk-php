@@ -36,6 +36,7 @@
   "require-dev": {
     "phpunit/phpunit": "3.*",
     "satooshi/php-coveralls": ">=0.6.1",
-    "pear-pear/PHP_CodeSniffer": ">=1.4.5"
+    "pear-pear/PHP_CodeSniffer": ">=1.4.5",
+    "amercier/cli-helpers": ">=1.0.0"
   }
 }
