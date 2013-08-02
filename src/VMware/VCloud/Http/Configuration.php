@@ -10,16 +10,16 @@ class Configuration
     public function toArray()
     {
         return array_merge(
-                $this->proxyConfiguration->toArray(),
-                $this->sslConfiguration->toArray(),
-            );
+            $this->proxyConfiguration->toArray(),
+            $this->sslConfiguration->toArray(),
+        );
     }
 
     public static function getDefaultConfiguration()
     {
         return new self(
-                ProxyConfiguration::getDefaultConfiguration(),
-                SSLConfiguration::getDefaultConfiguration()
-            );
+            ProxyConfiguration::getDefaultConfiguration(),
+            SSLConfiguration::getDefaultConfiguration()
+        );
     }
 }

@@ -20,12 +20,12 @@ abstract class AbstractObject
      */
     protected function get($name, $createMethod = null)
     {
-        if ( !isset($this->$name) ) {
-            throw new Exception\UnknownClassField( get_class($this), $name );
+        if (!isset($this->$name)) {
+            throw new Exception\UnknownClassField(get_class($this), $name);
         }
 
-        if ( $this->$name === null && $createMethod !== false ) {
-            if ( $createMethod === null ) {
+        if ($this->$name === null && $createMethod !== false) {
+            if ($createMethod === null) {
                 $createMethod = 'create' . ucfirst($name);
             }
             $this->$name = $this->$createMethod();
@@ -42,8 +42,8 @@ abstract class AbstractObject
      */
     protected function set($name, $value)
     {
-        if ( !isset($this->$name) ) {
-            throw new Exception\UnknownClassField( get_class($this), $name );
+        if (!isset($this->$name)) {
+            throw new Exception\UnknownClassField(get_class($this), $name);
         }
 
         $this->$name = $value;
@@ -61,15 +61,15 @@ abstract class AbstractObject
      */
     protected function add($name, $value)
     {
-        if ( !isset($this->$name) ) {
-            throw new Exception\UnknownClassField( get_class($this), $name );
+        if (!isset($this->$name)) {
+            throw new Exception\UnknownClassField(get_class($this), $name);
         }
-        if ( !is_array($this->$name) ) {
-            throw new Exception\ClassFieldNotArray( get_class($this), $name );
+        if (!is_array($this->$name)) {
+            throw new Exception\ClassFieldNotArray(get_class($this), $name);
         }
 
         $this->$name[] = $value;
-        return this;
+        return $this;
     }
 
     /**
@@ -84,18 +84,18 @@ abstract class AbstractObject
      */
     protected function removeByIndex($name, $index)
     {
-        if ( !isset($this->$name) ) {
-            throw new Exception\UnknownClassField( get_class($this), $name );
+        if (!isset($this->$name)) {
+            throw new Exception\UnknownClassField(get_class($this), $name);
         }
-        if ( !is_array($this->$name) ) {
-            throw new Exception\ClassFieldNotArray( get_class($this), $name );
+        if (!is_array($this->$name)) {
+            throw new Exception\ClassFieldNotArray(get_class($this), $name);
         }
-        if ( $index < 0 || $index >= count($this->$name) ) {
-            throw new Exception\ClassFieldNotArray( $name, $index );
+        if ($index < 0 || $index >= count($this->$name)) {
+            throw new Exception\ClassFieldNotArray($name, $index);
         }
 
-        unset( $this->$name[$index] );
-        return this;
+        unset($this->$name[$index]);
+        return $this;
     }
 
     /**
@@ -110,18 +110,18 @@ abstract class AbstractObject
      */
     protected function remove($name, $value)
     {
-        if ( !isset($this->$name) ) {
-            throw new Exception\UnknownClassField( get_class($this), $name );
+        if (!isset($this->$name)) {
+            throw new Exception\UnknownClassField(get_class($this), $name);
         }
-        if ( !is_array($this->$name) ) {
-            throw new Exception\ClassFieldNotArray( get_class($this), $name );
-        }
-
-        if( ($index = array_search($value, $this->$name)) === false) {
-            throw new Exception\IndexOutOfRange( $this->$name, $index );
+        if (!is_array($this->$name)) {
+            throw new Exception\ClassFieldNotArray(get_class($this), $name);
         }
 
-        unset( $this->$name[$index] );
-        return this;
+        if (($index = array_search($value, $this->$name)) === false) {
+            throw new Exception\IndexOutOfRange($this->$name, $index);
+        }
+
+        unset($this->$name[$index]);
+        return $this;
     }
 }

@@ -43,17 +43,17 @@ class Credentials extends AbstractObject
      *
      * @param array $params A key-value array containing the credetials
      */
-    public function __construct( $params )
+    public function __construct($params)
     {
         foreach (array('organization', 'username', 'password') as $parameter) {
-            if( !isset($params[$parameter]) ) {
+            if (!isset($params[$parameter])) {
                 throw new VMware\VCloud\Exception\MissingParameter($parameter);
             }
         }
 
         $this->set('organization', $params['organization']);
-        $this->set('username'    , $params['username']);
-        $this->setPassword( $params['password'] );
+        $this->set('username', $params['username']);
+        $this->setPassword($params['password']);
     }
 
     public function getOrganization()
@@ -69,28 +69,31 @@ class Credentials extends AbstractObject
     public function getPassword()
     {
         return mcrypt_decrypt(
-                self::PASSWORD_MCRYPT_CIPHER,
-                self::PASSWORD_MCRYPT_KEY,
-                $this->get('password'),
-                self::PASSWORD_MCRYPT_MODE
-            );
+            self::PASSWORD_MCRYPT_CIPHER,
+            self::PASSWORD_MCRYPT_KEY,
+            $this->get('password'),
+            self::PASSWORD_MCRYPT_MODE
+        );
     }
 
-    public function setPassword( $password )
+    public function setPassword($password)
     {
-        $this->set('password', mcrypt_encrypt(
+        $this->set(
+            'password',
+            mcrypt_encrypt(
                 self::PASSWORD_MCRYPT_CIPHER,
                 self::PASSWORD_MCRYPT_KEY,
                 $password,
                 self::PASSWORD_MCRYPT_MODE
-            ));
+            )
+        );
     }
 
     public function toArray()
     {
         return array(
-                'username' => $credentials->getUsername() . '@' . $credentials->getOrganization(),
-                'password' => $credentials->getPassword(),
-            );
+            'username' => $credentials->getUsername() . '@' . $credentials->getOrganization(),
+            'password' => $credentials->getPassword(),
+        );
     }
 }

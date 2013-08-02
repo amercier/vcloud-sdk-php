@@ -41,8 +41,8 @@ abstract class AbstractModelObject extends AbstractObject
      * Create a new Model Object.
      * @param Service $service the Service object
      */
-    public function __construct( Service $service, $model = null )
+    public function __construct(Service $service, $model = null)
     {
-        $this->setService( $service );
+        $this->setService($service);
     }
 }
