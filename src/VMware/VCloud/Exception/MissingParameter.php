@@ -2,5 +2,8 @@
 
 namespace VMware\VCloud\Exception;
 
-class MissingParameter extends Abstract
+use Cli\Helpers\Exception as VCloudException;
+
+class MissingParameter extends VCloudException
 {
+}

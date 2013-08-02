@@ -2,5 +2,8 @@
 
 namespace VMware\VCloud\Exception;
 
-class IndexOutOfRange extends Abstract
+use Cli\Helpers\Exception as VCloudException;
+
+class IndexOutOfRange extends VCloudException
 {
+}

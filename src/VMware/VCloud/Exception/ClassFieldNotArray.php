@@ -2,5 +2,8 @@
 
 namespace VMware\VCloud\Exception;
 
-class ClassFieldNotArray extends Abstract
+use Cli\Helpers\Exception as VCloudException;
+
+class ClassFieldNotArray extends VCloudException
 {
+}

@@ -2,5 +2,8 @@
 
 namespace VMware\VCloud\Exception;
 
-class UnknownClassField extends Abstract
+use Cli\Helpers\Exception as VCloudException;
+
+class UnknownClassField extends VCloudException
 {
+}
