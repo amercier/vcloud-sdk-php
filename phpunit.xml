@@ -14,10 +14,10 @@
          bootstrap="./tests/bootstrap.php">
 
     <testsuites>
-        <testsuite name="php-cli-helpers unit tests">
+        <testsuite name="unit">
             <directory>./tests/unit/</directory>
         </testsuite>
-        <testsuite name="php-cli-helpers integration tests">
+        <testsuite name="integration">
             <directory>./tests/integration/</directory>
         </testsuite>
     </testsuites>

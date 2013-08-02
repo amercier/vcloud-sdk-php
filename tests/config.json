@@ -1,0 +1,13 @@
+{
+    "host": "vcd-demo.ecocenter.fr",
+    "cloudadmin": {
+        "organization": "system",
+        "username": "administrator",
+        "password": "ecocenter"
+    },
+    "orgadmin": {
+        "organization": "ecv",
+        "username": "amercier",
+        "password": "ecocenter"
+    }
+}
