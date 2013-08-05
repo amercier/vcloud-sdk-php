@@ -34,6 +34,10 @@ integration: composer.lock
 	make lint && \
 	vendor/bin/phpunit --testsuite integration
 
+unit: composer.lock
+	make lint && \
+	vendor/bin/phpunit --testsuite unit
+
 lint: composer.lock
 	vendor/bin/phpcs --standard=PSR1 src/
 	vendor/bin/phpcs --standard=PSR2 src/
