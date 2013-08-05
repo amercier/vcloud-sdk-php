@@ -13,9 +13,10 @@ namespace VMware\VCloud;
 class Credentials extends AbstractObject
 {
 
-    protected static const PASSWORD_MCRYPT_KEY = strtr(base64_encode(openssl_random_pseudo_bytes(1024)), '+', '.');
-    public static const PASSWORD_MCRYPT_CIPHER = MCRYPT_RIJNDAEL_128;
-    public static const PASSWORD_MCRYPT_MODE   = MCRYPT_MODE_CFB;
+    protected static $mcryptKey = null;
+
+    const PASSWORD_MCRYPT_CIPHER = 'MCRYPT_RIJNDAEL_128';
+    const PASSWORD_MCRYPT_MODE   = 'MCRYPT_MODE_CFB';
 
     /**
      * The organization
@@ -43,17 +44,23 @@ class Credentials extends AbstractObject
      *
      * @param array $params A key-value array containing the credetials
      */
-    public function __construct($params)
+    public function __construct($organization, $username = null, $password = null)
     {
-        foreach (array('organization', 'username', 'password') as $parameter) {
-            if (!isset($params[$parameter])) {
-                throw new VMware\VCloud\Exception\MissingParameter($parameter);
+        // Add the possibility to invoke __construct(array(organization => ..., username => ..., password => ...))
+        if (is_array($organization) && $username === null && $password === null) {
+            foreach (array('organization', 'username', 'password') as $parameter) {
+                if (!isset($params[$parameter])) {
+                    throw new Exception\MissingParameter($parameter . ' in $params');
+                }
             }
+            $username = $organization['username'];
+            $password = $organization['password'];
+            $organization = $organization['organization'];
         }
 
-        $this->set('organization', $params['organization']);
-        $this->set('username', $params['username']);
-        $this->setPassword($params['password']);
+        $this->set('organization', $organization);
+        $this->set('username', $username);
+        $this->setPassword($password);
     }
 
     public function getOrganization()
@@ -69,10 +76,10 @@ class Credentials extends AbstractObject
     public function getPassword()
     {
         return mcrypt_decrypt(
-            self::PASSWORD_MCRYPT_CIPHER,
-            self::PASSWORD_MCRYPT_KEY,
+            constant(self::PASSWORD_MCRYPT_CIPHER),
+            self::getMcryptKey(),
             $this->get('password'),
-            self::PASSWORD_MCRYPT_MODE
+            constant(self::PASSWORD_MCRYPT_MODE)
         );
     }
 
@@ -81,10 +88,10 @@ class Credentials extends AbstractObject
         $this->set(
             'password',
             mcrypt_encrypt(
-                self::PASSWORD_MCRYPT_CIPHER,
-                self::PASSWORD_MCRYPT_KEY,
+                constant(self::PASSWORD_MCRYPT_CIPHER),
+                self::getMcryptKey(),
                 $password,
-                self::PASSWORD_MCRYPT_MODE
+                constant(self::PASSWORD_MCRYPT_MODE)
             )
         );
     }
@@ -95,5 +102,13 @@ class Credentials extends AbstractObject
             'username' => $credentials->getUsername() . '@' . $credentials->getOrganization(),
             'password' => $credentials->getPassword(),
         );
+    }
+
+    public static function getMcryptKey()
+    {
+        if (self::$mcryptKey === null) {
+            self::$mcryptKey = strtr(base64_encode(openssl_random_pseudo_bytes(16)), '+', '.');
+        }
+        return self::$mcryptKey;
     }
 }

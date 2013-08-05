@@ -11,7 +11,7 @@ abstract class AbstractModelObject extends AbstractObject
      * The reference to the Service object
      * @var Service
      */
-    protected $service = null;
+    // protected $service = null;
 
     /**
      * The reference to the Service object
@@ -23,10 +23,10 @@ abstract class AbstractModelObject extends AbstractObject
      * Get the Service object
      * @return Service Returns the Service object
      */
-    public function getService()
-    {
-        return $this->get('service');
-    }
+    // public function getService()
+    // {
+    //     return $this->get('service');
+    // }
 
     /**
      * Get the Href
@@ -41,7 +41,7 @@ abstract class AbstractModelObject extends AbstractObject
      * Create a new Model Object.
      * @param Service $service the Service object
      */
-    public function __construct(Service $service, $model = null)
+    public function __construct(/*Service $service, */$model = null)
     {
         $this->setService($service);
     }

@@ -42,7 +42,7 @@ abstract class AbstractObject
      */
     protected function set($name, $value)
     {
-        if (!isset($this->$name)) {
+        if (!property_exists($this, $name)) {
             throw new Exception\UnknownClassField(get_class($this), $name);
         }
 
@@ -68,7 +68,7 @@ abstract class AbstractObject
             throw new Exception\ClassFieldNotArray(get_class($this), $name);
         }
 
-        $this->$name[] = $value;
+        array_push($this->$name, $value);
         return $this;
     }
 
