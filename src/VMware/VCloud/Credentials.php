@@ -31,6 +31,18 @@ class Credentials extends AbstractObject
     protected $username = null;
 
     /**
+     * The password encryptor
+     * @var Encryptor
+     */
+    protected $encryptor = null;
+
+    /**
+     * The password key
+     * @var string
+     */
+    protected $passwordKey = null;
+
+    /**
      * The password, encrypted using mcrypt module
      * @var string
      */
@@ -49,7 +61,7 @@ class Credentials extends AbstractObject
         // Add the possibility to invoke __construct(array(organization => ..., username => ..., password => ...))
         if (is_array($organization) && $username === null && $password === null) {
             foreach (array('organization', 'username', 'password') as $parameter) {
-                if (!isset($params[$parameter])) {
+                if (!array_key_exists($parameter, $organization)) {
                     throw new Exception\MissingParameter($parameter . ' in $params');
                 }
             }
@@ -60,6 +72,8 @@ class Credentials extends AbstractObject
 
         $this->set('organization', $organization);
         $this->set('username', $username);
+        $this->set('encryptor', new Encryptor());
+        $this->set('passwordKey', Encryptor::generateRandomSalt());
         $this->setPassword($password);
     }
 
@@ -75,25 +89,12 @@ class Credentials extends AbstractObject
 
     public function getPassword()
     {
-        return mcrypt_decrypt(
-            constant(self::PASSWORD_MCRYPT_CIPHER),
-            self::getMcryptKey(),
-            $this->get('password'),
-            constant(self::PASSWORD_MCRYPT_MODE)
-        );
+        return $this->encryptor->decrypt($this->password, $this->passwordKey);
     }
 
     public function setPassword($password)
     {
-        $this->set(
-            'password',
-            mcrypt_encrypt(
-                constant(self::PASSWORD_MCRYPT_CIPHER),
-                self::getMcryptKey(),
-                $password,
-                constant(self::PASSWORD_MCRYPT_MODE)
-            )
-        );
+        return $this->set('password', $this->encryptor->encrypt($password, $this->passwordKey));
     }
 
     public function toArray()

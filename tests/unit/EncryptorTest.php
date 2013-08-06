@@ -31,5 +31,4 @@ class EncryptorTest extends VCloudTest
         $decryptedData = $encryptor->decrypt($encrytedData, $key);
         $this->assertEquals($data, $decryptedData, 'Decrypted data should be equivalent to the original one');
     }
-
 }

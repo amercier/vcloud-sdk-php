@@ -2,6 +2,9 @@
 
 namespace VMware\VCloud;
 
+/**
+ * A Utility class to encrypt/decrypt data
+ */
 class Encryptor
 {
     protected $salt;
