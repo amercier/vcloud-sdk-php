@@ -1,7 +1,15 @@
 vcloud-sdk-php
 ==============
 
-21st century PHP SDK for vCloud Director, based on [a patched version of VMWare SDK for PHP](https://github.com/amercier/vmware-vcloud-sdk-php-patched).
+21st century PHP SDK for vCloud Director, based on [a patched version of VMWare
+SDK for PHP](https://github.com/amercier/vmware-vcloud-sdk-php-patched).
+
+[![Build Status](https://travis-ci.org/amercier/vcloud-sdk-php.png?branch=master)](https://travis-ci.org/amercier/vcloud-sdk-php)
+[![Coverage Status](https://coveralls.io/repos/amercier/vcloud-sdk-php/badge.png?branch=master)](https://coveralls.io/r/amercier/vcloud-sdk-php?branch=master)
+[![Dependency Status](https://www.versioneye.com/user/projects/5200f4fa632bac07760081ec/badge.png)](https://www.versioneye.com/user/projects/5200f4fa632bac07760081ec)
+
+[![Latest Stable Version](https://poser.pugx.org/amercier/vcloud-sdk/v/stable.png)](https://packagist.org/packages/amercier/vcloud-sdk)
+
 
 ✔ **Object-oriented** - uses [PHP 5.3 namespaces](http://php.net/manual/en/language.namespaces.php)  
 ✔ **Hand-crafted** - no more auto-generated SOAP bindings!  
