@@ -1,5 +1,6 @@
 <?php
-namespace VMware\VCloud;
+
+namespace VMware\VCloud\Http;
 
 abstract class Host extends AbstractObject
 {
