@@ -11,7 +11,7 @@ class Configuration
     {
         return array_merge(
             $this->proxyConfiguration->toArray(),
-            $this->sslConfiguration->toArray(),
+            $this->sslConfiguration->toArray()
         );
     }
 
