@@ -18,14 +18,14 @@ class ProxyConfiguration
 
     protected $params;
 
-    public function __construct(array $params)
+    public function __construct(array $params = array())
     {
         $this->params = array();
 
         // Copy values into $this->params
         foreach ($params as $name => $value) {
-            if (!array_key_exists($name, self::PARAMS)) {
-                throw new Exception\InvalidKey('params', $name, self::PARAMS);
+            if (!array_key_exists($name, self::$DEFAULTS)) {
+                throw new Exception\InvalidKey('params', $name, self::$DEFAULTS);
             }
             $this->params[ $name ] = $value;
         }
@@ -40,7 +40,7 @@ class ProxyConfiguration
 
     public function toArray()
     {
-        return $params;
+        return $this->params;
     }
 
     public static function getDefaultConfiguration()
