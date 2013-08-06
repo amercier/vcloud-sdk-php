@@ -24,7 +24,7 @@ update: composer.phar
 
 test: composer.lock
 	make lint && \
-	vendor/bin/phpunit --testsuite unit --coverage-html build/logs/coverage --coverage-text=build/logs/coverage.txt && \
+	vendor/bin/phpunit --coverage-html build/logs/coverage --coverage-text=build/logs/coverage.txt && \
 	echo && \
 	echo ======== Code coverage ======== && \
 	cat build/logs/coverage.txt | grep -A3 Summary | tail -n 3 && \
