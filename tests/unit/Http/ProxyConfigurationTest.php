@@ -27,4 +27,14 @@ class ProxyConfigurationTest extends VCloudTest
             ProxyConfiguration::PARAM_PASSWORD => 'pass',
         ), $config->toArray());
     }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\InvalidArrayKey
+     */
+    public function testInvalidKey()
+    {
+        new ProxyConfiguration(array(
+            'mer il et fou' => 'enkuler de rire'
+        ));
+    }
 }

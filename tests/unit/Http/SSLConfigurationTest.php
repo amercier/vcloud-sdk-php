@@ -25,4 +25,14 @@ class SSLConfigurationTest extends VCloudTest
             SSLConfiguration::PARAM_CAFILE      => 'whatever.cer',
         ), $config->toArray());
     }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\InvalidArrayKey
+     */
+    public function testInvalidKey()
+    {
+        new SSLConfiguration(array(
+            'mer il et fou' => 'enkuler de rire'
+        ));
+    }
 }

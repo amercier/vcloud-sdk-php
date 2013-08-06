@@ -2,6 +2,8 @@
 
 namespace VMware\VCloud\Http;
 
+use \VMware\VCloud\Exception\InvalidArrayKey as InvalidArrayKey;
+
 class SSLConfiguration
 {
     const PARAM_VERIFY_PEER = 'ssl_verify_peer';
@@ -23,7 +25,7 @@ class SSLConfiguration
         // Copy values into $this->params
         foreach ($params as $name => $value) {
             if (!array_key_exists($name, self::$DEFAULTS)) {
-                throw new  Exception\InvalidKey('params', $name, self::$DEFAULTS);
+                throw new InvalidArrayKey('params', $name, self::$DEFAULTS);
             }
             $this->params[ $name ] = $value;
         }

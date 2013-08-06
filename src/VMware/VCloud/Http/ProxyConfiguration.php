@@ -2,6 +2,8 @@
 
 namespace VMware\VCloud\Http;
 
+use \VMware\VCloud\Exception\InvalidArrayKey as InvalidArrayKey;
+
 class ProxyConfiguration
 {
     const PARAM_HOST     = 'proxy_host';
@@ -25,7 +27,7 @@ class ProxyConfiguration
         // Copy values into $this->params
         foreach ($params as $name => $value) {
             if (!array_key_exists($name, self::$DEFAULTS)) {
-                throw new Exception\InvalidKey('params', $name, self::$DEFAULTS);
+                throw new InvalidArrayKey('params', $name, self::$DEFAULTS);
             }
             $this->params[ $name ] = $value;
         }

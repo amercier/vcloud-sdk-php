@@ -13,6 +13,7 @@ class ConfigurationTest extends VCloudTest
         $config = new Configuration();
         $this->assertArrayContains(ProxyConfiguration::$DEFAULTS, $config->toArray());
         $this->assertArrayContains(SSLConfiguration::$DEFAULTS, $config->toArray());
+        $this->assertEquals(Configuration::getDefaultConfiguration(), $config);
     }
 
     public function testCustomConfiguration()
