@@ -33,4 +33,57 @@ class CredentialsTest extends VCloudTest
         $this->assertEquals($this->config['cloudadmin']['username'], $credentials->getUsername());
         $this->assertEquals($this->config['cloudadmin']['password'], $credentials->getPassword());
     }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\MissingParameter
+     */
+    public function testConstructFromArrayWithMissingOrganization()
+    {
+        new Credentials(
+            array(
+                'username' => $this->config['cloudadmin']['username'],
+                'password' => $this->config['cloudadmin']['password'],
+            )
+        );
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\MissingParameter
+     */
+    public function testConstructFromArrayWithMissingUsername()
+    {
+        new Credentials(
+            array(
+                'organization' => $this->config['cloudadmin']['organization'],
+                'password' => $this->config['cloudadmin']['password'],
+            )
+        );
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\MissingParameter
+     */
+    public function testConstructFromArrayWithMissingPassword()
+    {
+        new Credentials(
+            array(
+                'organization' => $this->config['cloudadmin']['organization'],
+                'username' => $this->config['cloudadmin']['username'],
+            )
+        );
+    }
+
+    public function testToArray()
+    {
+        $credentials = new Credentials(
+            $this->config['cloudadmin']['organization'],
+            $this->config['cloudadmin']['username'],
+            $this->config['cloudadmin']['password']
+        );
+
+        $array = $credentials->toArray();
+
+        $this->assertArrayHasKey('username', $array);
+        $this->assertArrayHasKey('password', $array);
+    }
 }

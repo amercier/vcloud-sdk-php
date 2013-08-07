@@ -100,16 +100,8 @@ class Credentials extends AbstractObject
     public function toArray()
     {
         return array(
-            'username' => $credentials->getUsername() . '@' . $credentials->getOrganization(),
-            'password' => $credentials->getPassword(),
+            'username' => $this->getUsername() . '@' . $this->getOrganization(),
+            'password' => $this->getPassword(),
         );
-    }
-
-    public static function getMcryptKey()
-    {
-        if (self::$mcryptKey === null) {
-            self::$mcryptKey = strtr(base64_encode(openssl_random_pseudo_bytes(16)), '+', '.');
-        }
-        return self::$mcryptKey;
     }
 }
