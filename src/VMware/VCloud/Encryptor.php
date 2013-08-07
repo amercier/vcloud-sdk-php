@@ -14,12 +14,7 @@ class Encryptor
 
     public function __construct($salt = null)
     {
-        if (!defined(self::MCRYPT_CIPHER)) {
-            throw new Exception\MissingPHPModule('mcrypt', 'Constant ' . self::MCRYPT_CIPHER . ' is missing');
-        }
-        if (!defined(self::MCRYPT_MODE)) {
-            throw new Exception\MissingPHPModule('mcrypt', 'Constant ' . self::MCRYPT_MODE . ' is missing');
-        }
+        defined(self::MCRYPT_CIPHER) && defined(self::MCRYPT_MODE) || die('mcrypt module is not installed');
 
         $this->salt = $salt === null ? self::generateRandomSalt() : $salt;
     }
@@ -39,9 +34,12 @@ class Encryptor
             ),
             MCRYPT_RAND
         );
-        if (strlen($iv_base64 = rtrim(base64_encode($iv), '=')) != 22) {
+
+        $iv_base64 = rtrim(base64_encode($iv), '=');
+        /* useless?
+        if (strlen($iv_base64) != 22) {
             return false;
-        }
+        }*/
 
         // Encrypt $decrypted and an MD5 of $decrypted using $key.  MD5 is fine
         // to use here because it's just to verify successful decryption.
