@@ -31,4 +31,17 @@ class EncryptorTest extends VCloudTest
         $decryptedData = $encryptor->decrypt($encrytedData, $key);
         $this->assertEquals($data, $decryptedData, 'Decrypted data should be equivalent to the original one');
     }
+
+    public function testWrongKey()
+    {
+        $encryptor = new Encryptor('qwertyuiop');
+        $data = $this->config['cloudadmin']['password'];
+        $key1 = '1234567890';
+        $key2 = '0123456789';
+
+        $encrytedData = $encryptor->encrypt($data, $key1);
+        $decryptedData = $encryptor->decrypt($encrytedData, $key2);
+        $this->assertEquals(false, $decryptedData, 'decrypt() should return false qhile the given key is wrong');
+
+    }
 }
