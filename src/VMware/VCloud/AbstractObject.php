@@ -20,14 +20,11 @@ abstract class AbstractObject
      */
     protected function get($name, $createMethod = null)
     {
-        if (!isset($this->$name)) {
+        if (!property_exists($this, $name)) {
             throw new Exception\UnknownClassField(get_class($this), $name);
         }
 
-        if ($this->$name === null && $createMethod !== false) {
-            if ($createMethod === null) {
-                $createMethod = 'create' . ucfirst($name);
-            }
+        if ($this->$name === null && $createMethod !== null) {
             $this->$name = $this->$createMethod();
         }
 
