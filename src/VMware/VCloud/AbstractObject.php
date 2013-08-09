@@ -58,7 +58,7 @@ abstract class AbstractObject
      */
     protected function add($name, $value)
     {
-        if (!isset($this->$name)) {
+        if (!property_exists($this, $name)) {
             throw new Exception\UnknownClassField(get_class($this), $name);
         }
         if (!is_array($this->$name)) {
@@ -81,14 +81,14 @@ abstract class AbstractObject
      */
     protected function removeByIndex($name, $index)
     {
-        if (!isset($this->$name)) {
+        if (!property_exists($this, $name)) {
             throw new Exception\UnknownClassField(get_class($this), $name);
         }
         if (!is_array($this->$name)) {
             throw new Exception\ClassFieldNotArray(get_class($this), $name);
         }
         if ($index < 0 || $index >= count($this->$name)) {
-            throw new Exception\ClassFieldNotArray($name, $index);
+            throw new Exception\IndexOutOfRange($name, $index, count($this->$name));
         }
 
         unset($this->$name[$index]);
@@ -107,7 +107,7 @@ abstract class AbstractObject
      */
     protected function remove($name, $value)
     {
-        if (!isset($this->$name)) {
+        if (!property_exists($this, $name)) {
             throw new Exception\UnknownClassField(get_class($this), $name);
         }
         if (!is_array($this->$name)) {
@@ -115,7 +115,7 @@ abstract class AbstractObject
         }
 
         if (($index = array_search($value, $this->$name)) === false) {
-            throw new Exception\IndexOutOfRange($this->$name, $index);
+            throw new Exception\ArrayItemNotFound($name, $value);
         }
 
         unset($this->$name[$index]);

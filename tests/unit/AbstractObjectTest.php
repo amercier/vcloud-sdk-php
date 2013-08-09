@@ -41,6 +41,18 @@ class AbstractObjectChildren extends AbstractObject
         return $this->get('array1');
     }
 
+    public function addArray1($value) {
+        return $this->add('array1', $value);
+    }
+
+    public function removeArray1($value) {
+        return $this->remove('array1', $value);
+    }
+
+    public function removeArray1ByIndex($index) {
+        return $this->removeByIndex('array1', $index);
+    }
+
     public function setArray1($value) {
         return $this->set('array1', $value);
     }
@@ -56,8 +68,33 @@ class AbstractObjectChildren extends AbstractObject
     public function getUnknownField() {
         return $this->get('merIlEtFou');
     }
+
     public function setUnknownField($value) {
         return $this->set('merIlEtFou', $value);
+    }
+
+    public function addUnknownField($value) {
+        return $this->add('merIlEtFou', $value);
+    }
+
+    public function removeUnknownField($value) {
+        return $this->remove('merIlEtFou', $value);
+    }
+
+    public function removeUnknownFieldByIndex($value) {
+        return $this->removeByIndex('merIlEtFou', $value);
+    }
+
+    public function addWrongField($value) {
+        return $this->add('field1', $value);
+    }
+
+    public function removeWrongField($value) {
+        return $this->remove('field1', $value);
+    }
+
+    public function removeWrongFieldByIndex($value) {
+        return $this->removeByIndex('field1', $value);
     }
 }
 
@@ -95,4 +132,100 @@ class AbstractObjectTest extends \VCloudTest
         $object = new AbstractObjectChildren();
         $object->setUnknownField('whatever');
     }
+
+    public function testAddToArray1()
+    {
+        $object = new AbstractObjectChildren();
+        $object->addArray1('one');
+    }
+
+    public function testRemoveToArray1()
+    {
+        $object = new AbstractObjectChildren();
+        $object->addArray1('one');
+        $object->removeArray1('one');
+    }
+
+    public function testRemoveByIndexToArray1()
+    {
+        $object = new AbstractObjectChildren();
+        $object->addArray1('one');
+        $object->removeArray1ByIndex(0);
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\UnknownClassField
+     */
+    public function testAddUnknownClassField()
+    {
+        $object = new AbstractObjectChildren();
+        $object->addUnknownField('whatever');
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\UnknownClassField
+     */
+    public function testRemoveUnknownClassField()
+    {
+        $object = new AbstractObjectChildren();
+        $object->removeUnknownField('whatever');
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\UnknownClassField
+     */
+    public function testRemoveUnknownClassFieldByIndex()
+    {
+        $object = new AbstractObjectChildren();
+        $object->removeUnknownFieldByIndex(0);
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\ClassFieldNotArray
+     */
+    public function testAddClassFieldNotArray()
+    {
+        $object = new AbstractObjectChildren();
+        $object->addWrongField('whatever');
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\ClassFieldNotArray
+     */
+    public function testRemoveClassFieldNotArray()
+    {
+        $object = new AbstractObjectChildren();
+        $object->removeWrongField('whatever');
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\ClassFieldNotArray
+     */
+    public function testRemoveClassFieldNotArrayByIndex()
+    {
+        $object = new AbstractObjectChildren();
+        $object->removeWrongFieldByIndex(0);
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\IndexOutOfRange
+     */
+    public function testRemoveByIndexToArray1OutOfRange()
+    {
+        $object = new AbstractObjectChildren();
+        $object->addArray1('one');
+        $object->removeArray1ByIndex(1);
+    }
+
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\ArrayItemNotFound
+     */
+    public function testRemoveToArray1NotFound()
+    {
+        $object = new AbstractObjectChildren();
+        $object->addArray1('one');
+        $object->removeArray1('mer il et fou');
+    }
+
 }
