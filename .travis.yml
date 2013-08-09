@@ -13,7 +13,7 @@ script:
   - mkdir -p build/logs
   - vendor/bin/phpcs --standard=PSR1 src/
   - vendor/bin/phpcs --standard=PSR2 src/
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - vendor/bin/phpunit --testsuite unit --coverage-clover build/logs/clover.xml
 
 after_script:
   - vendor/bin/coveralls -v
