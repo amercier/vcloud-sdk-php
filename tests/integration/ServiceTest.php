@@ -15,23 +15,20 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         self::$config = json_decode( file_get_contents(dirname(__FILE__) . self::CONFIG_FILE), true );
     }
 
-    /*
-    public function testConstructWithCredentials()
-    {
-        $credentials = new Credentials(
-            self::$config['cloudadmin']['organization'],
-            self::$config['cloudadmin']['username'],
-            self::$config['cloudadmin']['password']
-        );
-        $this->assertTrue(true);
-    }*/
-
     public function testLoginAsCloudAdmin()
     {
         $service = new Service(self::$config['host']);
         $service->login(self::$config['cloudadmin']);
         $this->assertTrue($service->isLoggedIn());
     }
+
+    public function testLoginAsOrgAdmin()
+    {
+        $service = new Service(self::$config['host']);
+        $service->login(self::$config['orgadmin']);
+        $this->assertTrue($service->isLoggedIn());
+    }
+
     public function testLogout()
     {
         $service = new Service(self::$config['host']);
