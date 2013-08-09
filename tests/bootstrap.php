@@ -10,7 +10,9 @@ abstract class VCloudTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->config = json_decode( file_get_contents(dirname(__FILE__) . self::CONFIG_FILE), true );
+        if (file_exists(dirname(__FILE__) . self::CONFIG_FILE)) {
+            $this->config = json_decode( file_get_contents(dirname(__FILE__) . self::CONFIG_FILE), true );
+        }
     }
 
     public function assertArrayContains($expected, $actual, $message = '')
