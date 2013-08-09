@@ -1,0 +1,13 @@
+{
+    "host": "mysqerver",
+    "cloudadmin": {
+        "organization": "system",
+        "username": "administrator",
+        "password": "********"
+    },
+    "orgadmin": {
+        "organization": "myorg",
+        "username": "orgadmin",
+        "password": "********"
+    }
+}
