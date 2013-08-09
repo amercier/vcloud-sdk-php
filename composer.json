@@ -1,6 +1,6 @@
 {
   "name": "amercier/vcloud-sdk",
-  "description": "21st century PHP SDK for vCloud Director - Object-oriented, hand-crafted, namespaced, PSR-0 compatible",
+  "description": "21st century PHP SDK for vCloud Director - Object-oriented, hand-crafted, namespaced, PSR-2 compliant",
   "type": "library",
   "keywords": [
     "vmware",
