@@ -15,6 +15,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         self::$config = json_decode( file_get_contents(dirname(__FILE__) . self::CONFIG_FILE), true );
     }
 
+    /*
     public function testConstructWithCredentials()
     {
         $credentials = new Credentials(
@@ -23,5 +24,20 @@ class ServiceTest extends PHPUnit_Framework_TestCase
             self::$config['cloudadmin']['password']
         );
         $this->assertTrue(true);
+    }*/
+
+    public function testLoginAsCloudAdmin()
+    {
+        $service = new Service(self::$config['host']);
+        $service->login(self::$config['cloudadmin']);
+        $this->assertTrue($service->isLoggedIn());
+    }
+    public function testLogout()
+    {
+        $service = new Service(self::$config['host']);
+        $service->login(self::$config['cloudadmin']);
+        $this->assertTrue($service->isLoggedIn());
+        $service->logout();
+        $this->assertFalse($service->isLoggedIn());
     }
 }

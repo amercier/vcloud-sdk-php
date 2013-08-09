@@ -52,4 +52,12 @@ class ServiceTest extends \VCloudTest
         $service = new Service('server.example.org');
         $this->assertFalse($service->isLoggedIn());
     }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\AlreadyLoggedOut
+     */
+    public function testLogoutBeforeLogin() {
+        $service = new Service('server.example.org');
+        $service->logout();
+    }
 }

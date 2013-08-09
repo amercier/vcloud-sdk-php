@@ -46,10 +46,8 @@ class Service extends AbstractObject
 
     public function login($credentials)
     {
-        if (is_array($credentials)) {
+        if (!($credentials instanceof Credentials)) {
             $credentials = new Credentials($credentials);
-        } elseif (!($credentials instanceof Credentials)) {
-            throw new Exception\InvalidParameter($credentials, array('Credentials', 'array'));
         }
 
         $this->set('credentials', $credentials);
