@@ -10,7 +10,7 @@ namespace VMware\VCloud;
  * The password is stored encrypted using AES encryption with Rijndael 128-bit
  * cypher. The key used is randomly generated.
  */
-class Credentials extends AbstractObject
+class Credentials extends Object
 {
 
     protected static $mcryptKey = null;

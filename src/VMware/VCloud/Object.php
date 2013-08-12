@@ -4,7 +4,7 @@ namespace VMware\VCloud;
 /**
  * Utility class that provides generic getters and setters
  */
-abstract class AbstractObject
+abstract class Object
 {
     /**
      * Generic getter. If the value of $this->myValue is null, it calls the

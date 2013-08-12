@@ -4,13 +4,14 @@ namespace VMware\VCloud;
 
 use VMware\VCloud\Http\Host;
 
-class Service extends AbstractObject
+class Service extends Object
 {
-    protected $service = null;
+    protected $implementation = null;
     protected $host = null;
     protected $httpConfiguration = null;
     protected $credentials = null;
     protected $loggedIn = false;
+    protected $organizations = array();
 
     public function __construct($host, Http\Configuration $httpConfiguration = null)
     {
@@ -29,12 +30,12 @@ class Service extends AbstractObject
         );
     }
 
-    public function getService()
+    public function getImplementation()
     {
-        return $this->get('service', 'createService');
+        return $this->get('implementation', 'createImplementation');
     }
 
-    protected function createService()
+    protected function createImplementation()
     {
         return \VMware_VCloud_SDK_Service::getService();
     }
@@ -52,14 +53,17 @@ class Service extends AbstractObject
 
         $this->set('credentials', $credentials);
 
-        $orgList = $this->getService()->login(
+        $orgList = $this->getImplementation()->login(
             $this->get('host')->getUrl(),
             $this->get('credentials')->toArray(),
             $this->get('httpConfiguration')->toArray()
         );
 
         $this->set('loggedIn', true);
-        // FIXME $this->setOrganizationList($orgList);
+
+        foreach ($orgList->getOrg() as $org) {
+            $this->add('organizations', new Organization($this, $org));
+        }
 
         return $this;
     }
@@ -69,7 +73,33 @@ class Service extends AbstractObject
         if (!$this->isLoggedIn()) {
             throw new Exception\AlreadyLoggedOut($this->host);
         }
-        $this->service->logout();
+        $this->getImplementation()->logout();
         $this->set('loggedIn', false);
+    }
+
+    public function createModelFromReference(\VMware_VCloud_API_ReferenceType $reference)
+    {
+        return $this->getImplementation()->createSdkObj($reference);
+    }
+
+    public function getCredentials()
+    {
+        return $this->get('credentials');
+    }
+
+    public function getOrganizations()
+    {
+        return $this->get('organizations');
+    }
+
+    public function getCurrentOrganization()
+    {
+        $name = strtolower($this->getCredentials()->getOrganization());
+        foreach ($this->getOrganizations() as $organization) {
+            if (strtolower($organization->getName()) === $name) {
+                return $organization;
+            }
+        }
+        throw new Exception\ObjectNotFound('Organization', 'name', $name);
     }
 }

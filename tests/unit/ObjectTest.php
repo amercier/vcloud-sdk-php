@@ -4,9 +4,9 @@ namespace VMware\VCloud\Test\Unit;
 
 require_once dirname(__FILE__) . '/../bootstrap.php';
 
-use VMware\VCloud\AbstractObject;
+use VMware\VCloud\Object;
 
-class AbstractObjectChildren extends AbstractObject
+class ObjectChildren extends Object
 {
     protected $field1 = null;
     protected $field2 = null;
@@ -99,11 +99,11 @@ class AbstractObjectChildren extends AbstractObject
 }
 
 
-class AbstractObjectTest extends \VCloudTest
+class ObjectTest extends \VCloudTest
 {
     public function testGetSetField()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $this->assertEquals(null, $object->getField1());
         $object->setField1('ok');
         $this->assertEquals('ok', $object->getField1());
@@ -111,7 +111,7 @@ class AbstractObjectTest extends \VCloudTest
 
     public function testGetCreateField()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $this->assertEquals('field2', $object->getField2());
     }
 
@@ -120,7 +120,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testGetUnknownClassField()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->getUnknownField();
     }
 
@@ -129,26 +129,26 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testSetUnknownClassField()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->setUnknownField('whatever');
     }
 
     public function testAddToArray1()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->addArray1('one');
     }
 
     public function testRemoveToArray1()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->addArray1('one');
         $object->removeArray1('one');
     }
 
     public function testRemoveByIndexToArray1()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->addArray1('one');
         $object->removeArray1ByIndex(0);
     }
@@ -158,7 +158,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testAddUnknownClassField()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->addUnknownField('whatever');
     }
 
@@ -167,7 +167,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testRemoveUnknownClassField()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->removeUnknownField('whatever');
     }
 
@@ -176,7 +176,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testRemoveUnknownClassFieldByIndex()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->removeUnknownFieldByIndex(0);
     }
 
@@ -185,7 +185,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testAddClassFieldNotArray()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->addWrongField('whatever');
     }
 
@@ -194,7 +194,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testRemoveClassFieldNotArray()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->removeWrongField('whatever');
     }
 
@@ -203,7 +203,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testRemoveClassFieldNotArrayByIndex()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->removeWrongFieldByIndex(0);
     }
 
@@ -212,7 +212,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testRemoveByIndexToArray1OutOfRange()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->addArray1('one');
         $object->removeArray1ByIndex(1);
     }
@@ -223,7 +223,7 @@ class AbstractObjectTest extends \VCloudTest
      */
     public function testRemoveToArray1NotFound()
     {
-        $object = new AbstractObjectChildren();
+        $object = new ObjectChildren();
         $object->addArray1('one');
         $object->removeArray1('mer il et fou');
     }

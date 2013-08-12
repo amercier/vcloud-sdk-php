@@ -2,10 +2,10 @@
 
 namespace VMware\VCloud\Http;
 
-use \VMware\VCloud\AbstractObject;
+use \VMware\VCloud\Object;
 use \VMware\VCloud\Exception\MalformedUrl;
 
-class Host extends AbstractObject
+class Host extends Object
 {
     protected $url = null;
 

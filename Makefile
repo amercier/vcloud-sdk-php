@@ -38,6 +38,14 @@ unit: composer.lock
 	make lint && \
 	vendor/bin/phpunit --testsuite unit
 
+unit-full: composer.lock
+	make lint && \
+	vendor/bin/phpunit --testsuite unit --coverage-html build/logs/coverage --coverage-text=build/logs/coverage.txt && \
+	echo && \
+	echo ======== Code coverage ======== && \
+	cat build/logs/coverage.txt | grep -A3 Summary | tail -n 3 && \
+	echo ===============================
+
 lint: composer.lock
 	vendor/bin/phpcs --standard=PSR1 src/
 	vendor/bin/phpcs --standard=PSR2 src/

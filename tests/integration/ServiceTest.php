@@ -1,40 +1,79 @@
 <?php
 
+require_once dirname(__FILE__) . '/../bootstrap.php';
 
 use VMware\VCloud\Credentials;
 use VMware\VCloud\Service;
 
-class ServiceTest extends PHPUnit_Framework_TestCase
+class ServiceTest extends \VCloudTest
 {
-    const CONFIG_FILE = '/../config.json';
-
-    static $config = null;
-
-    public static function setUpBeforeClass()
-    {
-        self::$config = json_decode( file_get_contents(dirname(__FILE__) . self::CONFIG_FILE), true );
-    }
-
     public function testLoginAsCloudAdmin()
     {
-        $service = new Service(self::$config['host']);
-        $service->login(self::$config['cloudadmin']);
+        $service = new Service($this->config['host']);
+        $service->login($this->config['cloudadmin']);
         $this->assertTrue($service->isLoggedIn());
     }
 
     public function testLoginAsOrgAdmin()
     {
-        $service = new Service(self::$config['host']);
-        $service->login(self::$config['orgadmin']);
+        $service = new Service($this->config['host']);
+        $service->login($this->config['orgadmin']);
         $this->assertTrue($service->isLoggedIn());
     }
 
     public function testLogout()
     {
-        $service = new Service(self::$config['host']);
-        $service->login(self::$config['cloudadmin']);
+        $service = new Service($this->config['host']);
+        $service->login($this->config['cloudadmin']);
         $this->assertTrue($service->isLoggedIn());
         $service->logout();
         $this->assertFalse($service->isLoggedIn());
+    }
+
+    public function testGetOrganizationsAsOrgAdmin()
+    {
+        $service = new Service($this->config['host']);
+        $service->login($this->config['orgadmin']);
+        $organizations = $service->getOrganizations();
+        $this->assertEquals(1, count($organizations));
+        $this->assertEquals(
+            strtolower($service->getCredentials()->getOrganization()),
+            strtolower($organizations[0]->getName())
+        );
+    }
+
+    public function testGetCurrentOrganizationAsOrgAdmin()
+    {
+        $service = new Service($this->config['host']);
+        $service->login($this->config['orgadmin']);
+
+        $organizations = $service->getOrganizations();
+        $currentOrganization = $service->getCurrentOrganization();
+        $this->assertEquals($organizations[0], $currentOrganization);
+        $this->assertEquals(
+            strtolower($service->getCredentials()->getOrganization()),
+            strtolower($currentOrganization->getName())
+        );
+    }
+
+    public function testGetOrganizationsAsCloudAdmin()
+    {
+        $service = new Service($this->config['host']);
+        $service->login($this->config['cloudadmin']);
+        $organizations = $service->getOrganizations();
+        $this->assertNotEquals(1, count($organizations));
+    }
+
+    public function testGetCurrentOrganizationAsCloudAdmin()
+    {
+        $service = new Service($this->config['host']);
+        $service->login($this->config['cloudadmin']);
+
+        $organizations = $service->getOrganizations();
+        $currentOrganization = $service->getCurrentOrganization();
+        $this->assertEquals(
+            strtolower($service->getCredentials()->getOrganization()),
+            strtolower($currentOrganization->getName())
+        );
     }
 }

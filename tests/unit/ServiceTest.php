@@ -41,10 +41,10 @@ class ServiceTest extends \VCloudTest
         new Service(new \DateTime());
     }
 
-    public function testGetService()
+    public function testGetImplementation()
     {
         $service = new Service('server.example.org');
-        $this->assertTrue($service->getService() instanceof \VMware_VCloud_SDK_Service);
+        $this->assertTrue($service->getImplementation() instanceof \VMware_VCloud_SDK_Service);
     }
 
     public function testIsLoggedIn()
