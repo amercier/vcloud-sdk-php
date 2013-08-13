@@ -30,6 +30,40 @@ class ServiceTest extends \VCloudTest
         $this->assertFalse($service->isLoggedIn());
     }
 
+    /*
+    public function testCreateOrganization()
+    {
+        $service = new Service($this->config['host']);
+        $service->login($this->config['cloudadmin']);
+
+        $organization = $service
+            ->createOrganization(
+                $this->config['organization']['name'],
+                $this->config['organization']['fullName'],
+                $this->config['organization']['description']
+            )
+            ->setEMailSMTPServerSettings(null) // optional
+            ->setEMailNotificationSettings(new Organization\EMailNotificationSettings(
+                strtolower(ORG_NAME) . '@example.org',                          // Sender's email address
+                '[' . strtolower($this->config['organization']['name']) . '] ', // Email subject prefix
+                array('email1@example.org', 'email2@example.org')               // Send system notification to:
+            ))
+            ->setLDAPSettings(new Organization\LDAPCustomSettings(
+                'SIMPLE', // Authentication method ()
+                'ldap@example.org', // User name (null for anonymous)
+                'ldappassword', // Password (null for anonymous)
+                '' //
+            ));
+
+        $organization
+            ->createUser(
+                $this->config['orgadmin'],
+                'Organization Administrator',
+                true // LDAP
+            );
+    }
+    */
+
     public function testGetOrganizationsAsOrgAdmin()
     {
         $service = new Service($this->config['host']);
@@ -75,5 +109,18 @@ class ServiceTest extends \VCloudTest
             strtolower($service->getCredentials()->getOrganization()),
             strtolower($currentOrganization->getName())
         );
+    }
+
+    public function testDeleteOrganization()
+    {
+        $service = new Service($this->config['host']);
+        $service->login($this->config['orgadmin']);
+
+        $currentOrganization = $service->getCurrentOrganization();
+        $this->assertEquals(
+            strtolower($service->getCredentials()->getOrganization()),
+            strtolower($currentOrganization->getName())
+        );
+        $currentOrganization->delete();
     }
 }

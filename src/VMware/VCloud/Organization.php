@@ -5,6 +5,7 @@ namespace VMware\VCloud;
 class Organization extends ModelObject
 {
     protected $networks = null;
+    protected $virtualDataCenters = null;
 
     public function __construct(Service $service, $modelReferenceOrObject)
     {
@@ -33,5 +34,19 @@ class Organization extends ModelObject
             array_push($networks, new OrganizationNetwork($this, $orgNetworkRef));
         }
         return $networks;
+    }
+
+    public function getVirtualDataCenters()
+    {
+        return $this->get('virtualDataCenters', 'createVirtualDataCenters');
+    }
+
+    protected function createVirtualDataCenters()
+    {
+        $virtualDataCenters = array();
+        foreach ($this->getModel()->getVdcRefs() as $vdcRef) {
+            array_push($virtualDataCenters, new VirtualDataCenter($this, $vdcRef));
+        }
+        return $virtualDataCenters;
     }
 }
