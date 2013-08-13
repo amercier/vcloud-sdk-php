@@ -111,6 +111,7 @@ class ServiceTest extends \VCloudTest
         );
     }
 
+    /*
     public function testDeleteOrganization()
     {
         $service = new Service($this->config['host']);
@@ -123,4 +124,5 @@ class ServiceTest extends \VCloudTest
         );
         $currentOrganization->delete();
     }
+    */
 }
