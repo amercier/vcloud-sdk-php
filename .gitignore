@@ -2,4 +2,4 @@ vendor
 composer.lock
 composer.phar
 build
-tests/config.json
+tests/*.json
