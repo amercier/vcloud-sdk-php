@@ -13,7 +13,8 @@ class ResourceEntity extends Entity
         parent::__construct($parent, $reference, $model, $implementation);
     }
 
-    public function getStatus() {
+    public function getStatus()
+    {
         return new Status($this->getModel()->get_status());
     }
 }

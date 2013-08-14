@@ -6,7 +6,8 @@ class VirtualDataCenter extends Entity
 {
     protected $vApps = null;
 
-    public function getOrganization() {
+    public function getOrganization()
+    {
         return $this->get('parent');
     }
 
@@ -33,8 +34,7 @@ class VirtualDataCenter extends Entity
         }
         if ($notFoundException) {
             throw new Exception\ObjectNotFound('vApp', 'name', 'Virtual Datacenter ' . $this->getName());
-        }
-        else {
+        } else {
             return false;
         }
     }

@@ -7,8 +7,11 @@ class Organization extends Entity
     protected $networks = null;
     protected $virtualDataCenters = null;
 
-    public function __construct(Service $parent, \VMware_VCloud_API_ReferenceType $reference, \VMware_VCloud_API_OrgType $model = null)
-    {
+    public function __construct(
+        Service $parent,
+        \VMware_VCloud_API_ReferenceType $reference,
+        \VMware_VCloud_API_OrgType $model = null
+    ) {
         parent::__construct($parent, $reference, $model);
     }
 
@@ -65,8 +68,7 @@ class Organization extends Entity
         }
         if ($notFoundException) {
             throw new Exception\ObjectNotFound('vApp', 'name', 'Virtual Datacenter ' . $this->getName());
-        }
-        else {
+        } else {
             return false;
         }
     }

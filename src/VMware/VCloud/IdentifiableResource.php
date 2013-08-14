@@ -17,19 +17,25 @@ class IdentifiableResource extends Resource
         parent::__construct($parent, $reference, $model);
     }
 
-    public function getId() {
+    public function getId()
+    {
         return preg_replace('/.*(' . self::ID_PATTERN . ').*/', '$1', $this->getReferenceOrModel()->get_href());
     }
 
-    public function getHref() {
+    public function getHref()
+    {
         return $this->getReferenceOrModel()->get_href();
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->getReferenceOrModel()->get_type();
     }
 
-    public function __toString() {
-        return '<' . preg_replace('/application\\/vnd.vmware.vcloud.(.*)\\+xml/', '$1', $this->getType()) . '> ' . $this->getId();
+    public function __toString()
+    {
+        return '<'
+            . preg_replace('/application\\/vnd.vmware.vcloud.(.*)\\+xml/', '$1', $this->getType())
+            . '> ' . $this->getId();
     }
 }

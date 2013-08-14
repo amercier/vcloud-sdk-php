@@ -26,10 +26,9 @@ class Entity extends IdentifiableResource
 
     protected function createImplementation()
     {
-        if( $this->getReference() !== null ) {
+        if ($this->getReference() !== null) {
             return $this->getService()->createImplementationFromReference($this->getReference());
-        }
-        else {
+        } else {
             return $this->getService()->createImplementationFromEntity($this->getModel());
         }
     }

@@ -15,7 +15,7 @@ class Resource extends Object
     ) {
         $this->set('parent', $parent);
         $this->set('reference', $reference);
-        $this->set('model' , $model);
+        $this->set('model', $model);
     }
 
     protected function getParent()
