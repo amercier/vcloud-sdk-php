@@ -2,6 +2,6 @@
 
 namespace VMware\VCloud;
 
-class OrganizationNetwork extends ChildModelObject
+class OrganizationNetwork extends Entity
 {
 }

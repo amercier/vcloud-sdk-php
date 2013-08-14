@@ -2,14 +2,19 @@
 
 namespace VMware\VCloud;
 
-class Organization extends ModelObject
+class Organization extends Entity
 {
     protected $networks = null;
     protected $virtualDataCenters = null;
 
-    public function __construct(Service $service, $modelReferenceOrObject)
+    public function __construct(Service $parent, \VMware_VCloud_API_ReferenceType $reference, \VMware_VCloud_API_OrgType $model = null)
     {
-        parent::__construct($service, $modelReferenceOrObject);
+        parent::__construct($parent, $reference, $model);
+    }
+
+    protected function getImplementationGetterName()
+    {
+        return 'getOrg';
     }
 
     public function getService()
@@ -19,18 +24,18 @@ class Organization extends ModelObject
 
     public function getFullName()
     {
-        return $this->getModelData()->getFullName();
+        return $this->getModel()->getFullName();
     }
 
     public function getNetworks()
     {
-        return $this->get('networks', 'createNetworks');
+        return $this->get('networks', 'retrieveNetworks');
     }
 
-    protected function createNetworks()
+    protected function retrieveNetworks()
     {
         $networks = array();
-        foreach ($this->getModel()->getOrgNetworkRefs() as $orgNetworkRef) {
+        foreach ($this->getImplementation()->getOrgNetworkRefs() as $orgNetworkRef) {
             array_push($networks, new OrganizationNetwork($this, $orgNetworkRef));
         }
         return $networks;
@@ -38,15 +43,31 @@ class Organization extends ModelObject
 
     public function getVirtualDataCenters()
     {
-        return $this->get('virtualDataCenters', 'createVirtualDataCenters');
+        return $this->get('virtualDataCenters', 'retrieveVirtualDataCenters');
     }
 
-    protected function createVirtualDataCenters()
+    protected function retrieveVirtualDataCenters()
     {
         $virtualDataCenters = array();
-        foreach ($this->getModel()->getVdcRefs() as $vdcRef) {
+        foreach ($this->getImplementation()->getVdcRefs() as $vdcRef) {
             array_push($virtualDataCenters, new VirtualDataCenter($this, $vdcRef));
         }
         return $virtualDataCenters;
+    }
+
+    public function getVAppByName($name, $notFoundException = true)
+    {
+        foreach ($this->getVirtualDataCenters() as $virtualDataCenter) {
+            $vApp = $virtualDataCenter->getVAppByName($name, false);
+            if ($vApp !== false) {
+                return $vApp;
+            }
+        }
+        if ($notFoundException) {
+            throw new Exception\ObjectNotFound('vApp', 'name', 'Virtual Datacenter ' . $this->getName());
+        }
+        else {
+            return false;
+        }
     }
 }

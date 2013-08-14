@@ -8,24 +8,23 @@ abstract class Object
 {
     /**
      * Generic getter. If the value of $this->myValue is null, it calls the
-     * creator method (either $this->createMyValue, or the
-     * given creator method name).
+     * creator method.
      *
      * Setting $createMethod to false disables the call to the creator method.
      *
-     * @param string $name         The field name
-     * @param string $createMethod The creator method name, defaults to 'createMyValue' if name is 'myValue'
+     * @param string $name             The field name
+     * @param string $createMethodName The creator method name, defaults to 'createMyValue' if name is 'myValue'
      * @throws Exception\UnknownClassField If the field does not exist in the class
      * @return mixed Returns the value of the field $name
      */
-    protected function get($name, $createMethod = null)
+    protected function get($name, $createMethodName = null)
     {
         if (!property_exists($this, $name)) {
             throw new Exception\UnknownClassField(get_class($this), $name);
         }
 
-        if ($this->$name === null && $createMethod !== null) {
-            $this->$name = $this->$createMethod();
+        if ($this->$name === null && $createMethodName !== null) {
+            $this->$name = $this->$createMethodName();
         }
 
         return $this->$name;

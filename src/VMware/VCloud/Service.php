@@ -61,8 +61,9 @@ class Service extends Object
 
         $this->set('loggedIn', true);
 
-        foreach ($orgList->getOrg() as $org) {
-            $this->add('organizations', new Organization($this, $org));
+        foreach ($orgList->getOrg() as $orgRef) {
+            //$org = $this->getImplementation()->createSdkObj($orgRef)->getOrg();
+            $this->add('organizations', new Organization($this, $orgRef/*, $org*/));
         }
 
         return $this;
@@ -77,10 +78,22 @@ class Service extends Object
         $this->set('loggedIn', false);
     }
 
-    public function createModelFromReference(\VMware_VCloud_API_ReferenceType $reference)
+    public function createImplementationFromReference(\VMware_VCloud_API_ReferenceType $reference)
     {
         return $this->getImplementation()->createSdkObj($reference);
     }
+
+    public function createImplementationFromEntity(\VMware_VCloud_API_EntityType $entity)
+    {
+        return $this->getImplementation()->createSdkObj($entity);
+    }
+
+    /*
+    public function createModelFromResource(\VMware_VCloud_API_ResourceEntityType $resource)
+    {
+        return $this->getImplementation()->createSdkObj($resource);
+    }
+    */
 
     public function getCredentials()
     {
