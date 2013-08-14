@@ -1,0 +1,19 @@
+{
+    "host": "vcd-demo.ecocenter.fr",
+    "cloudadmin": {
+        "organization": "system",
+        "username": "amercier",
+        "password": "17sb,ymb4"
+    },
+    "orgadmin": {
+        "organization": "ecv",
+        "username": "amercier",
+        "password": "17sb,ymb4"
+    },
+    "vapp": "vCloud 5.1.2 for Selenium",
+    "organization": {
+      "name": "testing-sdk",
+      "fullName": "Testing SDK",
+      "description": "Programmatically generated organization for SDK testing purpose"
+    }
+}
