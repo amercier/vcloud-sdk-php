@@ -2,7 +2,7 @@
 
 namespace VMware\VCloud;
 
-class VAppNetwork extends Resource
+class VAppNetwork extends Resource implements Network
 {
     public function getName()
     {
