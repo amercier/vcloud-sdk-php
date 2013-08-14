@@ -33,4 +33,9 @@ class VAppNetwork extends Resource implements Network
         ? false
         : $this->getVApp()->getVirtualDataCenter()->getOrganization()->getNetworkById($parentNetwork->get_id());
     }
+
+    public function getFenceMode()
+    {
+        return $this->getModel()->getConfiguration()->getFenceMode();
+    }
 }

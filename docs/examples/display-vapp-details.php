@@ -39,8 +39,8 @@ if ($service->isLoggedIn()) {
         echo " ▸ vApp networks   \t\t" ;
         echo ($vApp->getNetworks() ? '' : 'none') . "\n";
         foreach($vApp->getNetworks() as $network) {
-            echo "      ▸ " . $network . " ";
-            echo '(' . ($network->getParentNetwork() ? 'connected to ' . $network->getParentNetwork() : 'isolated') . ")\n";
+            echo "      ▸ " . $network . "\t\t ";
+            echo $network->getFenceMode() . ($network->getParentNetwork() ? ' to ' . $network->getParentNetwork() : '') . "\n";
         }
 
         echo "\n";
