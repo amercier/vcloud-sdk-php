@@ -20,7 +20,7 @@ class VirtualDataCenter extends Entity
     {
         $vApps = array();
         foreach ($this->getImplementation()->getVAppRefs() as $vAppRef) {
-            array_push($vApps, new VApp($this, $vAppRef));
+            array_push($vApps, new VApp($this, null, $vAppRef));
         }
         return $vApps;
     }

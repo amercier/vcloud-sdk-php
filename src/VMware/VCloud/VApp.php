@@ -14,7 +14,11 @@ class VApp extends DeployableResourceEntity
 
     public function getOwner()
     {
-        return new User($this->getVirtualDataCenter()->getOrganization(), $this->getModel()->getOwner()->getUser());
+        return new User(
+            $this->getVirtualDataCenter()->getOrganization(),
+            null,
+            $this->getModel()->getOwner()->getUser()
+        );
     }
 
     public function getVirtualMachines()
@@ -26,7 +30,7 @@ class VApp extends DeployableResourceEntity
     {
         $virtualMachines = array();
         foreach ($this->getModel()->getChildren()->getVm() as $vm) {
-            array_push($virtualMachines, new VirtualMachine($this, null, $vm));
+            array_push($virtualMachines, new VirtualMachine($this, $vm));
         }
         return $virtualMachines;
     }
@@ -46,7 +50,7 @@ class VApp extends DeployableResourceEntity
     {
         $networks = array();
         foreach ($this->getNetworkConfigSection()->getNetworkConfig() as $vAppNetwork) {
-            array_push($networks, new VAppNetwork($this, null, $vAppNetwork));
+            array_push($networks, new VAppNetwork($this, $vAppNetwork));
         }
 
         return $networks;

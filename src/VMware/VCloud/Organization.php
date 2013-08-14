@@ -9,10 +9,10 @@ class Organization extends Entity
 
     public function __construct(
         Service $parent,
-        \VMware_VCloud_API_ReferenceType $reference,
-        \VMware_VCloud_API_OrgType $model = null
+        \VMware_VCloud_API_OrgType $model = null,
+        \VMware_VCloud_API_ReferenceType $reference
     ) {
-        parent::__construct($parent, $reference, $model);
+        parent::__construct($parent, $model, $reference);
     }
 
     protected function getImplementationGetterName()
@@ -53,7 +53,7 @@ class Organization extends Entity
     {
         $virtualDataCenters = array();
         foreach ($this->getImplementation()->getVdcRefs() as $vdcRef) {
-            array_push($virtualDataCenters, new VirtualDataCenter($this, $vdcRef));
+            array_push($virtualDataCenters, new VirtualDataCenter($this, null, $vdcRef));
         }
         return $virtualDataCenters;
     }

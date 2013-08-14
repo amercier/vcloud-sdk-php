@@ -62,8 +62,7 @@ class Service extends Object
         $this->set('loggedIn', true);
 
         foreach ($orgList->getOrg() as $orgRef) {
-            //$org = $this->getImplementation()->createSdkObj($orgRef)->getOrg();
-            $this->add('organizations', new Organization($this, $orgRef/*, $org*/));
+            $this->add('organizations', new Organization($this, null, $orgRef));
         }
 
         return $this;
