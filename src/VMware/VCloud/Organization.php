@@ -10,7 +10,7 @@ class Organization extends Entity
     public function __construct(
         Service $parent,
         \VMware_VCloud_API_OrgType $model = null,
-        \VMware_VCloud_API_ReferenceType $reference
+        \VMware_VCloud_API_ReferenceType $reference = null
     ) {
         parent::__construct($parent, $model, $reference);
     }
