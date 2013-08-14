@@ -39,9 +39,23 @@ class Organization extends Entity
     {
         $networks = array();
         foreach ($this->getImplementation()->getOrgNetworkRefs() as $orgNetworkRef) {
-            array_push($networks, new OrganizationNetwork($this, $orgNetworkRef));
+            array_push($networks, new OrganizationNetwork($this, null, $orgNetworkRef));
         }
         return $networks;
+    }
+
+    public function getNetworkById($id, $exceptionIfNotFound = true)
+    {
+        foreach ($this->getNetworks() as $network) {
+            if ($network->getId() === $id) {
+                return $network;
+            }
+        }
+        if ($notFoundException) {
+            throw new Exception\ObjectNotFound('Organization Network', 'id', 'Organization ' . $this->getName());
+        } else {
+            return false;
+        }
     }
 
     public function getVirtualDataCenters()

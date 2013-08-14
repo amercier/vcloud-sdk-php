@@ -40,7 +40,7 @@ if ($service->isLoggedIn()) {
         echo ($vApp->getNetworks() ? '' : 'none') . "\n";
         foreach($vApp->getNetworks() as $network) {
             echo "      ▸ " . $network . " ";
-            echo "\n";
+            echo '(' . ($network->getParentNetwork() ? 'connected to ' . $network->getParentNetwork() : 'isolated') . ")\n";
         }
 
         echo "\n";
