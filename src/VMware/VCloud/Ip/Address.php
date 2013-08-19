@@ -22,7 +22,7 @@ class Address extends Object
             $this->set('address', intval($address));
 
             if ($this->getAddress() < -2147483648 || $this->getAddress() > 2147483647) {
-                throw new Exception\InvalidParameter('Invalid IPv4 $address "' + $this->getAddress() + '"');
+                throw new Exception\InvalidParameter($address, array('string'));
             }
 
         } else { // Otherwise, parse it as a string
@@ -31,7 +31,7 @@ class Address extends Object
             $ip = null;
             preg_match('/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/', $address, $ip);
             if (!$ip || $ip[1] > 255 || $ip[2] > 255 || $ip[3] > 255 || $ip[4] > 255) {
-                throw new Exception\InvalidParameter('Invalid IPv4 Address "' + $address + '"');
+                throw new Exception\InvalidParameter($address, array('string'));
             }
 
             // Calculate the IP address number

@@ -4,6 +4,9 @@ namespace VMware\VCloud\Exception;
 
 use Cli\Helpers\Exception as VCloudException;
 
+/**
+ * @todo split into InvalidParameterValue and InvalidParameterType
+ */
 class InvalidParameter extends VCloudException
 {
     public function __construct($value, $expectedType)
