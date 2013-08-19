@@ -37,9 +37,8 @@ if ($service->isLoggedIn()) {
         }, $vApp->getVirtualMachines()));
         foreach($vApp->getVirtualMachines() as $virtualMachine) {
             echo "      ▸ " . str_pad($virtualMachine, $maxNameLength) . "\t ";
-            echo $virtualMachine->getVirtualCpu()->getQuantity() . " vCPU" . ($virtualMachine->getVirtualCpu()->getQuantity() === 1 ? ' ' : 's') . "\t";
-            echo $virtualMachine->getVirtualMemory()->getQuantity() . " MB\n";
-            // die(print_r($virtualMachine->getVirtualCpu(), true));
+            echo str_pad($virtualMachine->getVirtualCpu()->getQuantity(), 2, ' ', STR_PAD_LEFT) . " vCPU" . ($virtualMachine->getVirtualCpu()->getQuantity() === 1 ? ' ' : 's') . " / ";
+            echo str_pad($virtualMachine->getVirtualMemory()->getQuantity(), 5, ' ', STR_PAD_LEFT) . " MB\n";
         }
 
         echo " ▸ vApp networks   \t\t" ;
