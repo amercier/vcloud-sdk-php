@@ -32,14 +32,23 @@ if ($service->isLoggedIn()) {
 
         echo " ▸ virtual machines\t\t" ;
         echo ($vApp->getVirtualMachines() ? '' : 'none') . "\n";
+        $maxNameLength = max(array_map(function($vm) {
+            return strlen('' . $vm);
+        }, $vApp->getVirtualMachines()));
         foreach($vApp->getVirtualMachines() as $virtualMachine) {
-            echo "      ▸ " . $virtualMachine . "\n";
+            echo "      ▸ " . str_pad($virtualMachine, $maxNameLength) . "\t ";
+            echo $virtualMachine->getVirtualCpu()->getQuantity() . " vCPU" . ($virtualMachine->getVirtualCpu()->getQuantity() === 1 ? ' ' : 's') . "\t";
+            echo $virtualMachine->getVirtualMemory()->getQuantity() . " MB\n";
+            // die(print_r($virtualMachine->getVirtualCpu(), true));
         }
 
         echo " ▸ vApp networks   \t\t" ;
         echo ($vApp->getNetworks() ? '' : 'none') . "\n";
+        $maxNameLength = max(array_map(function($network) {
+            return strlen('' . $network);
+        }, $vApp->getNetworks()));
         foreach($vApp->getNetworks() as $network) {
-            echo "      ▸ " . $network . "\t\t ";
+            echo "      ▸ " . str_pad($network, $maxNameLength) . "\t ";
             echo $network->getFenceMode() . ($network->getParentNetwork() ? ' to ' . $network->getParentNetwork() : '') . "\n";
         }
 
