@@ -12,12 +12,12 @@ class Address extends Object
     public function __construct($address)
     {
         // Check parameter
-        if (gettype($address) !== 'string' && gettype($address) !== 'integer' && gettype($address) !== 'double') {
+        if (!is_integer($address) && !is_float($address) && !is_string($address)) {
             throw new Exception\InvalidParameter($address, array('string', 'integer', 'double'));
         }
 
         // If the $address is a number, consider it as the IP Address number representation
-        if (preg_match('/^-?[0-9]+$/', $address)) {
+        if (is_integer($address) || is_float($address) || is_string($address) && preg_match('/^-?[0-9]+$/', $address)) {
 
             $this->set('address', intval($address));
 
