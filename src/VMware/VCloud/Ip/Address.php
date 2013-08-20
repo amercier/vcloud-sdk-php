@@ -24,9 +24,9 @@ class Address extends Object
 
             $this->set('address', intval($address));
 
-            // if ($this->getAddress() < -2147483648 || $this->getAddress() > 2147483647) {
-            //     throw new Exception\IpOutOfRange('IP address ' . $this . ' is invalid (' . $address . ')');
-            // }
+            if ($this->getAddress() < -2147483648 || $this->getAddress() > 2147483647) {
+                throw new Exception\IpOutOfRange('IP address ' . $this . ' is invalid (' . $address . ')');
+            }
 
         } else { // Otherwise, parse it as a string
 

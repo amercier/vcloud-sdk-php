@@ -101,6 +101,8 @@ class AddressTest extends VCloudTest
      */
     public function testGetPreviousOnFirstAddress()
     {
+        // die((new Address('128.0.0.0'))->getPrevious()->getAddress() . ' - ' . (new Address('128.0.0.0'))->getAddress() . "\n");
+
         $address6 = new Address('0.0.0.0');
         $address6->getPrevious();
     }
