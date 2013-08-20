@@ -16,10 +16,14 @@ class AddressTest extends VCloudTest
         $this->assertTrue($address1 instanceof Address, "new Address('192.168.0.1') instanceof Address");
         $this->assertTrue($address3 instanceof Address, "new Address('0.0.0.0') instanceof Address");
         $this->assertTrue($address4 instanceof Address, "new Address('255.255.255.255') instanceof Address");
+    }
 
-        $this->assertEquals($address2->getAddress(), -256, "new Address('255.255.255.0')->getAddress() === -256");
-        $this->assertEquals($address3->getAddress(), 0, "new Address('0.0.0.0')->getAddress() === 0");
-        $this->assertEquals($address4->getAddress(), -1, "new Address('255.255.255.255')->getAddress() === -1");
+    /**
+     * @expectedException \VMware\VCloud\Exception\IpOutOfRange
+     */
+    public function testConstructIPOutOfRange()
+    {
+        $address6 = new Address('192.168.256.0');
     }
 
     public function testToString()

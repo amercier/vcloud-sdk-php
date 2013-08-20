@@ -9,6 +9,9 @@ class Address extends Object
 {
     protected $address;
 
+    protected static $lastAddress = null;
+    protected static $firstAddress = null;
+
     public function __construct($address)
     {
         // Check parameter
@@ -54,11 +57,7 @@ class Address extends Object
 
     public function getNext()
     {
-        // if ($this->getAddress() === 2147483647) { // 0111..111 => 1000..000
-        //     return new self(-2147483648);
-        // }
-
-        if ($this->getAddress() === -1) { // 255.255.255.255
+        if ($this->getAddress() === self::getLastAddress()->getAddress()) { // 255.255.255.255
             throw new Exception\IpOutOfRange('IP address 255.255.255.255 has no next address');
         }
 
@@ -67,14 +66,26 @@ class Address extends Object
 
     public function getPrevious()
     {
-        // if ($this->getAddress() === -2147483648) { // 1000..000 => 0111..111
-        //     return new self(2147483647);
-        // }
-
-        if ($this->getAddress() === 0) { // 0.0.0.0
+        if ($this->getAddress() === self::getFirstAddress()->getAddress()) { // 0.0.0.0
             throw new Exception\IpOutOfRange('IP address 0.0.0.0 has no previous address');
         }
 
         return new self($this->getAddress() - 1);
+    }
+
+    public static function getFirstAddress()
+    {
+        if (self::$firstAddress === null) {
+            self::$firstAddress = new Address('0.0.0.0');
+        }
+        return self::$firstAddress;
+    }
+
+    public static function getLastAddress()
+    {
+        if (self::$lastAddress === null) {
+            self::$lastAddress = new Address('255.255.255.255');
+        }
+        return self::$lastAddress;
     }
 }
