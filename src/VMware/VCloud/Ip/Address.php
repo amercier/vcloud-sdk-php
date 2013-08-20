@@ -21,9 +21,9 @@ class Address extends Object
 
             $this->set('address', intval($address));
 
-            if ($this->getAddress() < -2147483648 || $this->getAddress() > 2147483647) {
-                throw new Exception\IpOutOfRange('IP address ' . $this . ' is invalid (' . $address . ')');
-            }
+            // if ($this->getAddress() < -2147483648 || $this->getAddress() > 2147483647) {
+            //     throw new Exception\IpOutOfRange('IP address ' . $this . ' is invalid (' . $address . ')');
+            // }
 
         } else { // Otherwise, parse it as a string
 
@@ -54,9 +54,9 @@ class Address extends Object
 
     public function getNext()
     {
-        if ($this->getAddress() === 2147483647) { // 0111..111 => 1000..000
-            return new self(-2147483648);
-        }
+        // if ($this->getAddress() === 2147483647) { // 0111..111 => 1000..000
+        //     return new self(-2147483648);
+        // }
 
         if ($this->getAddress() === -1) { // 255.255.255.255
             throw new Exception\IpOutOfRange('IP address 255.255.255.255 has no next address');
@@ -67,9 +67,9 @@ class Address extends Object
 
     public function getPrevious()
     {
-        if ($this->getAddress() === -2147483648) { // 1000..000 => 0111..111
-            return new self(2147483647);
-        }
+        // if ($this->getAddress() === -2147483648) { // 1000..000 => 0111..111
+        //     return new self(2147483647);
+        // }
 
         if ($this->getAddress() === 0) { // 0.0.0.0
             throw new Exception\IpOutOfRange('IP address 0.0.0.0 has no previous address');
