@@ -12,8 +12,8 @@ class Address extends Object
     public function __construct($address)
     {
         // Check parameter
-        if (gettype($address) !== 'string' && gettype($address) !== 'integer') {
-            throw new Exception\InvalidParameter($address, array('string', 'integer'));
+        if (gettype($address) !== 'string' && gettype($address) !== 'integer' && gettype($address) !== 'double') {
+            throw new Exception\InvalidParameter($address, array('string', 'integer', 'double'));
         }
 
         // If the $address is a number, consider it as the IP Address number representation
@@ -55,26 +55,26 @@ class Address extends Object
     public function getNext()
     {
         if ($this->getAddress() === 2147483647) { // 0111..111 => 1000..000
-            return new self(intval(-2147483648));
+            return new self(-2147483648);
         }
 
         if ($this->getAddress() === -1) { // 255.255.255.255
             throw new Exception\IpOutOfRange('IP address 255.255.255.255 has no next address');
         }
 
-        return new self(intval($this->getAddress() + 1));
+        return new self($this->getAddress() + 1);
     }
 
     public function getPrevious()
     {
         if ($this->getAddress() === -2147483648) { // 1000..000 => 0111..111
-            return new self(intval(2147483647));
+            return new self(2147483647);
         }
 
         if ($this->getAddress() === 0) { // 0.0.0.0
             throw new Exception\IpOutOfRange('IP address 0.0.0.0 has no previous address');
         }
 
-        return new self(intval($this->getAddress() - 1));
+        return new self($this->getAddress() - 1);
     }
 }
