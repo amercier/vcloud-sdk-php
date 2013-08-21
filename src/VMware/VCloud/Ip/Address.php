@@ -24,21 +24,14 @@ class Address extends Object
 
             $this->set('address', intval($address));
 
-            if ($this->getAddress() < -2147483648 || $this->getAddress() > 2147483647) {
-                throw new Exception\IpOutOfRange('IP address ' . $this . ' is invalid (' . $address . ')');
-            }
-
         } else { // Otherwise, parse it as a string
 
-            // Retrieve the different part
-            $ip = null;
-            preg_match('/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/', $address, $ip);
-            if (!$ip || $ip[1] > 255 || $ip[2] > 255 || $ip[3] > 255 || $ip[4] > 255) {
+            $ip = ip2long($address);
+            if ($ip === false) {
                 throw new Exception\IpOutOfRange('IP address ' . $address . ' is invalid');
             }
 
-            // Calculate the IP address number
-            $this->set('address', (+$ip[1]<<24) + (+$ip[2]<<16) + (+$ip[3]<<8) + (+$ip[4]));
+            $this->set('address', $ip);
         }
     }
 
