@@ -15,10 +15,10 @@
 
     <testsuites>
         <testsuite name="unit">
-            <directory>./tests/unit/</directory>
+            <directory>./tests/VMWare/VCloud/Test/Unit</directory>
         </testsuite>
         <testsuite name="integration">
-            <directory>./tests/integration/</directory>
+            <directory>./tests/VMWare/VCloud/Test/Integration</directory>
         </testsuite>
     </testsuites>
 
