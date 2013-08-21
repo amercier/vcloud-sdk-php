@@ -7,7 +7,7 @@ use \VMware\VCloud\Exception as Exception;
 
 class Address extends Object
 {
-    protected $address;
+    protected $address = null;
 
     protected static $lastAddress = null;
     protected static $firstAddress = null;
