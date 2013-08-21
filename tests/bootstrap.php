@@ -1,25 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-abstract class VCloudTest extends PHPUnit_Framework_TestCase
-{
-    const CONFIG_FILE = '/config.json';
+// Add test namespaces to the autoloader
 
-    protected $config = null;
-
-    public function setUp()
-    {
-        if (file_exists(dirname(__FILE__) . self::CONFIG_FILE)) {
-            $this->config = json_decode( file_get_contents(dirname(__FILE__) . self::CONFIG_FILE), true );
-        }
-    }
-
-    public function assertArrayContains($expected, $actual, $message = '')
-    {
-        foreach($expected as $key => $value) {
-            $this->assertArrayHasKey($key, $actual, $message);
-            $this->assertContains($value, $actual, $message);
-        }
-    }
-}
+$loader = include __DIR__ . '/../vendor/autoload.php';
+$loader->add('VMware\\VCloud\\Test', __DIR__);

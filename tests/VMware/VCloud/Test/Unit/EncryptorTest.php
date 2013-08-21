@@ -1,10 +1,11 @@
 <?php
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
+namespace VMware\VCloud\Test\Unit;
 
+use VMware\VCloud\Test\ConfigurableTestCase;
 use VMware\VCloud\Encryptor;
 
-class EncryptorTest extends VCloudTest
+class EncryptorTest extends ConfigurableTestCase
 {
     public function testDecryptWithDefaultSalt()
     {

@@ -14,6 +14,7 @@ all: composer.lock
 	# Dependencies installed/upgraded successfully
 
 composer.lock: composer.phar
+	[ -e composer.lock ] && rm composer.lock
 	php composer.phar install
 
 composer.phar:
@@ -47,8 +48,8 @@ unit-full: composer.lock
 	echo ===============================
 
 lint: composer.lock
-	vendor/bin/phpcs --standard=PSR1 src/
-	vendor/bin/phpcs --standard=PSR2 src/
+	vendor/bin/phpcs --standard=PSR1 src/ tests/
+	vendor/bin/phpcs --standard=PSR2 src/ tests/
 
 clean:
 	rm -Rf vendor composer.phar composer.lock

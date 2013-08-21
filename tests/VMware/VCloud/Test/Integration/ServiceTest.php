@@ -1,11 +1,11 @@
 <?php
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
+namespace VMware\VCloud\Test\Integration;
 
 use VMware\VCloud\Credentials;
 use VMware\VCloud\Service;
 
-class ServiceTest extends \VCloudTest
+class ServiceTest extends ConfigurableTestCase
 {
     public function testLoginAsCloudAdmin()
     {

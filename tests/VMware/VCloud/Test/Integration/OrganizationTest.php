@@ -1,10 +1,10 @@
 <?php
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
+namespace VMware\VCloud\Test\Integration;
 
 use VMware\VCloud\Service;
 
-class OrganizationTest extends \VCloudTest
+class OrganizationTest extends ConfigurableTestCase
 {
     public function testNetworks()
     {

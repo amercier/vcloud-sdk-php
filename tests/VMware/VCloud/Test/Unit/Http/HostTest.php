@@ -1,10 +1,11 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../bootstrap.php';
+namespace VMware\VCloud\Test\Unit\Http;
 
+use VMware\VCloud\Test\ConfigurableTestCase;
 use VMware\VCloud\Http\Host;
 
-class HostTest extends VCloudTest
+class HostTest extends ConfigurableTestCase
 {
     public function testConstructWithFQDN()
     {

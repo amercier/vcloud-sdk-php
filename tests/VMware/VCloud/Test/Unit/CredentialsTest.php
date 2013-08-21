@@ -1,10 +1,11 @@
 <?php
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
+namespace VMware\VCloud\Test\Unit;
 
+use VMware\VCloud\Test\ConfigurableTestCase;
 use VMware\VCloud\Credentials;
 
-class CredentialsTest extends VCloudTest
+class CredentialsTest extends ConfigurableTestCase
 {
     public function testConstructFromParameters()
     {

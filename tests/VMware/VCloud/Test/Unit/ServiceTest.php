@@ -2,12 +2,11 @@
 
 namespace VMware\VCloud\Test\Unit;
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
-
+use VMware\VCloud\Test\ConfigurableTestCase;
 use VMware\VCloud\Http;
 use VMware\VCloud\Service;
 
-class ServiceTest extends \VCloudTest
+class ServiceTest extends ConfigurableTestCase
 {
     public function testConstructWithObjectHost()
     {
@@ -56,7 +55,8 @@ class ServiceTest extends \VCloudTest
     /**
      * @expectedException \VMware\VCloud\Exception\AlreadyLoggedOut
      */
-    public function testLogoutBeforeLogin() {
+    public function testLogoutBeforeLogin()
+    {
         $service = new Service('server.example.org');
         $service->logout();
     }
