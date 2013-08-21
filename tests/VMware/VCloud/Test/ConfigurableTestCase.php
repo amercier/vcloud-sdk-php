@@ -4,7 +4,7 @@ namespace VMware\VCloud\Test;
 
 abstract class ConfigurableTestCase extends \PHPUnit_Framework_TestCase
 {
-    const CONFIG_FILE = '/config.json';
+    const CONFIG_FILE = '/../../../config.json';
 
     protected $config = null;
 

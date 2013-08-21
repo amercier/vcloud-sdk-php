@@ -2,6 +2,7 @@
 
 namespace VMware\VCloud\Test\Integration;
 
+use VMware\VCloud\Test\ConfigurableTestCase;
 use VMware\VCloud\Credentials;
 use VMware\VCloud\Service;
 
