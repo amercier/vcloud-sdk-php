@@ -30,13 +30,13 @@
     }
   ],
   "require": {
-    "vmware/vcloud-sdk-patched": "512.*",
+    "vmware/vcloud-sdk-patched": "*",
     "pear-pear/HTTP_Request2": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "3.*",
-    "satooshi/php-coveralls": ">=0.6.1",
-    "pear-pear/PHP_CodeSniffer": ">=1.4.5",
-    "amercier/cli-helpers": ">=1.1.0"
+    "phpunit/phpunit": "*",
+    "satooshi/php-coveralls": "*",
+    "pear-pear/PHP_CodeSniffer": "*",
+    "amercier/cli-helpers": "*"
   }
 }
