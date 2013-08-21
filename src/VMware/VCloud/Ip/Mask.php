@@ -21,12 +21,17 @@ class Mask extends Object
 
             // Calculate the actual mask (-xxxx)
             // Address::getLastAddress() is the full "ones" number, aka FFFFFFFF in 32-bits
-            $this->set('mask', $maskSize === 0 ? 0 : (Address::getLastAddress()->getAddress() << (32 - $maskSize)));
+            $this->setMask($maskSize === 0 ? 0 : (Address::getLastAddress()->getAddress() << (32 - $maskSize)));
 
         } else { // Address (Ex: 255.255.255.0)
             $address = $mask instanceof Address ? $mask : new Address($mask);
-            $this->set('mask', $address->getAddress());
+            $this->setMask($address->getAddress());
         }
+    }
+
+    protected function setMask($mask)
+    {
+        return $this->set('mask', $mask > 0x7FFFFFFF ? $mask - 0x100000000 : $mask);
     }
 
     public function getMask()

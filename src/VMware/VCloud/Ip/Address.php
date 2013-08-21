@@ -22,7 +22,7 @@ class Address extends Object
         // If the $address is a number, consider it as the IP Address number representation
         if (is_integer($address) || is_float($address) || is_string($address) && preg_match('/^-?[0-9]+$/', $address)) {
 
-            $this->set('address', intval($address));
+            $this->setAddress(intval($address));
 
         } else { // Otherwise, parse it as a string
 
@@ -31,8 +31,13 @@ class Address extends Object
                 throw new Exception\IpOutOfRange('IP address ' . $address . ' is invalid');
             }
 
-            $this->set('address', $ip);
+            $this->setAddress($ip);
         }
+    }
+
+    protected function setAddress($address)
+    {
+        return $this->set('address', $address > 0x7FFFFFFF ? $address - 0x100000000 : $address);
     }
 
     public function getAddress()
