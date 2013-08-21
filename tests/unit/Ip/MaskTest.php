@@ -39,7 +39,7 @@ class MaskTest extends VCloudTest
         $this->assertTrue($mask33 instanceof Mask, "new Mask('0.0.0.0') instanceof Mask");
 
         for ($i = 0 ; $i <= 32 ; $i++) {
-        	$this->assertEquals($i === 0 ? 0 : -1 << (32 - $i), $masks[$i]->getMask(), 'new Mask(' + $i + ')->getMask() === -1 << ' + (32 - $i) + ' === ' + ($i === 0 ? 0 : -1 << (32 - $i)));
+        	$this->assertEquals($i === 0 ? 0 : Address::getLastAddress()->getAddress() << (32 - $i), $masks[$i]->getMask(), 'new Mask(' + $i + ')->getMask() === Address::getLastAddress()->getAddress() << ' + (32 - $i) + ' === ' + ($i === 0 ? 0 : Address::getLastAddress()->getAddress() << (32 - $i)));
         }
 
 	    $this->assertEquals($mask11, $mask12, "new Mask('24') === new Mask(24)");
