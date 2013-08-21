@@ -15,7 +15,7 @@ class Mask extends Object
 
             // Retrieve the mask size (31 to 0)
             $maskSize = intval($mask);
-            if ($maskSize > 32) {
+            if ($maskSize > 32 || $maskSize < 0) {
                 throw new Exception\InvalidMaskSize($maskSize);
             }
 

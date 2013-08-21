@@ -26,6 +26,14 @@ class AddressTest extends VCloudTest
         $address6 = new Address('192.168.256.0');
     }
 
+    /**
+     * @expectedException \VMware\VCloud\Exception\InvalidParameter
+     */
+    public function testConstructInvalidParameter()
+    {
+        $address6 = new Address(array());
+    }
+
     public function testToString()
     {
         $address1 = new Address('0.0.0.0');

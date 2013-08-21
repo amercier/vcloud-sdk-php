@@ -86,5 +86,26 @@ class MaskTest extends VCloudTest
         $this->assertEquals($address1, $mask1->apply('192.168.0.255'), "new Mask(16)->apply('192.168.0.255') === '192.168.0.0'");
         $this->assertEquals($address1, $mask1->apply('192.168.1.0')  , "new Mask(16)->apply('192.168.1.0') === '192.168.0.0'");
         $this->assertEquals($address1, $mask1->apply('192.168.1.254'), "new Mask(16)->apply('192.168.1.254') === '192.168.0.0'");
+
+        $this->assertEquals($address1, $mask1->apply(new Address('192.168.0.1')  ), "new Mask(16)->apply('192.168.0.1') === '192.168.0.0'");
+        $this->assertEquals($address1, $mask1->apply(new Address('192.168.0.255')), "new Mask(16)->apply('192.168.0.255') === '192.168.0.0'");
+        $this->assertEquals($address1, $mask1->apply(new Address('192.168.1.0')  ), "new Mask(16)->apply('192.168.1.0') === '192.168.0.0'");
+        $this->assertEquals($address1, $mask1->apply(new Address('192.168.1.254')), "new Mask(16)->apply('192.168.1.254') === '192.168.0.0'");
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\InvalidMaskSize
+     */
+    public function testConstructWithMaskSizeMinus1()
+    {
+        new Mask(-1);
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\InvalidMaskSize
+     */
+    public function testConstructWithMaskSize33()
+    {
+        new Mask(33);
     }
 }
