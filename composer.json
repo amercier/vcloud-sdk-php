@@ -37,6 +37,8 @@
     "phpunit/phpunit": "*",
     "satooshi/php-coveralls": "*",
     "pear-pear/PHP_CodeSniffer": "*",
-    "amercier/cli-helpers": "*"
+    "amercier/cli-helpers": "*",
+    "phpdocumentor/phpdocumentor": "*",
+    "phpdocumentor/template-responsive-twig": "*"
   }
 }

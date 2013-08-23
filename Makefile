@@ -7,8 +7,9 @@
 # started immediately. If this is not the case, please report an issue.
 #
 # @todo Check if XDebug is installed
+# @todo Check if mcrypt is installed
 
-.PHONY: update clean
+.PHONY: update clean docs
 
 all: composer.lock
 	# Dependencies installed/upgraded successfully
@@ -53,3 +54,7 @@ lint: composer.lock
 
 clean:
 	rm -Rf vendor composer.phar composer.lock
+
+docs:
+	[ -d docs ] && rm -Rf docs || echo Nothing to do
+	phpdoc --directory src/ --target docs/api --title "vCloud Director PHP SDK" --template responsive-twig
