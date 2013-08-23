@@ -3,11 +3,20 @@
 namespace VMware\VCloud\Test\Unit\Ip;
 
 use VMware\VCloud\Test\ConfigurableTestCase;
+use VMware\VCloud\Ip\BitMask;
 use VMware\VCloud\Ip\Address;
 use VMware\VCloud\Ip\Mask;
 
 class MaskTest extends ConfigurableTestCase
 {
+    const MASK_24 = 0xFFFFFF00;
+    const MASK_32 = 0xFFFFFFFF;
+    const MASK_00 = 0x00000000;
+
+    const NUMBER_32 = 4294967295;
+    const NUMBER_24 = 4294967040;
+    const NUMBER_00 = 0;
+
     public function testConstruct()
     {
         $masks = array();
@@ -40,11 +49,15 @@ class MaskTest extends ConfigurableTestCase
         $this->assertTrue($mask33 instanceof Mask, "new Mask('0.0.0.0') instanceof Mask");
 
         for ($i = 0; $i <= 32; $i++) {
+            $expected =
+                $i === 0
+                ? 0
+                : BitMask::getUnsignedValue((Address::getLast()->getValue() << (32 - $i)) & BitMask::LAST);
             $this->assertEquals(
-                $i === 0 ? 0 : Address::getLastAddress()->getAddress() << (32 - $i),
-                $masks[$i]->getMask(),
-                'new Mask(' + $i + ')->getMask() === Address::getLastAddress()->getAddress() << '
-                + (32 - $i) + ' === ' + ($i === 0 ? 0 : Address::getLastAddress()->getAddress() << (32 - $i))
+                $expected,
+                $masks[$i]->getValue(),
+                'new Mask(' . $i . ')->getValue() === Address::getLast()->getValue() << '
+                . (32 - $i) . ' === ' . $expected
             );
         }
 
@@ -56,6 +69,42 @@ class MaskTest extends ConfigurableTestCase
 
         $this->assertEquals($mask31, $mask32, "new Mask('0') === new Mask(0)");
         $this->assertEquals($mask31, $mask33, "new Mask('0.0.0.0') === new Mask(0)");
+    }
+
+    public function testGetValue()
+    {
+        $mask11 = new Mask(24);
+        $mask12 = new Mask('24');
+        $mask13 = new Mask('255.255.255.0');
+
+        $mask21 = new Mask(32);
+        $mask22 = new Mask('32');
+        $mask23 = new Mask('255.255.255.255');
+
+        $mask31 = new Mask(0);
+        $mask32 = new Mask('0');
+        $mask33 = new Mask('0.0.0.0');
+
+        $this->assertEquals(self::MASK_24, $mask11->getValue());
+        $this->assertEquals(self::MASK_24, $mask12->getValue());
+        $this->assertEquals(self::MASK_24, $mask13->getValue());
+        $this->assertEquals(self::NUMBER_24, $mask11->getValue());
+        $this->assertEquals(self::NUMBER_24, $mask12->getValue());
+        $this->assertEquals(self::NUMBER_24, $mask13->getValue());
+
+        $this->assertEquals(self::MASK_32, $mask21->getValue());
+        $this->assertEquals(self::MASK_32, $mask22->getValue());
+        $this->assertEquals(self::MASK_32, $mask23->getValue());
+        $this->assertEquals(self::NUMBER_32, $mask21->getValue());
+        $this->assertEquals(self::NUMBER_32, $mask22->getValue());
+        $this->assertEquals(self::NUMBER_32, $mask23->getValue());
+
+        $this->assertEquals(self::MASK_00, $mask31->getValue());
+        $this->assertEquals(self::MASK_00, $mask32->getValue());
+        $this->assertEquals(self::MASK_00, $mask33->getValue());
+        $this->assertEquals(self::NUMBER_00, $mask31->getValue());
+        $this->assertEquals(self::NUMBER_00, $mask32->getValue());
+        $this->assertEquals(self::NUMBER_00, $mask33->getValue());
     }
 
     public function testToString()

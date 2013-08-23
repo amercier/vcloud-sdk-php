@@ -7,16 +7,35 @@ use VMware\VCloud\Ip\Address;
 
 class AddressTest extends ConfigurableTestCase
 {
+    const MASK_192_168_0_1 = 0xC0A80001;
+    const MASK_255_255_255_0 = 0xFFFFFF00;
+    const MASK_0_0_0_0 = 0x00000000;
+    const MASK_255_255_255_255 = 0xFFFFFFFF;
+    const MASK_127_255_255_255 = 0x7FFFFFFF;
+    const MASK_128_0_0_0 = 0x80000000;
+
+    const NUMBER_192_168_0_1 = 3232235521;
+    const NUMBER_255_255_255_0 = 4294967040;
+    const NUMBER_0_0_0_0 = 0;
+    const NUMBER_255_255_255_255 = 4294967295;
+    const NUMBER_127_255_255_255 = 2147483647;
+    const NUMBER_128_0_0_0 = 2147483648;
+
     public function testConstruct()
     {
         $address1 = new Address('192.168.0.1');
         $address2 = new Address('255.255.255.0');
         $address3 = new Address('0.0.0.0');
         $address4 = new Address('255.255.255.255');
+        $address5 = new Address('127.255.255.255');
+        $address6 = new Address('128.0.0.0');
 
         $this->assertTrue($address1 instanceof Address, "new Address('192.168.0.1') instanceof Address");
+        $this->assertTrue($address2 instanceof Address, "new Address('255.255.255.0') instanceof Address");
         $this->assertTrue($address3 instanceof Address, "new Address('0.0.0.0') instanceof Address");
         $this->assertTrue($address4 instanceof Address, "new Address('255.255.255.255') instanceof Address");
+        $this->assertTrue($address5 instanceof Address, "new Address('127.255.255.255') instanceof Address");
+        $this->assertTrue($address6 instanceof Address, "new Address('128.0.0.0') instanceof Address");
     }
 
     /**
@@ -33,6 +52,78 @@ class AddressTest extends ConfigurableTestCase
     public function testConstructInvalidParameter()
     {
         $address6 = new Address(array());
+    }
+
+    public function testGetValue()
+    {
+        $address1 = new Address('192.168.0.1');
+        $address2 = new Address('255.255.255.0');
+        $address3 = new Address('0.0.0.0');
+        $address4 = new Address('255.255.255.255');
+        $address5 = new Address('127.255.255.255');
+        $address6 = new Address('128.0.0.0');
+
+        $this->assertEquals(
+            self::MASK_192_168_0_1,
+            $address1->getValue(),
+            "new Address('" . $address1 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::MASK_255_255_255_0,
+            $address2->getValue(),
+            "new Address('" . $address2 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::MASK_0_0_0_0,
+            $address3->getValue(),
+            "new Address('" . $address3 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::MASK_255_255_255_255,
+            $address4->getValue(),
+            "new Address('" . $address4 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::MASK_127_255_255_255,
+            $address5->getValue(),
+            "new Address('" . $address6 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::MASK_128_0_0_0,
+            $address6->getValue(),
+            "new Address('" . $address6 . "')->getValue()"
+        );
+
+        $this->assertEquals(
+            self::NUMBER_192_168_0_1,
+            $address1->getValue(),
+            "new Address('" . $address1 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::NUMBER_255_255_255_0,
+            $address2->getValue(),
+            "new Address('" . $address2 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::NUMBER_0_0_0_0,
+            $address3->getValue(),
+            "new Address('" . $address3 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::NUMBER_255_255_255_255,
+            $address4->getValue(),
+            "new Address('" . $address4 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::NUMBER_127_255_255_255,
+            $address5->getValue(),
+            "new Address('" . $address6 . "')->getValue()"
+        );
+        $this->assertEquals(
+            self::NUMBER_128_0_0_0,
+            $address6->getValue(),
+            "new Address('" . $address6 . "')->getValue()"
+        );
     }
 
     public function testToString()

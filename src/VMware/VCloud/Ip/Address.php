@@ -2,88 +2,44 @@
 
 namespace VMware\VCloud\Ip;
 
-use \VMware\VCloud\Object as Object;
 use \VMware\VCloud\Exception as Exception;
 
-class Address extends Object
+class Address extends BitMask
 {
-    protected $address = null;
-
-    protected static $lastAddress = null;
-    protected static $firstAddress = null;
-
-    public function __construct($address)
-    {
-        // Check parameter
-        if (!is_integer($address) && !is_float($address) && !is_string($address)) {
-            throw new Exception\InvalidParameter($address, array('string', 'integer', 'double'));
-        }
-
-        // If the $address is a number, consider it as the IP Address number representation
-        if (is_integer($address) || is_float($address) || is_string($address) && preg_match('/^-?[0-9]+$/', $address)) {
-
-            $this->setAddress(intval($address));
-
-        } else { // Otherwise, parse it as a string
-
-            $ip = ip2long($address);
-            if ($ip === false) {
-                throw new Exception\IpOutOfRange('IP address ' . $address . ' is invalid');
-            }
-
-            $this->setAddress($ip);
-        }
-    }
-
-    protected function setAddress($address)
-    {
-        return $this->set('address', $address > 0x7FFFFFFF ? $address - 0x100000000 : $address);
-    }
-
-    public function getAddress()
-    {
-        return $this->get('address');
-    }
-
-    public function __toString()
-    {
-        return  (($this->getAddress() >> 24) & 255)
-            . '.' . (($this->getAddress() >> 16) & 255)
-            . '.' . (($this->getAddress() >> 8 ) & 255)
-            . '.' . (($this->getAddress() >> 0 ) & 255);
-    }
+    protected static $LAST_ADDRESS = null;
+    protected static $FIRST_ADDRESS = null;
 
     public function getNext()
     {
-        if ($this->getAddress() === self::getLastAddress()->getAddress()) { // 255.255.255.255
+        if ($this->getValue() === self::getLast()->getValue()) { // 255.255.255.255
             throw new Exception\IpOutOfRange('IP address 255.255.255.255 has no next address');
         }
 
-        return new self($this->getAddress() + 1);
+        return new self($this->getValue() + 1);
     }
 
     public function getPrevious()
     {
-        if ($this->getAddress() === self::getFirstAddress()->getAddress()) { // 0.0.0.0
+        if ($this->getValue() === self::getFirst()->getValue()) { // 0.0.0.0
             throw new Exception\IpOutOfRange('IP address 0.0.0.0 has no previous address');
         }
 
-        return new self($this->getAddress() - 1);
+        return new self($this->getValue() - 1);
     }
 
-    public static function getFirstAddress()
+    public static function getFirst()
     {
-        if (self::$firstAddress === null) {
-            self::$firstAddress = new Address('0.0.0.0');
+        if (self::$FIRST_ADDRESS === null) {
+            self::$FIRST_ADDRESS = new Address(BitMask::FIRST);
         }
-        return self::$firstAddress;
+        return self::$FIRST_ADDRESS;
     }
 
-    public static function getLastAddress()
+    public static function getLast()
     {
-        if (self::$lastAddress === null) {
-            self::$lastAddress = new Address('255.255.255.255');
+        if (self::$LAST_ADDRESS === null) {
+            self::$LAST_ADDRESS = new Address(BitMask::LAST);
         }
-        return self::$lastAddress;
+        return self::$LAST_ADDRESS;
     }
 }

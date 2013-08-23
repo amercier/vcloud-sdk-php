@@ -10,7 +10,7 @@ class Subnet extends Object
     protected $network = null;
     protected $mask = null;
 
-    protected static function getAddressAsObject($address)
+    protected static function getValueAsObject($address)
     {
         return $address instanceof Address ? $address : new Address($address);
     }
@@ -22,12 +22,12 @@ class Subnet extends Object
 
     public function __construct($network, $mask)
     {
-        $this->set('network', self::getAddressAsObject($network));
+        $this->set('network', self::getValueAsObject($network));
         $this->set('mask', self::getMaskAsObject($mask));
 
         // Check the network/mask validity
-        if ($this->getMask()->apply($this->getNetwork())->getAddress() !== $this->getNetwork()->getAddress()) {
-            throw new Exception\InvalidSubnet(self::getAddressAsObject($network), self::getMaskAsObject($mask));
+        if ($this->getMask()->apply($this->getNetwork())->getValue() !== $this->getNetwork()->getValue()) {
+            throw new Exception\InvalidSubnet(self::getValueAsObject($network), self::getMaskAsObject($mask));
         }
     }
 
@@ -48,23 +48,23 @@ class Subnet extends Object
 
     public function getBroadcastAddress()
     {
-        return new Address($this->getNetwork()->getAddress() | ~$this->getMask()->getMask());
+        return new Address($this->getNetwork()->getValue() | ~$this->getMask()->getValue());
     }
 
     public function isNetworkAddress($address)
     {
-        return self::getAddressAsObject($address)->getAddress() === $this->getNetwork()->getAddress();
+        return self::getValueAsObject($address)->getValue() === $this->getNetwork()->getValue();
     }
 
     public function isBroadcastAddress($address)
     {
-        return self::getAddressAsObject($address)->getAddress() === $this->getBroadcastAddress()->getAddress();
+        return self::getValueAsObject($address)->getValue() === $this->getBroadcastAddress()->getValue();
     }
 
     public function isValidAddress($address)
     {
-        $realAddress = self::getAddressAsObject($address);
-        return $this->getMask()->apply($realAddress)->getAddress() === $this->getNetwork()->getAddress()
+        $realAddress = self::getValueAsObject($address);
+        return $this->getMask()->apply($realAddress)->getValue() === $this->getNetwork()->getValue()
             && !$this->isNetworkAddress($realAddress)
             && !$this->isBroadcastAddress($realAddress);
     }
