@@ -27,6 +27,16 @@ class Address extends BitMask
         return new self($this->getValue() - 1);
     }
 
+    public function isBefore($address)
+    {
+        return $this->getValue() < $address->getValue();
+    }
+
+    public function isAfter($address)
+    {
+        return $this->getValue() > $address->getValue();
+    }
+
     public static function getFirst()
     {
         if (self::$FIRST_ADDRESS === null) {
@@ -41,5 +51,10 @@ class Address extends BitMask
             self::$LAST_ADDRESS = new Address(BitMask::LAST);
         }
         return self::$LAST_ADDRESS;
+    }
+
+    public static function factory($address)
+    {
+        return $address instanceof self ? $address : new self($address);
     }
 }

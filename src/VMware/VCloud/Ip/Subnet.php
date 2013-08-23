@@ -10,24 +10,14 @@ class Subnet extends Object
     protected $network = null;
     protected $mask = null;
 
-    protected static function getValueAsObject($address)
-    {
-        return $address instanceof Address ? $address : new Address($address);
-    }
-
-    protected static function getMaskAsObject($mask)
-    {
-        return $mask instanceof Mask ? $mask : new Mask($mask);
-    }
-
     public function __construct($network, $mask)
     {
-        $this->set('network', self::getValueAsObject($network));
-        $this->set('mask', self::getMaskAsObject($mask));
+        $this->set('network', Address::factory($network));
+        $this->set('mask', Mask::factory($mask));
 
         // Check the network/mask validity
         if ($this->getMask()->apply($this->getNetwork())->getValue() !== $this->getNetwork()->getValue()) {
-            throw new Exception\InvalidSubnet(self::getValueAsObject($network), self::getMaskAsObject($mask));
+            throw new Exception\InvalidSubnet(Address::factory($network), Mask::factory($mask));
         }
     }
 
@@ -53,17 +43,17 @@ class Subnet extends Object
 
     public function isNetworkAddress($address)
     {
-        return self::getValueAsObject($address)->getValue() === $this->getNetwork()->getValue();
+        return Address::factory($address)->getValue() === $this->getNetwork()->getValue();
     }
 
     public function isBroadcastAddress($address)
     {
-        return self::getValueAsObject($address)->getValue() === $this->getBroadcastAddress()->getValue();
+        return Address::factory($address)->getValue() === $this->getBroadcastAddress()->getValue();
     }
 
     public function isValidAddress($address)
     {
-        $realAddress = self::getValueAsObject($address);
+        $realAddress = Address::factory($address);
         return $this->getMask()->apply($realAddress)->getValue() === $this->getNetwork()->getValue()
             && !$this->isNetworkAddress($realAddress)
             && !$this->isBroadcastAddress($realAddress);

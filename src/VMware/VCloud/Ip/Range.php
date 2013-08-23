@@ -10,12 +10,12 @@ class Range extends Object
     protected $start;
     protected $end;
 
-    public function __construct(Address $start, Address $end)
+    public function __construct($start, $end)
     {
-        $this->set('start', $start);
-        $this->set('end', $end);
+        $this->set('start', Address::factory($start));
+        $this->set('end', Address::factory($end));
 
-        if ($start->isAfter($end)) {
+        if ($this->getStart()->isAfter($this->getEnd())) {
             throw new Exception\InvalidRange($start, $end, 'End address is before start address');
         }
     }
@@ -30,13 +30,19 @@ class Range extends Object
         return $this->get('end');
     }
 
-    public function contains(Address $address)
+    public function contains($address)
     {
-        return !$address->isBefore($this->getStart()) && !$address->isAfter($this->getEnd());
+        $realAddress = Address::factory($address);
+        return !$realAddress->isBefore($this->getStart()) && !$realAddress->isAfter($this->getEnd());
     }
 
     public function intersects(Range $range)
     {
         return $this->getStart()->isAfter($range->getEnd()) || $this->getEnd()->isBefore($range->getStart());
+    }
+
+    public function belongsTo(Subnet $subnet)
+    {
+        return $subnet->isValidAddress($this->getStart()) && $subnet->isValidAddress($this->getEnd());
     }
 }

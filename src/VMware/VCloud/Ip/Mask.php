@@ -43,4 +43,9 @@ class Mask extends BitMask
             return new Address($this->getValue() & $realAddress->getValue());
         }
     }
+
+    public static function factory($mask)
+    {
+        return $mask instanceof self ? $mask : new self($mask);
+    }
 }

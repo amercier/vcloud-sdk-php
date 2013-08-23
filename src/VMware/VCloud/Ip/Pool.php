@@ -17,6 +17,11 @@ class Pool extends Object
         $this->allocateAddresses($allocatedAddresses);
     }
 
+    public function getSubnet()
+    {
+        return $this->get('subnet');
+    }
+
     public function addRanges($ranges)
     {
         foreach ($ranges as $range) {
@@ -30,7 +35,7 @@ class Pool extends Object
         if (!$range->belongsTo($this->getSubnet())) {
             throw new Exception\RangeOutOfSubnet($this->getSubnet(), $range);
         }
-        $this->add('range', $range);
+        $this->add('ranges', $range);
     }
 
     public function contains($address)

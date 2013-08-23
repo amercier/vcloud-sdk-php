@@ -312,4 +312,62 @@ class AddressTest extends ConfigurableTestCase
         $address6 = new Address('0.0.0.0');
         $address6->getPrevious();
     }
+
+    public function testIsBefore()
+    {
+        $address1 = new Address('0.0.0.0');
+        $address2 = new Address('10.170.12.34');
+        $address3 = new Address('127.255.255.255');
+        $address4 = new Address('128.0.0.0');
+        $address5 = new Address('192.186.0.1');
+        $address6 = new Address('255.255.255.255');
+
+        $this->assertTrue($address1->isBefore($address2));
+        $this->assertTrue($address2->isBefore($address3));
+        $this->assertTrue($address3->isBefore($address4));
+        $this->assertTrue($address4->isBefore($address5));
+        $this->assertTrue($address5->isBefore($address6));
+
+        $this->assertFalse($address2->isBefore($address1));
+        $this->assertFalse($address3->isBefore($address2));
+        $this->assertFalse($address4->isBefore($address3));
+        $this->assertFalse($address5->isBefore($address4));
+        $this->assertFalse($address6->isBefore($address5));
+
+        $this->assertFalse($address1->isBefore($address1));
+        $this->assertFalse($address2->isBefore($address2));
+        $this->assertFalse($address3->isBefore($address3));
+        $this->assertFalse($address4->isBefore($address4));
+        $this->assertFalse($address5->isBefore($address5));
+        $this->assertFalse($address6->isBefore($address6));
+    }
+
+    public function testIsAfter()
+    {
+        $address1 = new Address('0.0.0.0');
+        $address2 = new Address('10.170.12.34');
+        $address3 = new Address('127.255.255.255');
+        $address4 = new Address('128.0.0.0');
+        $address5 = new Address('192.186.0.1');
+        $address6 = new Address('255.255.255.255');
+
+        $this->assertTrue($address2->isAfter($address1));
+        $this->assertTrue($address3->isAfter($address2));
+        $this->assertTrue($address4->isAfter($address3));
+        $this->assertTrue($address5->isAfter($address4));
+        $this->assertTrue($address6->isAfter($address5));
+
+        $this->assertFalse($address1->isAfter($address2));
+        $this->assertFalse($address2->isAfter($address3));
+        $this->assertFalse($address3->isAfter($address4));
+        $this->assertFalse($address4->isAfter($address5));
+        $this->assertFalse($address5->isAfter($address6));
+
+        $this->assertFalse($address1->isAfter($address1));
+        $this->assertFalse($address2->isAfter($address2));
+        $this->assertFalse($address3->isAfter($address3));
+        $this->assertFalse($address4->isAfter($address4));
+        $this->assertFalse($address5->isAfter($address5));
+        $this->assertFalse($address6->isAfter($address6));
+    }
 }
