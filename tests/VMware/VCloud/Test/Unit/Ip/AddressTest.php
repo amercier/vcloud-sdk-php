@@ -370,4 +370,13 @@ class AddressTest extends ConfigurableTestCase
         $this->assertFalse($address5->isAfter($address5));
         $this->assertFalse($address6->isAfter($address6));
     }
+
+    public function testFactory()
+    {
+        $address = new Address('192.186.0.1');
+
+        $this->assertEquals($address, Address::factory($address));
+        $this->assertEquals($address, Address::factory(''.$address));
+        $this->assertFalse($address === Address::factory($address), '$address === Address::factory($address)');
+    }
 }

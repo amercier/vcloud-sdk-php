@@ -58,4 +58,12 @@ class Subnet extends Object
             && !$this->isNetworkAddress($realAddress)
             && !$this->isBroadcastAddress($realAddress);
     }
+
+    public static function factory($networkOrSubnet, $mask = null)
+    {
+        return
+            $networkOrSubnet instanceof self
+            ? new self(Address::factory($networkOrSubnet->getNetwork()), Mask::factory($networkOrSubnet->getMask()))
+            : new self($networkOrSubnet, $mask);
+    }
 }

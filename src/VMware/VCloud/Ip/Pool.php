@@ -67,23 +67,45 @@ class Pool extends Object
         $this->add('allocatedAddresses', $addresses);
     }
 
-    public function isAvailable(Address $addresses)
+    public function isAvailable(Address $address)
     {
-
+        if (!$this->contains($address)) {
+            throw new Exception\AddressOutOfPool($this, $address);
+        }
+        foreach ($this->getAllocatedAddresses() as $allocated) {
+            if ($address->equals($allocated)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function isAllocated(Address $address)
     {
-
+        return !$this->isAvailable();
     }
 
     public function getFirstAvailable()
     {
-
+        foreach ($this->getRanges() as $range) {
+            for ($address = $range->getStart(); $range->contains($address); $address = $address->getNext()) {
+                if (!$this->isAllocated($address)) {
+                    return $address;
+                }
+            }
+        }
+        throw new Exception\FullPool($this);
     }
 
     public function getLastAvailable()
     {
-
+        foreach ($this->getRanges() as $range) {
+            for ($address = $range->getEnd(); $range->contains($address); $address = $address->getPrevious()) {
+                if (!$this->isAllocated($address)) {
+                    return $address;
+                }
+            }
+        }
+        throw new Exception\FullPool($this);
     }
 }

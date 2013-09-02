@@ -215,4 +215,13 @@ class MaskTest extends ConfigurableTestCase
     {
         new Mask(33);
     }
+
+    public function testFactory()
+    {
+        $mask = new Mask(24);
+
+        $this->assertEquals($mask, Mask::factory($mask));
+        $this->assertEquals($mask, Mask::factory($mask->getMaskSize()));
+        $this->assertFalse($mask === Mask::factory($mask), '$mask === Mask::factory($mask)');
+    }
 }

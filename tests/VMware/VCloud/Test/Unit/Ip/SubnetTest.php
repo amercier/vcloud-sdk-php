@@ -222,4 +222,14 @@ class SubnetTest extends ConfigurableTestCase
         $this->assertTrue($subnet3->isValidAddress($subnet3->getBroadcastAddress()->getPrevious()));
         $this->assertTrue($subnet4->isValidAddress($subnet4->getBroadcastAddress()->getPrevious()));
     }
+
+    public function testFactory()
+    {
+        $subnet = new Subnet('192.186.0.0', 16);
+
+        $this->assertEquals($subnet, Subnet::factory($subnet));
+        $this->assertEquals($subnet, Subnet::factory($subnet->getNetwork(), $subnet->getMask()));
+        $this->assertEquals($subnet, Subnet::factory('192.186.0.0', 16));
+        $this->assertFalse($subnet === Subnet::factory($subnet), '$subnet === Subnet::factory($subnet)');
+    }
 }

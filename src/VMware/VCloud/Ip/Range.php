@@ -54,4 +54,12 @@ class Range extends Object
     {
         return $this->getStart() . ' - ' . $this->getEnd();
     }
+
+    public static function factory($startOrRange, $end = null)
+    {
+        return
+            $startOrRange instanceof self
+            ? new self($startOrRange->getStart(), $startOrRange->getEnd())
+            : new self($startOrRange, Address::factory($end));
+    }
 }

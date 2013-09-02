@@ -55,6 +55,6 @@ class Address extends BitMask
 
     public static function factory($address)
     {
-        return $address instanceof self ? $address : new self($address);
+        return new self($address instanceof self ? $address->getValue() : $address);
     }
 }

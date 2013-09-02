@@ -46,6 +46,6 @@ class Mask extends BitMask
 
     public static function factory($mask)
     {
-        return $mask instanceof self ? $mask : new self($mask);
+        return new self($mask instanceof self ? $mask->getMaskSize() : $mask);
     }
 }

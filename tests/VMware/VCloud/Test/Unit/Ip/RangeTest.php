@@ -164,4 +164,14 @@ class RangeTest extends ConfigurableTestCase
         $this->assertEquals('192.168.0.1 - 192.168.255.254', ''.$range1);
         $this->assertEquals('10.170.1.1 - 10.170.1.254', ''.$range2);
     }
+
+    public function testRange()
+    {
+        $range = new Range('192.168.0.1', '192.168.255.254');
+
+        $this->assertEquals($range, Range::factory($range));
+        $this->assertEquals($range, Range::factory($range->getStart(), $range->getEnd()));
+        $this->assertEquals($range, Range::factory('192.168.0.1', '192.168.255.254'));
+        $this->assertFalse($range === Range::factory($range), '$range === Range::factory($range)');
+    }
 }
