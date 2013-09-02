@@ -16,7 +16,11 @@ class Range extends Object
         $this->set('end', Address::factory($end));
 
         if ($this->getStart()->isAfter($this->getEnd())) {
-            throw new Exception\InvalidRange($start, $end, 'End address is before start address');
+            throw new Exception\InvalidRange(
+                Address::factory($start),
+                Address::factory($end),
+                'End address is before start address'
+            );
         }
     }
 
@@ -38,11 +42,16 @@ class Range extends Object
 
     public function intersects(Range $range)
     {
-        return $this->getStart()->isAfter($range->getEnd()) || $this->getEnd()->isBefore($range->getStart());
+        return !($this->getStart()->isAfter($range->getEnd()) || $this->getEnd()->isBefore($range->getStart()));
     }
 
     public function belongsTo(Subnet $subnet)
     {
         return $subnet->isValidAddress($this->getStart()) && $subnet->isValidAddress($this->getEnd());
+    }
+
+    public function __toString()
+    {
+        return $this->getStart() . ' - ' . $this->getEnd();
     }
 }
