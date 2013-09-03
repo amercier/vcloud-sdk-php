@@ -4,6 +4,6 @@ namespace VMware\VCloud\Exception;
 
 use Cli\Helpers\Exception as VCloudException;
 
-class IpOutOfRange extends VCloudException
+class AddressOutOfBounds extends VCloudException
 {
 }

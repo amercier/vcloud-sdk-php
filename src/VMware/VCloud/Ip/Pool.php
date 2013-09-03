@@ -3,23 +3,54 @@
 namespace VMware\VCloud\Ip;
 
 use \VMware\VCloud\Object as Object;
+use \VMware\VCloud\Exception as Exception;
 
 class Pool extends Object
 {
     protected $subnet = null;
     protected $ranges = array();
     protected $allocatedAddresses = array();
+    protected $allowOverlapping = null;
 
-    public function __construct(Subnet $subnet, $ranges = array(), $allocatedAddresses = array())
+    public function __construct(Subnet $subnet, $ranges = array(), $allocatedAddresses = array(), $allowOverlapping = false)
     {
         $this->set('subnet', $subnet);
         $this->addRanges($ranges);
-        $this->allocateAddresses($allocatedAddresses);
+        $this->allocateAll($allocatedAddresses);
+        $this->set('allowOverlapping', $allowOverlapping);
+    }
+
+    public function allowsOverlapping()
+    {
+        return $this->get('allowOverlapping');
     }
 
     public function getSubnet()
     {
         return $this->get('subnet');
+    }
+
+    public function getRanges()
+    {
+        return $this->get('ranges');
+    }
+
+    public function addRange(Range $range)
+    {
+        if (!$range->belongsTo($this->getSubnet())) {
+            throw new Exception\RangeOutOfSubnet($this->getSubnet(), $range);
+        }
+
+        // Check overlapping
+        if (!$this->allowsOverlapping()) {
+            foreach ($this->getRanges() as $existingRange) {
+                if ($range->intersects($existingRange)) {
+                    throw new Exception\RangeOverlap($range, $existingRange);
+                }
+            }
+        }
+
+        return $this->add('ranges', $range);
     }
 
     public function addRanges($ranges)
@@ -30,45 +61,53 @@ class Pool extends Object
         return $this;
     }
 
-    public function addRange(Range $range)
-    {
-        if (!$range->belongsTo($this->getSubnet())) {
-            throw new Exception\RangeOutOfSubnet($this->getSubnet(), $range);
-        }
-        $this->add('ranges', $range);
-    }
-
     public function contains($address)
     {
+        $address = Address::factory($address);
+
         if (!$this->getSubnet()->isValidAddress($address)) {
-            throw new Exception\IpOutOfSubnet($address, $this->getSubnet());
+            throw new Exception\AddressOutOfSubnet($this->getSubnet(), $address);
         }
         foreach ($this->getRanges() as $range) {
-            if ($range->contains($range)) {
+            if ($range->contains($address)) {
                 return true;
             }
         }
         return false;
     }
 
-    public function allocateAddresses($addresses)
+    public function allocate($address)
+    {
+        $address = Address::factory($address);
+
+        if (!$this->contains($address)) {
+            throw new Exception\AddressOutOfPool($this, $address);
+        }
+        $this->add('allocatedAddresses', $address);
+    }
+
+    public function allocateAll($addresses)
     {
         foreach ($addresses as $address) {
-            $this->allocateAddress($address);
+            $this->allocate($address);
         }
         return $this;
     }
 
-    public function allocateAddress(Address $addresses)
+    public function getAllocatedAddresses()
     {
-        if (!$this->contains($address)) {
-            throw new Exception\AddressOutOfPool($this, $address);
-        }
-        $this->add('allocatedAddresses', $addresses);
+        return $this->get('allocatedAddresses');
     }
 
-    public function isAvailable(Address $address)
+    public function isAllocated($address)
     {
+        return !$this->isAvailable($address);
+    }
+
+    public function isAvailable($address)
+    {
+        $address = Address::factory($address);
+
         if (!$this->contains($address)) {
             throw new Exception\AddressOutOfPool($this, $address);
         }
@@ -78,11 +117,6 @@ class Pool extends Object
             }
         }
         return true;
-    }
-
-    public function isAllocated(Address $address)
-    {
-        return !$this->isAvailable();
     }
 
     public function getFirstAvailable()
@@ -107,5 +141,10 @@ class Pool extends Object
             }
         }
         throw new Exception\FullPool($this);
+    }
+
+    public function __toString()
+    {
+        return '[ ' . implode(' ; ', $this->getRanges()) . ' ]';
     }
 }
