@@ -30,7 +30,7 @@ class BitMask extends Object
         } else { // Otherwise, parse it as a string
             $value = ip2long($address);
             if ($value === false) {
-                throw new Exception\IpOutOfRange('IP address ' . $address . ' is invalid');
+                throw new Exception\InvalidBitMask($address);
             }
             $this->setValue($value);
         }
@@ -44,6 +44,11 @@ class BitMask extends Object
     public function getValue()
     {
         return $this->get('value');
+    }
+
+    protected function equals($bitMask)
+    {
+        return $this->getValue() === $bitMask->getValue();
     }
 
     public function __toString()

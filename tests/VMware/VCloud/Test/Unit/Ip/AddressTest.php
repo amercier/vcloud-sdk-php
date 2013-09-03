@@ -39,9 +39,9 @@ class AddressTest extends ConfigurableTestCase
     }
 
     /**
-     * @expectedException \VMware\VCloud\Exception\IpOutOfRange
+     * @expectedException \VMware\VCloud\Exception\InvalidBitMask
      */
-    public function testConstructIpOutOfRange()
+    public function testConstructInvalidBitMask()
     {
         $address6 = new Address('192.168.256.0');
     }
@@ -226,7 +226,7 @@ class AddressTest extends ConfigurableTestCase
     }
 
     /**
-     * @expectedException \VMware\VCloud\Exception\IpOutOfRange
+     * @expectedException \VMware\VCloud\Exception\AddressOutOfBounds
      */
     public function testGetNextOnLastAddress()
     {
@@ -305,7 +305,7 @@ class AddressTest extends ConfigurableTestCase
     }
 
     /**
-     * @expectedException \VMware\VCloud\Exception\IpOutOfRange
+     * @expectedException \VMware\VCloud\Exception\AddressOutOfBounds
      */
     public function testGetPreviousOnFirstAddress()
     {
@@ -369,6 +369,40 @@ class AddressTest extends ConfigurableTestCase
         $this->assertFalse($address4->isAfter($address4));
         $this->assertFalse($address5->isAfter($address5));
         $this->assertFalse($address6->isAfter($address6));
+    }
+
+    public function testEquals()
+    {
+        $addresses1 = array(
+            new Address('0.0.0.0'),
+            new Address('10.170.12.34'),
+            new Address('127.255.255.255'),
+            new Address('128.0.0.0'),
+            new Address('192.186.0.1'),
+            new Address('255.255.255.255'),
+        );
+
+        $addresses2 = array(
+            new Address('0.0.0.0'),
+            new Address('10.170.12.34'),
+            new Address('127.255.255.255'),
+            new Address('128.0.0.0'),
+            new Address('192.186.0.1'),
+            new Address('255.255.255.255'),
+        );
+
+        for ($i = 0 ; $i < count($addresses1) ; $i++) {
+            for ($j = 0 ; $j < count($addresses2) ; $j++) {
+                if ($i === $j) {
+                    $this->assertTrue($addresses1[$i]->equals($addresses2[$j]));
+                    $this->assertTrue($addresses2[$j]->equals($addresses1[$i]));
+                }
+                else {
+                    $this->assertFalse($addresses1[$i]->equals($addresses2[$j]));
+                    $this->assertFalse($addresses2[$j]->equals($addresses1[$i]));
+                }
+            }
+        }
     }
 
     public function testFactory()

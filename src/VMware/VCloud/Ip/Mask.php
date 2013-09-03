@@ -26,6 +26,10 @@ class Mask extends BitMask
 
         } else { // Address (Ex: 255.255.255.0)
             parent::__construct($mask);
+
+            if(!preg_match('/^1*0*$/', decbin($this->getValue()))) {
+                throw new Exception\InvalidMask($this);
+            }
         }
     }
 
@@ -42,6 +46,11 @@ class Mask extends BitMask
             $realAddress = new Address($address);
             return new Address($this->getValue() & $realAddress->getValue());
         }
+    }
+
+    public function equals($address)
+    {
+        return parent::equals(self::factory($address));
     }
 
     public static function factory($mask)

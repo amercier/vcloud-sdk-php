@@ -71,6 +71,14 @@ class MaskTest extends ConfigurableTestCase
         $this->assertEquals($mask31, $mask33, "new Mask('0.0.0.0') === new Mask(0)");
     }
 
+    /**
+     * @expectedException \VMware\VCloud\Exception\InvalidMask
+     */
+    public function testConstructInvalidMask()
+    {
+        new Mask('192.168.0.1');
+    }
+
     public function testGetValue()
     {
         $mask11 = new Mask(24);
@@ -112,7 +120,6 @@ class MaskTest extends ConfigurableTestCase
         $mask1 = new Mask('255.255.255.0');
         $mask2 = new Mask('0.0.0.0');
         $mask3 = new Mask('255.255.255.255');
-        $mask4 = new Mask('192.168.0.14');
 
         $this->assertEquals(
             '255.255.255.0',
@@ -128,11 +135,6 @@ class MaskTest extends ConfigurableTestCase
             '255.255.255.255',
             '' . $mask3,
             "new Mask('255.255.255.255').toString() === '255.255.255.255'"
-        );
-        $this->assertEquals(
-            '192.168.0.14',
-            '' . $mask4,
-            "new Mask('192.168.0.14').toString() === '192.168.0.14'"
         );
     }
 
@@ -214,6 +216,47 @@ class MaskTest extends ConfigurableTestCase
     public function testConstructWithMaskSize33()
     {
         new Mask(33);
+    }
+
+
+    public function testEquals()
+    {
+        $addresses1 = array(
+            new Mask('255.255.255.0'),
+            new Mask('0.0.0.0'),
+            new Mask('255.255.255.255'),
+        );
+
+        $addresses2 = array(
+            new Mask('255.255.255.0'),
+            new Mask('0.0.0.0'),
+            new Mask('255.255.255.255'),
+        );
+
+        for ($i = 0 ; $i < count($addresses1) ; $i++) {
+            for ($j = 0 ; $j < count($addresses2) ; $j++) {
+                if ($i === $j) {
+                    $this->assertTrue($addresses1[$i]->equals(
+                        $addresses2[$j]),
+                        $addresses1[$i] . ' must equal ' . $addresses2[$j]
+                    );
+                    $this->assertTrue(
+                        $addresses2[$j]->equals($addresses1[$i]),
+                        $addresses2[$j] . ' must equal ' . $addresses1[$i]
+                    );
+                }
+                else {
+                    $this->assertFalse($addresses1[$i]->equals(
+                        $addresses2[$j]),
+                        $addresses1[$i] . ' must not equal ' . $addresses2[$j]
+                    );
+                    $this->assertFalse(
+                        $addresses2[$j]->equals($addresses1[$i]),
+                        $addresses2[$j] . ' must not equal ' . $addresses1[$i]
+                    );
+                }
+            }
+        }
     }
 
     public function testFactory()

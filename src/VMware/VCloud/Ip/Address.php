@@ -11,8 +11,8 @@ class Address extends BitMask
 
     public function getNext()
     {
-        if ($this->getValue() === self::getLast()->getValue()) { // 255.255.255.255
-            throw new Exception\IpOutOfRange('IP address 255.255.255.255 has no next address');
+        if (self::getLast()->equals($this)) { // 255.255.255.255
+            throw new Exception\AddressOutOfBounds('IP address 255.255.255.255 has no next address');
         }
 
         return new self($this->getValue() + 1);
@@ -20,8 +20,8 @@ class Address extends BitMask
 
     public function getPrevious()
     {
-        if ($this->getValue() === self::getFirst()->getValue()) { // 0.0.0.0
-            throw new Exception\IpOutOfRange('IP address 0.0.0.0 has no previous address');
+        if (self::getFirst()->equals($this)) { // 0.0.0.0
+            throw new Exception\AddressOutOfBounds('IP address 0.0.0.0 has no previous address');
         }
 
         return new self($this->getValue() - 1);
@@ -35,6 +35,11 @@ class Address extends BitMask
     public function isAfter($address)
     {
         return $this->getValue() > $address->getValue();
+    }
+
+    public function equals($address)
+    {
+        return parent::equals(self::factory($address));
     }
 
     public static function getFirst()
