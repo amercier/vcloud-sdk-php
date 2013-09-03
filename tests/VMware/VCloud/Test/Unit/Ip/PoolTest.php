@@ -36,9 +36,32 @@ class PoolTest extends ConfigurableTestCase
         $range1 = new Range('192.168.1.1', '192.168.1.10');
         $range2 = new Range('192.168.1.21', '192.168.1.30');
         $pool->addRange($range1);
-        $this->assertEquals(array($range1), $pool->getRanges());
+        $this->assertEquals(implode(' ; ', array($range1)), implode(' ; ', $pool->getRanges()));
         $pool->addRange($range2);
-        $this->assertEquals(array($range1, $range2), $pool->getRanges());
+        $this->assertEquals(implode(' ; ', array($range1, $range2)), implode(' ; ', $pool->getRanges()));
+    }
+
+    public function testAddRangeOrder()
+    {
+        $subnet = new Subnet('192.168.1.0', 24);
+        $pool = new Pool($subnet);
+
+        $range1 = new Range('192.168.1.1', '192.168.1.10');
+        $range2 = new Range('192.168.1.21', '192.168.1.30');
+        $range3 = new Range('192.168.1.31', '192.168.1.40');
+        $range4 = new Range('192.168.1.61', '192.168.1.70');
+
+        $pool->addRanges(array($range3, $range1));
+        $this->assertEquals(
+            implode(' ; ', array($range1, $range3)),
+            implode(' ; ', $pool->getRanges())
+        );
+
+        $pool->addRanges(array($range4, $range2));
+        $this->assertEquals(
+            implode(' ; ', array($range1, $range2, $range3, $range4)),
+            implode(' ; ', $pool->getRanges())
+        );
     }
 
     /**
@@ -298,11 +321,177 @@ class PoolTest extends ConfigurableTestCase
 
     public function testGetFirstAvailable()
     {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.5'),
+                new Range('192.168.1.10', '192.168.1.15'),
+            )
+        );
 
+        foreach (array(
+            new Address('192.168.1.2'),
+            new Address('192.168.1.3'),
+            new Address('192.168.1.4'),
+            new Address('192.168.1.5'),
+            new Address('192.168.1.10'),
+            new Address('192.168.1.11'),
+            new Address('192.168.1.12'),
+            new Address('192.168.1.13'),
+            new Address('192.168.1.14'),
+            new Address('192.168.1.15'),
+        ) as $address) {
+            $this->assertEquals(''.$address, ''.$pool->getFirstAvailable());
+            $pool->allocate($address);
+        }
+    }
+
+    public function testGetFirstAvailableReversed()
+    {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.10', '192.168.1.15'),
+                new Range('192.168.1.2', '192.168.1.5'),
+            )
+        );
+
+        foreach (array(
+            new Address('192.168.1.2'),
+            new Address('192.168.1.3'),
+            new Address('192.168.1.4'),
+            new Address('192.168.1.5'),
+            new Address('192.168.1.10'),
+            new Address('192.168.1.11'),
+            new Address('192.168.1.12'),
+            new Address('192.168.1.13'),
+            new Address('192.168.1.14'),
+            new Address('192.168.1.15'),
+        ) as $address) {
+            $this->assertEquals(''.$address, ''.$pool->getFirstAvailable());
+            $pool->allocate($address);
+        }
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\FullPool
+     */
+    public function testGetFirstAvailableFullPool()
+    {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.5'),
+                new Range('192.168.1.10', '192.168.1.15'),
+            )
+        );
+
+        foreach (array(
+            new Address('192.168.1.2'),
+            new Address('192.168.1.3'),
+            new Address('192.168.1.4'),
+            new Address('192.168.1.5'),
+            new Address('192.168.1.10'),
+            new Address('192.168.1.11'),
+            new Address('192.168.1.12'),
+            new Address('192.168.1.13'),
+            new Address('192.168.1.14'),
+            new Address('192.168.1.15'),
+        ) as $address) {
+            $pool->allocate($address);
+        }
+
+        $pool->getFirstAvailable();
     }
 
     public function testGetLastAvailable()
     {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.5'),
+                new Range('192.168.1.10', '192.168.1.15'),
+            )
+        );
 
+        foreach (array(
+            new Address('192.168.1.15'),
+            new Address('192.168.1.14'),
+            new Address('192.168.1.13'),
+            new Address('192.168.1.12'),
+            new Address('192.168.1.11'),
+            new Address('192.168.1.10'),
+            new Address('192.168.1.5'),
+            new Address('192.168.1.4'),
+            new Address('192.168.1.3'),
+            new Address('192.168.1.2'),
+        ) as $address) {
+            $this->assertEquals(''.$address, ''.$pool->getLastAvailable());
+            $pool->allocate($address);
+        }
+    }
+
+    public function testGetLastAvailableReversed()
+    {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.10', '192.168.1.15'),
+                new Range('192.168.1.2', '192.168.1.5'),
+            )
+        );
+
+        foreach (array(
+            new Address('192.168.1.15'),
+            new Address('192.168.1.14'),
+            new Address('192.168.1.13'),
+            new Address('192.168.1.12'),
+            new Address('192.168.1.11'),
+            new Address('192.168.1.10'),
+            new Address('192.168.1.5'),
+            new Address('192.168.1.4'),
+            new Address('192.168.1.3'),
+            new Address('192.168.1.2'),
+        ) as $address) {
+            $this->assertEquals(''.$address, ''.$pool->getLastAvailable());
+            $pool->allocate($address);
+        }
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\FullPool
+     */
+    public function testGetLastAvailableFullPool()
+    {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.5'),
+                new Range('192.168.1.10', '192.168.1.15'),
+            )
+        );
+
+        foreach (array(
+            new Address('192.168.1.15'),
+            new Address('192.168.1.14'),
+            new Address('192.168.1.13'),
+            new Address('192.168.1.12'),
+            new Address('192.168.1.11'),
+            new Address('192.168.1.10'),
+            new Address('192.168.1.5'),
+            new Address('192.168.1.4'),
+            new Address('192.168.1.3'),
+            new Address('192.168.1.2'),
+        ) as $address) {
+            $pool->allocate($address);
+        }
+
+        $pool->getLastAvailable();
     }
 }

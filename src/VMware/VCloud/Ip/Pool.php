@@ -47,14 +47,27 @@ class Pool extends Object
 
         // Check overlapping
         if (!$this->allowsOverlapping()) {
-            foreach ($this->getRanges() as $existingRange) {
+
+            $ranges = $this->getRanges();
+
+            foreach ($ranges as $existingRange) {
                 if ($range->intersects($existingRange)) {
                     throw new Exception\RangeOverlap($range, $existingRange);
                 }
             }
-        }
 
-        return $this->add('ranges', $range);
+            // If overlapping is not allowed, insert the range at its place
+            $index = 0;
+            while ($index < count($ranges) && $ranges[$index]->isBefore($range)) {
+                $index++;
+            }
+            return $this->add('ranges', $range, $index);
+
+        } else {
+
+            // If overlapping is allowed, insert the range at whatever place
+            return $this->add('ranges', $range);
+        }
     }
 
     public function addRanges($ranges)
@@ -137,7 +150,7 @@ class Pool extends Object
 
     public function getLastAvailable()
     {
-        foreach ($this->getRanges() as $range) {
+        foreach (array_reverse($this->getRanges()) as $range) {
             for ($address = $range->getEnd(); $range->contains($address); $address = $address->getPrevious()) {
                 if (!$this->isAllocated($address)) {
                     return $address;

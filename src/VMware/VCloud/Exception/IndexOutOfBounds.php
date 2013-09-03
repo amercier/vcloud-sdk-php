@@ -4,7 +4,7 @@ namespace VMware\VCloud\Exception;
 
 use Cli\Helpers\Exception as VCloudException;
 
-class IndexOutOfRange extends VCloudException
+class IndexOutOfBounds extends VCloudException
 {
     public function __construct($fieldName, $index, $size)
     {

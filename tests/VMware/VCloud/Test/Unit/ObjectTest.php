@@ -44,6 +44,24 @@ class ObjectTest extends ConfigurableTestCase
         $object->addArray1('one');
     }
 
+    public function testAddToArray1AtIndex()
+    {
+        $object = new ObjectChildren();
+        $object->addArray1('two');
+        $object->addArray1AtIndex('one', 0);
+
+        $this->assertEquals(array('one', 'two'), $object->getArray1());
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\IndexOutOfBounds
+     */
+    public function testAddToArray1AtIndexOutOfBounds()
+    {
+        $object = new ObjectChildren();
+        $object->addArray1AtIndex('two', 1);
+    }
+
     public function testRemoveToArray1()
     {
         $object = new ObjectChildren();
@@ -113,7 +131,7 @@ class ObjectTest extends ConfigurableTestCase
     }
 
     /**
-     * @expectedException \VMware\VCloud\Exception\IndexOutOfRange
+     * @expectedException \VMware\VCloud\Exception\IndexOutOfBounds
      */
     public function testRemoveByIndexToArray1OutOfRange()
     {

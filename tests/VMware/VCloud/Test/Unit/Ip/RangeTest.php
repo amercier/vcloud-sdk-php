@@ -132,6 +132,42 @@ class RangeTest extends ConfigurableTestCase
         }
     }
 
+    public function testIsBefore()
+    {
+        $range1 = new Range('10.170.1.0', '10.170.1.255');
+        $range2 = new Range('192.168.0.0', '192.168.255.255');
+
+        $this->assertTrue($range1->isBefore($range2));
+        $this->assertFalse($range2->isBefore($range1));
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\RangeOverlap
+     */
+    public function testIsBeforeOverlap()
+    {
+        $range = new Range('192.168.0.0', '192.168.255.255');
+        $range->isBefore(new Range('192.167.10.0', '192.168.10.0'));
+    }
+
+    public function testIsAfter()
+    {
+        $range1 = new Range('10.170.1.0', '10.170.1.255');
+        $range2 = new Range('192.168.0.0', '192.168.255.255');
+
+        $this->assertTrue($range2->isAfter($range1));
+        $this->assertFalse($range1->isAfter($range2));
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\RangeOverlap
+     */
+    public function testIsAfterOverlap()
+    {
+        $range = new Range('192.168.0.0', '192.168.255.255');
+        $range->isAfter(new Range('192.167.10.0', '192.168.10.0'));
+    }
+
     public function testBelongsTo()
     {
         $range1 = new Range('192.168.0.1', '192.168.255.254');

@@ -49,13 +49,14 @@ abstract class Object
     /**
      * Add an element to an array
      *
-     * @param string $name  The name of the array field
-     * @param string $value The value to set
+     * @param string  $name  The name of the array field
+     * @param string  $value The value to set
+     * @param integer $index The index of the new value (optional)
      * @throws Exception\UnknownClassField  If the field does not exist in the class
      * @throws Exception\ClassFieldNotArray If the field is not an array
      * @return AbstractObject Returns this object to allow chaining
      */
-    protected function add($name, $value)
+    protected function add($name, $value, $index = null)
     {
         if (!property_exists($this, $name)) {
             throw new Exception\UnknownClassField(get_class($this), $name);
@@ -64,7 +65,15 @@ abstract class Object
             throw new Exception\ClassFieldNotArray(get_class($this), $name);
         }
 
-        array_push($this->$name, $value);
+        if ($index === null) {
+            array_push($this->$name, $value);
+        } else {
+            if ($index < 0 || $index > count($this->$name)) {
+                throw new Exception\IndexOutOfBounds($name, $index, count($this->$name));
+            }
+            array_splice($this->$name, $index, 0, array($value));
+        }
+
         return $this;
     }
 
@@ -87,7 +96,7 @@ abstract class Object
             throw new Exception\ClassFieldNotArray(get_class($this), $name);
         }
         if ($index < 0 || $index >= count($this->$name)) {
-            throw new Exception\IndexOutOfRange($name, $index, count($this->$name));
+            throw new Exception\IndexOutOfBounds($name, $index, count($this->$name));
         }
 
         unset($this->$name[$index]);

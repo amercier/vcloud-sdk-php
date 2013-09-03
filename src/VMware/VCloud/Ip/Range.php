@@ -45,6 +45,24 @@ class Range extends Object
         return !($this->getStart()->isAfter($range->getEnd()) || $this->getEnd()->isBefore($range->getStart()));
     }
 
+    public function isBefore(Range $range)
+    {
+        if ($this->intersects($range)) {
+            throw new Exception\RangeOverlap($range, $this);
+        }
+
+        return $this->getEnd()->isBefore($range->getStart());
+    }
+
+    public function isAfter(Range $range)
+    {
+        if ($this->intersects($range)) {
+            throw new Exception\RangeOverlap($range, $this);
+        }
+
+        return $this->getStart()->isAfter($range->getEnd());
+    }
+
     public function belongsTo(Subnet $subnet)
     {
         return $subnet->isValidAddress($this->getStart()) && $subnet->isValidAddress($this->getEnd());

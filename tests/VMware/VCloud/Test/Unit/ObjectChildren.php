@@ -51,6 +51,11 @@ class ObjectChildren extends Object
         return $this->add('array1', $value);
     }
 
+    public function addArray1AtIndex($value, $index)
+    {
+        return $this->add('array1', $value, $index);
+    }
+
     public function removeArray1($value)
     {
         return $this->remove('array1', $value);
