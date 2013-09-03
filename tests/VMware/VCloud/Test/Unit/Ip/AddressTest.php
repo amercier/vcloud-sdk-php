@@ -391,13 +391,12 @@ class AddressTest extends ConfigurableTestCase
             new Address('255.255.255.255'),
         );
 
-        for ($i = 0 ; $i < count($addresses1) ; $i++) {
-            for ($j = 0 ; $j < count($addresses2) ; $j++) {
+        for ($i = 0; $i < count($addresses1); $i++) {
+            for ($j = 0; $j < count($addresses2); $j++) {
                 if ($i === $j) {
                     $this->assertTrue($addresses1[$i]->equals($addresses2[$j]));
                     $this->assertTrue($addresses2[$j]->equals($addresses1[$i]));
-                }
-                else {
+                } else {
                     $this->assertFalse($addresses1[$i]->equals($addresses2[$j]));
                     $this->assertFalse($addresses2[$j]->equals($addresses1[$i]));
                 }

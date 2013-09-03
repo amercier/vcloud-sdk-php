@@ -233,21 +233,20 @@ class MaskTest extends ConfigurableTestCase
             new Mask('255.255.255.255'),
         );
 
-        for ($i = 0 ; $i < count($addresses1) ; $i++) {
-            for ($j = 0 ; $j < count($addresses2) ; $j++) {
+        for ($i = 0; $i < count($addresses1); $i++) {
+            for ($j = 0; $j < count($addresses2); $j++) {
                 if ($i === $j) {
-                    $this->assertTrue($addresses1[$i]->equals(
-                        $addresses2[$j]),
+                    $this->assertTrue(
+                        $addresses1[$i]->equals($addresses2[$j]),
                         $addresses1[$i] . ' must equal ' . $addresses2[$j]
                     );
                     $this->assertTrue(
                         $addresses2[$j]->equals($addresses1[$i]),
                         $addresses2[$j] . ' must equal ' . $addresses1[$i]
                     );
-                }
-                else {
-                    $this->assertFalse($addresses1[$i]->equals(
-                        $addresses2[$j]),
+                } else {
+                    $this->assertFalse(
+                        $addresses1[$i]->equals($addresses2[$j]),
                         $addresses1[$i] . ' must not equal ' . $addresses2[$j]
                     );
                     $this->assertFalse(

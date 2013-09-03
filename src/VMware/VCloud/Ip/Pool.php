@@ -12,8 +12,12 @@ class Pool extends Object
     protected $allocatedAddresses = array();
     protected $allowOverlapping = null;
 
-    public function __construct(Subnet $subnet, $ranges = array(), $allocatedAddresses = array(), $allowOverlapping = false)
-    {
+    public function __construct(
+        Subnet $subnet,
+        $ranges = array(),
+        $allocatedAddresses = array(),
+        $allowOverlapping = false
+    ) {
         $this->set('subnet', $subnet);
         $this->addRanges($ranges);
         $this->allocateAll($allocatedAddresses);

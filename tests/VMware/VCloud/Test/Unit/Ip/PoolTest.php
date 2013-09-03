@@ -132,10 +132,12 @@ class PoolTest extends ConfigurableTestCase
     {
         $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
         $pool = new Pool($subnet);
-        $pool->addRanges(array(
-            new Range('192.168.1.2', '192.168.1.10'),
-            new Range('192.168.1.21', '192.168.1.30')
-        ));
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.10'),
+                new Range('192.168.1.21', '192.168.1.30')
+            )
+        );
 
         $this->assertFalse($pool->contains('192.168.1.1'));
         $this->assertTrue($pool->contains('192.168.1.2'));
@@ -156,10 +158,12 @@ class PoolTest extends ConfigurableTestCase
     {
         $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
         $pool = new Pool($subnet);
-        $pool->addRanges(array(
-            new Range('192.168.1.2', '192.168.1.10'),
-            new Range('192.168.1.21', '192.168.1.30')
-        ));
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.10'),
+                new Range('192.168.1.21', '192.168.1.30')
+            )
+        );
 
         $pool->contains('192.168.1.0');
     }
@@ -168,10 +172,12 @@ class PoolTest extends ConfigurableTestCase
     {
         $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
         $pool = new Pool($subnet);
-        $pool->addRanges(array(
-            new Range('192.168.1.2', '192.168.1.10'),
-            new Range('192.168.1.21', '192.168.1.30')
-        ));
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.10'),
+                new Range('192.168.1.21', '192.168.1.30')
+            )
+        );
 
         foreach (array(
             '192.168.1.2',
@@ -196,10 +202,12 @@ class PoolTest extends ConfigurableTestCase
     {
         $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
         $pool = new Pool($subnet);
-        $pool->addRanges(array(
-            new Range('192.168.1.2', '192.168.1.10'),
-            new Range('192.168.1.21', '192.168.1.30')
-        ));
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.10'),
+                new Range('192.168.1.21', '192.168.1.30')
+            )
+        );
 
         $pool->allocate('192.168.1.0');
     }
@@ -211,10 +219,12 @@ class PoolTest extends ConfigurableTestCase
     {
         $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
         $pool = new Pool($subnet);
-        $pool->addRanges(array(
-            new Range('192.168.1.2', '192.168.1.10'),
-            new Range('192.168.1.21', '192.168.1.30')
-        ));
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.10'),
+                new Range('192.168.1.21', '192.168.1.30')
+            )
+        );
 
         $pool->allocate('192.168.1.1');
     }
@@ -226,10 +236,12 @@ class PoolTest extends ConfigurableTestCase
     {
         $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
         $pool = new Pool($subnet);
-        $pool->addRanges(array(
-            new Range('192.168.1.2', '192.168.1.10'),
-            new Range('192.168.1.21', '192.168.1.30')
-        ));
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.10'),
+                new Range('192.168.1.21', '192.168.1.30')
+            )
+        );
 
         $pool->isAllocated('192.168.1.1');
     }
@@ -241,10 +253,12 @@ class PoolTest extends ConfigurableTestCase
     {
         $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
         $pool = new Pool($subnet);
-        $pool->addRanges(array(
-            new Range('192.168.1.2', '192.168.1.10'),
-            new Range('192.168.1.21', '192.168.1.30')
-        ));
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.10'),
+                new Range('192.168.1.21', '192.168.1.30')
+            )
+        );
 
         $pool->isAvailable('192.168.1.1');
     }
@@ -253,10 +267,12 @@ class PoolTest extends ConfigurableTestCase
     {
         $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
         $pool = new Pool($subnet);
-        $pool->addRanges(array(
-            new Range('192.168.1.2', '192.168.1.10'),
-            new Range('192.168.1.21', '192.168.1.30')
-        ));
+        $pool->addRanges(
+            array(
+                new Range('192.168.1.2', '192.168.1.10'),
+                new Range('192.168.1.21', '192.168.1.30')
+            )
+        );
 
         $addresses = array(
             '192.168.1.2',

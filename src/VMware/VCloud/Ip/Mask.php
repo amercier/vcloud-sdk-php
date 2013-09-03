@@ -27,7 +27,7 @@ class Mask extends BitMask
         } else { // Address (Ex: 255.255.255.0)
             parent::__construct($mask);
 
-            if(!preg_match('/^1*0*$/', decbin($this->getValue()))) {
+            if (!preg_match('/^1*0*$/', decbin($this->getValue()))) {
                 throw new Exception\InvalidMask($this);
             }
         }
