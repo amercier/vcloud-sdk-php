@@ -219,6 +219,67 @@ class PoolTest extends ConfigurableTestCase
         $pool->allocate('192.168.1.1');
     }
 
+    /**
+     * @expectedException \VMware\VCloud\Exception\AddressOutOfPool
+     */
+    public function testIsAllocatedAddressOutOfPool()
+    {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(array(
+            new Range('192.168.1.2', '192.168.1.10'),
+            new Range('192.168.1.21', '192.168.1.30')
+        ));
+
+        $pool->isAllocated('192.168.1.1');
+    }
+
+    /**
+     * @expectedException \VMware\VCloud\Exception\AddressOutOfPool
+     */
+    public function testIsAvailableAddressOutOfPool()
+    {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(array(
+            new Range('192.168.1.2', '192.168.1.10'),
+            new Range('192.168.1.21', '192.168.1.30')
+        ));
+
+        $pool->isAvailable('192.168.1.1');
+    }
+
+    public function testAllocateAll()
+    {
+        $subnet = new Subnet('192.168.1.0', 24, array(), array(), true);
+        $pool = new Pool($subnet);
+        $pool->addRanges(array(
+            new Range('192.168.1.2', '192.168.1.10'),
+            new Range('192.168.1.21', '192.168.1.30')
+        ));
+
+        $addresses = array(
+            '192.168.1.2',
+            '192.168.1.5',
+            '192.168.1.10',
+            '192.168.1.21',
+            '192.168.1.25',
+            '192.168.1.30',
+        );
+
+        foreach ($addresses as $address) {
+            $this->assertFalse($pool->isAllocated($address));
+            $this->assertTrue($pool->isAvailable($address));
+        }
+
+        $pool->allocateAll($addresses);
+
+        foreach ($addresses as $address) {
+            $this->assertTrue($pool->isAllocated($address));
+            $this->assertFalse($pool->isAvailable($address));
+        }
+    }
+
     public function testGetFirstAvailable()
     {
 
