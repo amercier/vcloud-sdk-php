@@ -2,7 +2,7 @@
 
 namespace VMware\VCloud;
 
-class ExternalNetwork extends Entity implements network
+class ExternalNetwork extends Entity implements Network
 {
     protected $parentNetwork = null;
     protected $gateway = null;
