@@ -137,39 +137,25 @@ class Service extends Object
 
     public function getExternalNetworkById($id, $exceptionIfNotFound = true)
     {
-        foreach ($this->getExternalNetworks() as $externalNetwork) {
-            if ($externalNetwork->getId() === $id) {
-                return $externalNetwork;
-            }
-        }
-        if ($exceptionIfNotFound) {
-            throw new Exception\ObjectNotFound(
-                'External Network',
-                'id',
-                $externalNetwork->getId(),
-                'vCloud Director ' . $this->getHost()
-            );
-        } else {
-            return false;
-        }
+        return $this->getBy(
+            'externalNetworks',
+            'id',
+            $id,
+            'External Network',
+            'vCloud Director ' . $this->getHost(),
+            $exceptionIfNotFound
+        );
     }
 
     public function getExternalNetworkByName($name, $exceptionIfNotFound = true)
     {
-        foreach ($this->getExternalNetworks() as $externalNetwork) {
-            if ($externalNetwork->getName() === $name) {
-                return $externalNetwork;
-            }
-        }
-        if ($exceptionIfNotFound) {
-            throw new Exception\ObjectNotFound(
-                'External Network',
-                'name',
-                $externalNetwork->getId(),
-                'vCloud Director ' . $this->getHost()
-            );
-        } else {
-            return false;
-        }
+        return $this->getBy(
+            'externalNetworks',
+            'name',
+            $name,
+            'External Network',
+            'vCloud Director ' . $this->getHost(),
+            $exceptionIfNotFound
+        );
     }
 }

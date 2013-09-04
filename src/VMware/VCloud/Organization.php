@@ -46,21 +46,14 @@ class Organization extends Entity
 
     public function getNetworkById($id, $exceptionIfNotFound = true)
     {
-        foreach ($this->getNetworks() as $network) {
-            if ($network->getId() === $id) {
-                return $network;
-            }
-        }
-        if ($exceptionIfNotFound) {
-            throw new Exception\ObjectNotFound(
-                'Organization Network',
-                'id',
-                $network->getId(),
-                'Organization ' . $this->getName()
-            );
-        } else {
-            return false;
-        }
+        return $this->getBy(
+            'networks',
+            'id',
+            $id,
+            'Organization Network',
+            'Organization ' . $this->getName(),
+            $exceptionIfNotFound
+        );
     }
 
     public function getVirtualDataCenters()
@@ -77,7 +70,7 @@ class Organization extends Entity
         return $virtualDataCenters;
     }
 
-    public function getVAppByName($name, $notFoundException = true)
+    public function getVAppByName($name, $exceptionIfNotFound = true)
     {
         foreach ($this->getVirtualDataCenters() as $virtualDataCenter) {
             $vApp = $virtualDataCenter->getVAppByName($name, false);
@@ -85,8 +78,8 @@ class Organization extends Entity
                 return $vApp;
             }
         }
-        if ($notFoundException) {
-            throw new Exception\ObjectNotFound('vApp', 'name', 'Virtual Datacenter ' . $this->getName());
+        if ($exceptionIfNotFound) {
+            throw new Exception\ObjectNotFound('vApp', 'name', $name, 'Virtual Datacenter ' . $this->getName());
         } else {
             return false;
         }

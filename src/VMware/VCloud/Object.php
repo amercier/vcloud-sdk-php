@@ -129,4 +129,27 @@ abstract class Object
         unset($this->$name[$index]);
         return $this;
     }
+
+    protected function getBy($name, $criteria, $value, $objectType = null,
+        $thisDescription = null, $exceptionIfNotFound = true)
+    {
+        $getter = 'get' . ucfirst($name);
+        $itemGetter = 'get' . ucfirst($criteria);
+
+        foreach ($this->$getter() as $item) {
+            if ($item->$itemGetter() === $value) {
+                return $item;
+            }
+        }
+        if ($exceptionIfNotFound) {
+            throw new Exception\ObjectNotFound(
+                $objectType ? $objectType : ucfirst($name),
+                $criteria,
+                $value,
+                $thisDescription ? $thisDescription : $this
+            );
+        } else {
+            return false;
+        }
+    }
 }

@@ -25,17 +25,15 @@ class VirtualDataCenter extends Entity
         return $vApps;
     }
 
-    public function getVAppByName($name, $notFoundException = true)
+    public function getVAppByName($name, $exceptionIfNotFound = true)
     {
-        foreach ($this->getVApps() as $vApp) {
-            if ($vApp->getName() === $name) {
-                return $vApp;
-            }
-        }
-        if ($notFoundException) {
-            throw new Exception\ObjectNotFound('vApp', 'name', 'Virtual Datacenter ' . $this->getName());
-        } else {
-            return false;
-        }
+        return $this->getBy(
+            'vApps',
+            'name',
+            $name,
+            'vApp',
+            'Virtual Datacenter ' . $this->getName(),
+            $exceptionIfNotFound
+        );
     }
 }
