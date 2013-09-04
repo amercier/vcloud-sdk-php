@@ -12,6 +12,7 @@ class Service extends Object
     protected $credentials = null;
     protected $loggedIn = false;
     protected $organizations = array();
+    protected $externalNetworks = null;
 
     public function __construct($host, Http\Configuration $httpConfiguration = null)
     {
@@ -28,6 +29,11 @@ class Service extends Object
             ? Http\Configuration::getDefaultConfiguration()
             : $httpConfiguration
         );
+    }
+
+    public function getHost()
+    {
+        return $this->get('host');
     }
 
     public function getImplementation()
@@ -113,5 +119,47 @@ class Service extends Object
             }
         }
         throw new Exception\ObjectNotFound('Organization', 'name', $name);
+    }
+
+    public function getExternalNetworks()
+    {
+        return $this->get('externalNetworks', 'retrieveExternalNetworks');
+    }
+
+    protected function retrieveExternalNetworks()
+    {
+        $externalNetworks = array();
+        foreach ($this->getImplementation()->createSDKAdminObj()->getExternalNetworkRefs() as $externalNetworkRef) {
+            array_push($externalNetworks, new ExternalNetwork($this, null, $externalNetworkRef));
+        }
+        return $externalNetworks;
+    }
+
+    public function getExternalNetworkById($id, $exceptionIfNotFound = true)
+    {
+        foreach ($this->getExternalNetworks() as $externalNetwork) {
+            if ($externalNetwork->getId() === $id) {
+                return $externalNetwork;
+            }
+        }
+        if ($exceptionIfNotFound) {
+            throw new Exception\ObjectNotFound('External Network', 'id', $externalNetwork->getId(), 'vCloud Director ' . $this->getHost());
+        } else {
+            return false;
+        }
+    }
+
+    public function getExternalNetworkByName($name, $exceptionIfNotFound = true)
+    {
+        foreach ($this->getExternalNetworks() as $externalNetwork) {
+            if ($externalNetwork->getName() === $name) {
+                return $externalNetwork;
+            }
+        }
+        if ($exceptionIfNotFound) {
+            throw new Exception\ObjectNotFound('External Network', 'name', $externalNetwork->getId(), 'vCloud Director ' . $this->getHost());
+        } else {
+            return false;
+        }
     }
 }

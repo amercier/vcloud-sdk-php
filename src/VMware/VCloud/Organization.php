@@ -51,8 +51,8 @@ class Organization extends Entity
                 return $network;
             }
         }
-        if ($notFoundException) {
-            throw new Exception\ObjectNotFound('Organization Network', 'id', 'Organization ' . $this->getName());
+        if ($exceptionIfNotFound) {
+            throw new Exception\ObjectNotFound('Organization Network', 'id', $network->getId(), 'Organization ' . $this->getName());
         } else {
             return false;
         }

@@ -2,7 +2,7 @@
 
 namespace VMware\VCloud;
 
-class OrganizationNetwork extends Entity implements network
+class ExternalNetwork extends Entity implements network
 {
     protected $parentNetwork = null;
     protected $gateway = null;
@@ -10,7 +10,7 @@ class OrganizationNetwork extends Entity implements network
 
     protected function getImplementationGetterName()
     {
-        return 'getNetwork';
+        return 'getAdminNetwork';
     }
 
     public function __toString()
@@ -18,7 +18,7 @@ class OrganizationNetwork extends Entity implements network
         return $this->getName();
     }
 
-    public function getOrganization()
+    public function getService()
     {
         return $this->getParent();
     }

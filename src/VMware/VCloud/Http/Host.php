@@ -32,4 +32,9 @@ class Host extends Object
     {
         return $this->get('url');
     }
+
+    public function __toString()
+    {
+        return $this->getUrl();
+    }
 }
