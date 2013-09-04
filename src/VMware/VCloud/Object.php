@@ -130,9 +130,14 @@ abstract class Object
         return $this;
     }
 
-    protected function getBy($name, $criteria, $value, $objectType = null,
-        $thisDescription = null, $exceptionIfNotFound = true)
-    {
+    protected function getBy(
+        $name,
+        $criteria,
+        $value,
+        $objectType = null,
+        $thisDescription = null,
+        $exceptionIfNotFound = true
+    ) {
         $getter = 'get' . ucfirst($name);
         $itemGetter = 'get' . ucfirst($criteria);
 
