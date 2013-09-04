@@ -143,7 +143,12 @@ class Service extends Object
             }
         }
         if ($exceptionIfNotFound) {
-            throw new Exception\ObjectNotFound('External Network', 'id', $externalNetwork->getId(), 'vCloud Director ' . $this->getHost());
+            throw new Exception\ObjectNotFound(
+                'External Network',
+                'id',
+                $externalNetwork->getId(),
+                'vCloud Director ' . $this->getHost()
+            );
         } else {
             return false;
         }
@@ -157,7 +162,12 @@ class Service extends Object
             }
         }
         if ($exceptionIfNotFound) {
-            throw new Exception\ObjectNotFound('External Network', 'name', $externalNetwork->getId(), 'vCloud Director ' . $this->getHost());
+            throw new Exception\ObjectNotFound(
+                'External Network',
+                'name',
+                $externalNetwork->getId(),
+                'vCloud Director ' . $this->getHost()
+            );
         } else {
             return false;
         }
