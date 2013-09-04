@@ -5,6 +5,8 @@ namespace VMware\VCloud;
 class VAppNetwork extends Resource implements Network
 {
     protected $parentNetwork = null;
+    protected $gateway = null;
+    protected $ipPool = null;
 
     public function getName()
     {
@@ -37,5 +39,53 @@ class VAppNetwork extends Resource implements Network
     public function getFenceMode()
     {
         return $this->getModel()->getConfiguration()->getFenceMode();
+    }
+
+    public function getGateway()
+    {
+        return $this->get('gateway', 'retrieveGateway');
+    }
+
+    public function retrieveGateway()
+    {
+        $scope = $this->getModel()->getConfiguration()->getIpScopes()->getIpScope();
+        $scope = $scope[0];
+        return new Ip\Address($scope->getGateway());
+    }
+
+    public function getIpPool()
+    {
+        return $this->get('ipPool', 'retrieveIpPool');
+    }
+
+    protected function retrieveIpPool()
+    {
+        $scope = $this->getModel()->getConfiguration()->getIpScopes()->getIpScope();
+        $scope = $scope[0];
+        $mask = new Ip\Mask($scope->getNetmask());
+        $gateway = $this->getGateway();
+        $subnet = new Ip\Subnet($mask->apply($gateway), $mask);
+
+        $pool = new Ip\Pool($subnet);
+
+        // Add Ranges
+        $ranges = $scope->getIpRanges();
+        if ($ranges) {
+            foreach ($ranges->getIpRange() as $range) {
+                $pool->addRange(new Ip\Range($range->getStartAddress(), $range->getEndAddress()));
+            }
+        }
+
+        // Allocate allocated addresses
+        $allocatedIpAddresses = $scope->getAllocatedIpAddresses();
+        if ($allocatedIpAddresses) {
+            foreach ($allocatedIpAddresses->getIpAddress() as $address) {
+                if ($pool->contains($gateway)) {
+                    $pool->allocate($address);
+                }
+            }
+        }
+
+        return $pool;
     }
 }

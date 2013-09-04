@@ -9,4 +9,6 @@ interface Network
     public function getParentNetwork();
 
     public function getFenceMode();
+
+    public function getIpPool();
 }

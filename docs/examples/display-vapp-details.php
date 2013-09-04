@@ -48,6 +48,8 @@ if ($service->isLoggedIn()) {
         }, $vApp->getNetworks()));
         foreach($vApp->getNetworks() as $network) {
             echo "      ▸ " . str_pad($network, $maxNameLength) . "\t ";
+            echo str_pad($network->getIpPool()->getSubnet(), 18) . "\t ";
+            echo str_pad($network->getGateway(), 15) . "\t ";
             echo $network->getFenceMode() . ($network->getParentNetwork() ? ' to ' . $network->getParentNetwork() : '') . "\n";
         }
 
