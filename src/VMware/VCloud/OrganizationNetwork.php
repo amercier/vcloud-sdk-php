@@ -2,7 +2,7 @@
 
 namespace VMware\VCloud;
 
-class OrganizationNetwork extends Entity implements network
+class OrganizationNetwork extends Entity implements Network
 {
     protected $parentNetwork = null;
     protected $gateway = null;

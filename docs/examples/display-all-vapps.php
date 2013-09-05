@@ -16,7 +16,7 @@ if ($service->isLoggedIn()) {
         echo "--------------------------------------------------------------\n";
         echo " Virtual Data Center " . strtoupper($vdc->getName()) . "\n";
         echo "--------------------------------------------------------------\n";
-        foreach ($vdc->getVApps() as $vApp) {
+        foreach ($vdc->getVAppTemplates() as $vApp) {
             echo ' ▸ ' . $vApp->getName() . "\n";
         }
         echo "\n";

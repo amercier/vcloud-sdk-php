@@ -6,6 +6,7 @@ class Organization extends Entity
 {
     protected $networks = null;
     protected $virtualDataCenters = null;
+    protected $catalogs = null;
 
     public function __construct(
         Service $parent,
@@ -83,5 +84,19 @@ class Organization extends Entity
         } else {
             return false;
         }
+    }
+
+    public function getCatalogs()
+    {
+        return $this->get('catalogs', 'retrieveCatalogs');
+    }
+
+    protected function retrieveCatalogs()
+    {
+        $catalogs = array();
+        foreach ($this->getImplementation()->getCatalogRefs() as $catalogRef) {
+            array_push($catalogs, new Catalog($this, null, $catalogRef));
+        }
+        return $catalogs;
     }
 }

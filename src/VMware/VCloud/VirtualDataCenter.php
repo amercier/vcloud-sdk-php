@@ -36,4 +36,30 @@ class VirtualDataCenter extends Entity
             $exceptionIfNotFound
         );
     }
+
+    public function getVAppTemplates()
+    {
+        return $this->get('vAppTemplates', 'retrieveVAppTemplates');
+    }
+
+    protected function retrieveVAppTemplates()
+    {
+        $vAppTemplates = array();
+        foreach ($this->getImplementation()->getVAppTemplateRefs() as $vAppTemplateRef) {
+            array_push($vAppTemplates, new VAppTemplate($this, null, $vAppTemplateRef));
+        }
+        return $vAppTemplates;
+    }
+
+    public function getVAppTemplateByName($name, $exceptionIfNotFound = true)
+    {
+        return $this->getBy(
+            'vAppTemplates',
+            'name',
+            $name,
+            'vAppTemplate',
+            'Virtual Datacenter ' . $this->getName(),
+            $exceptionIfNotFound
+        );
+    }
 }
