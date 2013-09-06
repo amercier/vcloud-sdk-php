@@ -6,6 +6,23 @@ class VAppTemplate extends DeployableResourceEntity
 {
     protected $virtualMachines = null;
 
+    public function getVirtualDataCenter()
+    {
+        return $this->getParent();
+    }
+
+    public function getCatalog()
+    {
+
+        die(print_r($this->getService()->createImplementationFromReference($this->getImplementation()->getCatalogItemLink()), true));
+
+        return $this->getImplementation()->isPartOfCatalogItem()
+        ? $this->getVirtualDataCenter()->getOrganization()->getCatalogById(
+            IdentifiableResource::getIdFromHref($this->getImplementation()->getCatalogItemLink()->get_href())
+        )
+        : null;
+    }
+
     public function getVirtualMachines()
     {
         return $this->get('virtualMachines', 'retrieveVirtualMachines');

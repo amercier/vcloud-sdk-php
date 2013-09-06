@@ -99,4 +99,16 @@ class Organization extends Entity
         }
         return $catalogs;
     }
+
+    public function getCatalogById($id, $exceptionIfNotFound = true)
+    {
+        return $this->getBy(
+            'catalogs',
+            'id',
+            $id,
+            'Catalog',
+            'Organization ' . $this->getName(),
+            $exceptionIfNotFound
+        );
+    }
 }

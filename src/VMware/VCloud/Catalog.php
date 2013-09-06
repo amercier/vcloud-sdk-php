@@ -15,6 +15,12 @@ class Catalog extends Entity
         return $catalogItems[self::TYPE_VAPP_TEMPLATE];
     }
 
+    public function getMedias()
+    {
+        $catalogItems = $this->get('catalogItems', 'retrieveCatalogItems');
+        return $catalogItems[self::TYPE_MEDIA];
+    }
+
     protected function retrieveCatalogItems()
     {
         $catalogItems = array(

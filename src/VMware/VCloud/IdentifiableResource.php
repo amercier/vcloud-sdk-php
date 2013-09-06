@@ -20,9 +20,13 @@ class IdentifiableResource extends Resource
         $this->set('reference', $reference);
     }
 
+    public static function getIdFromHref($href) {
+        return preg_replace('/.*(' . self::ID_PATTERN . ').*/', '$1', $href);
+    }
+
     public function getId()
     {
-        return preg_replace('/.*(' . self::ID_PATTERN . ').*/', '$1', $this->getReferenceOrModel()->get_href());
+        return self::getIdFromHref($this->getReferenceOrModel()->get_href());
     }
 
     public function getHref()

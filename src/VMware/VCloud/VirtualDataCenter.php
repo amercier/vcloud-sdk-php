@@ -5,6 +5,8 @@ namespace VMware\VCloud;
 class VirtualDataCenter extends Entity
 {
     protected $vApps = null;
+    protected $vAppTemplates = null;
+    protected $medias = null;
 
     public function getOrganization()
     {
@@ -19,10 +21,25 @@ class VirtualDataCenter extends Entity
     protected function retrieveVApps()
     {
         $vApps = array();
-        foreach ($this->getImplementation()->getVAppRefs() as $vAppRef) {
-            array_push($vApps, new VApp($this, null, $vAppRef));
+        $vAppRefs = $this->getImplementation()->getVAppRefs();
+        if ($vAppRefs !== null) {
+            foreach ($vAppRefs as $vAppRef) {
+                array_push($vApps, new VApp($this, null, $vAppRef));
+            }
         }
         return $vApps;
+    }
+
+    public function getVAppById($id, $exceptionIfNotFound = true)
+    {
+        return $this->getBy(
+            'vApps',
+            'id',
+            $id,
+            'vApp',
+            'Virtual Datacenter ' . $this->getName(),
+            $exceptionIfNotFound
+        );
     }
 
     public function getVAppByName($name, $exceptionIfNotFound = true)
@@ -45,8 +62,11 @@ class VirtualDataCenter extends Entity
     protected function retrieveVAppTemplates()
     {
         $vAppTemplates = array();
-        foreach ($this->getImplementation()->getVAppTemplateRefs() as $vAppTemplateRef) {
-            array_push($vAppTemplates, new VAppTemplate($this, null, $vAppTemplateRef));
+        $vAppTemplateRefs = $this->getImplementation()->getVAppTemplateRefs();
+        if ($vAppTemplateRefs !== null) {
+            foreach ($vAppTemplateRefs as $vAppTemplateRef) {
+                array_push($vAppTemplates, new VAppTemplate($this, null, $vAppTemplateRef));
+            }
         }
         return $vAppTemplates;
     }
@@ -57,7 +77,60 @@ class VirtualDataCenter extends Entity
             'vAppTemplates',
             'name',
             $name,
-            'vAppTemplate',
+            'vApp Template',
+            'Virtual Datacenter ' . $this->getName(),
+            $exceptionIfNotFound
+        );
+    }
+
+    public function getVAppTemplateById($id, $exceptionIfNotFound = true)
+    {
+        return $this->getBy(
+            'vAppTemplates',
+            'id',
+            $id,
+            'vApp Template',
+            'Virtual Datacenter ' . $this->getName(),
+            $exceptionIfNotFound
+        );
+    }
+
+    public function getMedias()
+    {
+        return $this->get('medias', 'retrieveMedias');
+    }
+
+    protected function retrieveMedias()
+    {
+        $medias = array();
+        $mediaRefs = $this->getImplementation()->getMediaRefs();
+        if ($mediaRefs !== null) {
+            foreach ($mediaRefs as $mediaRef) {
+                array_push($medias, new Media($this, null, $mediaRef));
+            }
+        }
+        return $medias;
+    }
+
+    public function getMediaByName($name, $exceptionIfNotFound = true)
+    {
+        return $this->getBy(
+            'medias',
+            'name',
+            $name,
+            'media',
+            'Virtual Datacenter ' . $this->getName(),
+            $exceptionIfNotFound
+        );
+    }
+
+    public function getMediaById($id, $exceptionIfNotFound = true)
+    {
+        return $this->getBy(
+            'medias',
+            'id',
+            $id,
+            'media',
             'Virtual Datacenter ' . $this->getName(),
             $exceptionIfNotFound
         );

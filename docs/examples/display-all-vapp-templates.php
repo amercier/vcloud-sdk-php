@@ -17,24 +17,53 @@ if ($service->isLoggedIn()) {
         echo " Organization " . strtoupper($org) . "\n";
         echo "================================================================================\n";
         echo "\n";
-        foreach ($org->getCatalogs() as $catalog) {
+        foreach ($org->getVirtualDatacenters() as $vdc) {
             echo "--------------------------------------------------------------------------------\n";
-            echo " Catalog " . strtoupper($catalog) . "\n";
+            echo " Virtual Datacenter " . strtoupper($vdc) . "\n";
             echo "--------------------------------------------------------------------------------\n";
-            echo " ▸ vApp Templates\n";
-            foreach($catalog->getVAppTemplates() as $vAppTemplate) {
-                echo "     ▸ " . $vAppTemplate . " ";
-                echo "(" . count($vAppTemplate->getVirtualMachines()) . ' vms: ' . implode(', ', $vAppTemplate->getVirtualMachines()) . ")\n";
+
+            // vApp Templates
+
+            $vAppTemplates = $vdc->getVAppTemplates();
+            if (count($vAppTemplates) === 0) {
+                echo " ▸ 0 vApp Templates\n";
             }
-            // echo " ▸ medias\n";
-            // foreach($catalog->getMedias() as $media) {
-            //     echo "     ▸ " . $media . " ";
-            //     echo "(" . count($media->getSize()) . " B)\n";
-            // }
+            else {
+                echo " ▸ vApp Templates\n";
+                $maxNameLength = max(array_map(function($vAppTemplate) {
+                    return strlen('' . $vAppTemplate);
+                }, $vAppTemplates));
+                foreach($vdc->getVAppTemplates() as $vAppTemplate) {
+                    echo "     ▸ " . str_pad($vAppTemplate, $maxNameLength) . " ";
+                    try {
+                        echo "   " . str_pad(count($vAppTemplate->getVirtualMachines()), 2, ' ', STR_PAD_LEFT) . " VMs";
+                        echo "   " . $vAppTemplate->getCatalog() . "\n";
+                    }
+                    catch (VMware_VCloud_SDK_Exception $e) {
+                        echo "(### ERROR ###)\n";
+                    }
+                }
+            }
+
+            // Medias
+
+            $medias = $vdc->getMedias();
+            if (count($medias) === 0) {
+                echo " ▸ 0 medias\n";
+            }
+            else {
+                echo " ▸ medias\n";
+                $maxNameLength = max(array_map(function($media) {
+                    return strlen('' . $media);
+                }, $medias));
+                foreach($vdc->getMedias() as $media) {
+                    echo "    ▸ " . str_pad($media, $maxNameLength) . " ";
+                    echo "   " . str_pad($media->getImageType(), 3);
+                    echo "   " . count($media->getFiles()) . " files";
+                    echo "   " . str_pad($media->getSize(), 10, ' ', STR_PAD_LEFT) . " B\n";
+                }
+            }
         }
-        foreach ($vdc->getVApps() as $vApp) {
-            echo ' ▸ ' . $vApp->getName() . "\n";
-        }
-        echo "\n";
+        echo "\n\n";
     }
 }
