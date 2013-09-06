@@ -91,11 +91,25 @@ class Organization extends Entity
         return $this->get('catalogs', 'retrieveCatalogs');
     }
 
+    protected function getCatalogOrgLink(\VMware_VCloud_API_CatalogType $catalog)
+    {
+        foreach ($catalog->getLink() as $link) {
+            if ($link->get_type() === 'application/vnd.vmware.vcloud.org+xml') {
+                return $link;
+            }
+        }
+        return $link;
+    }
+
     protected function retrieveCatalogs()
     {
         $catalogs = array();
-        foreach ($this->getImplementation()->getCatalogRefs() as $catalogRef) {
-            array_push($catalogs, new Catalog($this, null, $catalogRef));
+        foreach ($this->getImplementation()->getCatalogs() as $catalog) {
+            $link = $this->getCatalogOrgLink($catalog);
+            $organization = $link === null ? null : $this->getService()->getOrganizationById(
+                IdentifiableResource::getIdFromHref($link->get_href())
+            );
+            array_push($catalogs, new Catalog($organization, $catalog));
         }
         return $catalogs;
     }
@@ -111,4 +125,21 @@ class Organization extends Entity
             $exceptionIfNotFound
         );
     }
+
+    public function getVAppTemplateById($id, $exceptionIfNotFound = true)
+    {
+        echo $id . "\n";
+        foreach ($this->getVirtualDataCenters() as $virtualDataCenter) {
+            $vAppTemplate = $virtualDataCenter->getVAppTemplateById($id, false);
+            if ($vAppTemplate !== false) {
+                return $vAppTemplate;
+            }
+        }
+        if ($exceptionIfNotFound) {
+            throw new Exception\ObjectNotFound('vApp Template', 'id', $id, 'Virtual Datacenter ' . $this->getName());
+        } else {
+            return false;
+        }
+    }
+
 }

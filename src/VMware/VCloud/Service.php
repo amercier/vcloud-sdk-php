@@ -110,15 +110,33 @@ class Service extends Object
         return $this->get('organizations');
     }
 
+    public function getOrganizationById($id, $exceptionIfNotFound = true)
+    {
+        return $this->getBy(
+            'organizations',
+            'id',
+            $id,
+            'Organization',
+            'vCloud Director ' . $this->getHost(),
+            $exceptionIfNotFound
+        );
+    }
+
+    public function getOrganizationByName($name, $exceptionIfNotFound = true)
+    {
+        return $this->getBy(
+            'organizations',
+            'name',
+            $name,
+            'Organization',
+            'vCloud Director ' . $this->getHost(),
+            $exceptionIfNotFound
+        );
+    }
+
     public function getCurrentOrganization()
     {
-        $name = strtolower($this->getCredentials()->getOrganization());
-        foreach ($this->getOrganizations() as $organization) {
-            if (strtolower($organization->getName()) === $name) {
-                return $organization;
-            }
-        }
-        throw new Exception\ObjectNotFound('Organization', 'name', $name);
+        return $this->getOrganizationByName(strtolower($this->getCredentials()->getOrganization()));
     }
 
     public function getExternalNetworks()

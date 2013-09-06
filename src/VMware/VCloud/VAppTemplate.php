@@ -13,14 +13,15 @@ class VAppTemplate extends DeployableResourceEntity
 
     public function getCatalog()
     {
+        if (!$this->getImplementation()->isPartOfCatalogItem()) {
+            return null;
+        }
 
-        die(print_r($this->getService()->createImplementationFromReference($this->getImplementation()->getCatalogItemLink()), true));
+        $catalogItemLink = $this->getImplementation()->getCatalogItemLink();
+        $catalogItem = $this->getService()->createImplementationFromReference($catalogItemLink);
+        $catalogId = IdentifiableResource::getIdFromHref($catalogItem->getCatalogRef()->get_href());
 
-        return $this->getImplementation()->isPartOfCatalogItem()
-        ? $this->getVirtualDataCenter()->getOrganization()->getCatalogById(
-            IdentifiableResource::getIdFromHref($this->getImplementation()->getCatalogItemLink()->get_href())
-        )
-        : null;
+        return $this->getVirtualDataCenter()->getOrganization()->getCatalogById($catalogId);
     }
 
     public function getVirtualMachines()

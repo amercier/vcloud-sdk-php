@@ -9,6 +9,11 @@ class Catalog extends Entity
 
     protected $catalogItems = null;
 
+    public function getOrganization()
+    {
+        return $this->getParent();
+    }
+
     public function getVAppTemplates()
     {
         $catalogItems = $this->get('catalogItems', 'retrieveCatalogItems');
@@ -41,11 +46,12 @@ class Catalog extends Entity
     protected function createCatalogItemInstance(\VMware_VCloud_API_ReferenceType $entity)
     {
         $type = $entity->get_type();
+        die(print_r($entity, true));
         switch($type) {
             case self::TYPE_VAPP_TEMPLATE:
-                return new VAppTemplate($this, null, $entity);
+                return $this->getOrganization()->getVAppTemplateById(IdentifiableResource::getIdFromHref($entity->get_href()));
             case self::TYPE_MEDIA:
-                return new Media($this, null, $entity);
+                return $this->getOrganization()->getMediaById(IdentifiableResource::getIdFromHref($entity->get_href()));
             default:
                 throw new \RuntimeException('Unknown catalog item type ' . $type);
         }

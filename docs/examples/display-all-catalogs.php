@@ -23,12 +23,14 @@ if ($service->isLoggedIn()) {
             echo "--------------------------------------------------------------------------------\n";
             echo " ▸ vApp Templates\n";
             foreach($catalog->getVAppTemplates() as $vAppTemplate) {
-                echo "     ▸ " . $vAppTemplate . " ";
+                echo "     ▸ " . $vAppTemplate . "\n";
                 try {
-                    echo "(" . count($vAppTemplate->getVirtualMachines()) . ' vms: ' . implode(', ', $vAppTemplate->getVirtualMachines()) . ")\n";
+                    foreach ($vAppTemplate->getVirtualMachines() as $vm) {
+                        echo "         ▸ " . $vm . "\n";
+                    }
                 }
                 catch (VMware_VCloud_SDK_Exception $e) {
-                    echo "(### ERROR ###)\n";
+                    echo "         ▸ " . $e->getMessage() . "\n";
                 }
             }
             echo " ▸ medias\n";
