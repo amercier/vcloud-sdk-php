@@ -22,21 +22,54 @@ if ($service->isLoggedIn()) {
             echo " Catalog " . strtoupper($catalog) . "\n";
             echo "--------------------------------------------------------------------------------\n";
             echo " ▸ vApp Templates\n";
-            foreach($catalog->getVAppTemplates() as $vAppTemplate) {
-                echo "     ▸ " . $vAppTemplate . "\n";
-                try {
-                    foreach ($vAppTemplate->getVirtualMachines() as $vm) {
-                        echo "         ▸ " . $vm . "\n";
+            $vAppTemplates = $catalog->getVAppTemplates();
+            if (count($vAppTemplates) === 0) {
+                echo " ▸ 0 vApp Templates\n";
+            }
+            else {
+                $maxNameLength = max(array_map(function($vAppTemplate) {
+                    return strlen('' . $vAppTemplate);
+                }, $vAppTemplates));
+                foreach($vAppTemplates as $vAppTemplate) {
+                    echo "    ▸ " . str_pad($vAppTemplate, $maxNameLength) . "\n";
+                    $virtualMachines = $vAppTemplate->getVirtualMachines();
+                    if (count($virtualMachines) === 0) {
+                        echo "       ▸ 0 virtual machines\n";
+                    }
+                    else {
+                        $maxVMNameLength = max(array_map(function($virtualMachine) {
+                            return strlen('' . $virtualMachine);
+                        }, $virtualMachines));
+                        foreach ($virtualMachines as $virtualMachine) {
+                            try {
+                                echo "       ▸ " . str_pad($virtualMachine, $maxVMNameLength) . " ";
+                                echo $virtualMachine->getHref() . "\n";
+                                die("\n" . $virtualMachine->getModel()->export() . "\n");
+                                // echo str_pad($virtualMachine->getVirtualCpu()->getQuantity(), 2, ' ', STR_PAD_LEFT) . " vCPU" . ($virtualMachine->getVirtualCpu()->getQuantity() === 1 ? ' ' : 's') . " / ";
+                                // echo str_pad($virtualMachine->getVirtualMemory()->getQuantity(), 5, ' ', STR_PAD_LEFT) . " MB\n";
+                            }
+                            catch (VMware_VCloud_SDK_Exception $e) {
+                                echo "(### ERROR ###)\n";
+                            }
+                        }
                     }
                 }
-                catch (VMware_VCloud_SDK_Exception $e) {
-                    echo "         ▸ " . $e->getMessage() . "\n";
-                }
             }
-            echo " ▸ medias\n";
-            foreach($catalog->getMedias() as $media) {
-                echo "     ▸ " . $media . " ";
-                echo "(" . count($media->getSize()) . " B)\n";
+            $medias = $catalog->getMedias();
+            if (count($medias) === 0) {
+                echo " ▸ 0 medias\n";
+            }
+            else {
+                echo " ▸ medias\n";
+                $maxNameLength = max(array_map(function($media) {
+                    return strlen('' . $media);
+                }, $medias));
+                foreach($medias as $media) {
+                    echo "    ▸ " . str_pad($media, $maxNameLength) . " ";
+                    echo "   " . str_pad($media->getImageType(), 3);
+                    echo "   " . count($media->getFiles()) . " files";
+                    echo "   " . str_pad($media->getSize(), 10, ' ', STR_PAD_LEFT) . " B\n";
+                }
             }
         }
         echo "\n\n";
