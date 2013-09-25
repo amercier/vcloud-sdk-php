@@ -8,6 +8,11 @@ class ExternalNetwork extends Entity implements Network
     protected $gateway = null;
     protected $ipPool = null;
 
+    protected function retrieveParent()
+    {
+        throw new \Exception('Not implemented');
+    }
+
     protected function getImplementationGetterName()
     {
         return 'getAdminNetwork';

@@ -142,7 +142,7 @@ abstract class Object
         $itemGetter = 'get' . ucfirst($criteria);
 
         foreach ($this->$getter() as $item) {
-            if ($item->$itemGetter() === $value) {
+            if (strtolower($item->$itemGetter()) === $value) {
                 return $item;
             }
         }

@@ -7,6 +7,11 @@ class Media extends ResourceEntity
     protected $size = null;
     protected $files = null;
 
+    protected function retrieveParent()
+    {
+        throw new \Exception('Not implemented');
+    }
+
     public function getVirtualDataCenter()
     {
         return $this->getParent();

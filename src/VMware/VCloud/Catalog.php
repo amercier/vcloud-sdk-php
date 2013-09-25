@@ -9,6 +9,11 @@ class Catalog extends Entity
 
     protected $catalogItems = null;
 
+    protected function retrieveParent()
+    {
+        throw new \Exception('Not implemented');
+    }
+
     public function getOrganization()
     {
         return $this->getParent();

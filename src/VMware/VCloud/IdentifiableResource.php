@@ -5,7 +5,7 @@ namespace VMware\VCloud;
 /**
  * @todo toLink?
  */
-class IdentifiableResource extends Resource
+abstract class IdentifiableResource extends Resource
 {
     const ID_PATTERN = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 

@@ -6,6 +6,11 @@ class VAppTemplate extends DeployableResourceEntity
 {
     protected $virtualMachines = null;
 
+    protected function retrieveParent()
+    {
+        throw new \Exception('Not implemented');
+    }
+
     public function getVirtualDataCenter()
     {
         return $this->getParent();

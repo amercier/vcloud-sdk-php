@@ -5,9 +5,10 @@ namespace VMware\VCloud;
 /**
  * @todo getTasks?
  */
-class Entity extends IdentifiableResource
+abstract class Entity extends IdentifiableResource
 {
     protected $implementation;
+    protected $metadata;
 
     public function __construct(
         Object $parent,
@@ -57,6 +58,16 @@ class Entity extends IdentifiableResource
     public function getDescription()
     {
         return $this->getModel()->getDescription();
+    }
+
+    public function getMetadata()
+    {
+        return $this->get('metadata', 'retrieveMetadata');
+    }
+
+    protected function retrieveMetadata()
+    {
+        return new Metadata($this, $this->getImplementation()->getMetadata(), null);
     }
 
     public function __toString()

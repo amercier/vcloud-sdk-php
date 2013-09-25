@@ -8,6 +8,11 @@ class VirtualDataCenter extends Entity
     protected $vAppTemplates = null;
     protected $medias = null;
 
+    protected function retrieveParent()
+    {
+        throw new \Exception('Not implemented');
+    }
+
     public function getOrganization()
     {
         return $this->get('parent');

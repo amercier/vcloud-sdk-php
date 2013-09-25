@@ -5,7 +5,7 @@ namespace VMware\VCloud;
 /**
  * @todo deploy(), ...
  */
-class DeployableResourceEntity extends ResourceEntity
+abstract class DeployableResourceEntity extends ResourceEntity
 {
     public function __construct(
         Object $parent,

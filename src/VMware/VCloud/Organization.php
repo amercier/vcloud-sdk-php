@@ -16,6 +16,16 @@ class Organization extends Entity
         parent::__construct($parent, $model, $reference);
     }
 
+    protected function getParent()
+    {
+        return $this->getService();
+    }
+
+    protected function retrieveParent()
+    {
+        // never called as we override ::getParent()
+    }
+
     protected function getImplementationGetterName()
     {
         return 'getOrg';

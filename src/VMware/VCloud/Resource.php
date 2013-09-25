@@ -5,7 +5,7 @@ namespace VMware\VCloud;
 /**
  * @todo move $reference to IdentifiableResource
  */
-class Resource extends Object
+abstract class Resource extends Object
 {
     protected $parent = null;
     protected $model = null;
@@ -20,8 +20,10 @@ class Resource extends Object
 
     protected function getParent()
     {
-        return $this->get('parent');
+        return $this->get('parent', 'retrieveParent');
     }
+
+    abstract protected function retrieveParent();
 
     protected function getModel()
     {
@@ -33,6 +35,7 @@ class Resource extends Object
      */
     public function getService()
     {
-        return $this->getParent()->getService();
+        $parent = $this->getParent();
+        return $parent instanceof Service ? $parent : $parent->getService();
     }
 }
