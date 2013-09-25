@@ -20,6 +20,40 @@ SDK for PHP](https://github.com/amercier/vmware-vcloud-sdk-php-patched).
 ✔ **Maintainable** - it's open source! So clone it, fork it, tune it, fix it as you please!  
 
 
+
+Installation
+------------
+
+### 1. Install Composer
+
+    curl https://getcomposer.org/installer | php --
+
+Note: you may need to have `https_proxy` variable set if you are behind a proxy.
+
+### 2. Create _composer.json_
+
+    php composer.phar init
+
+### 3. Edit _composer.json_
+
+```
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net"
+        }
+    ],
+    "require": {
+        "amercier/vcloud-sdk": "*"
+    }
+```
+
+### 4. Install dependencies
+
+    php composer.phar update
+
+
 Licensing
 ---------
 
