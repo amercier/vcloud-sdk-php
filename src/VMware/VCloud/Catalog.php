@@ -35,10 +35,13 @@ class Catalog extends Entity
 
         foreach ($this->getImplementation()->getCatalogItems() as $catalogItem) {
             $entity = $catalogItem->getEntity();
-            array_push(
-                $catalogItems[$entity->get_type()],
-                $this->createCatalogItemInstance($entity)
-            );
+            $instance = $this->createCatalogItemInstance($entity);
+            if ($instance !== false) {
+                array_push(
+                    $catalogItems[$entity->get_type()],
+                    $instance
+                );
+            }
         }
         return $catalogItems;
     }
@@ -46,12 +49,17 @@ class Catalog extends Entity
     protected function createCatalogItemInstance(\VMware_VCloud_API_ReferenceType $entity)
     {
         $type = $entity->get_type();
-        die(print_r($entity, true));
         switch($type) {
             case self::TYPE_VAPP_TEMPLATE:
-                return $this->getOrganization()->getVAppTemplateById(IdentifiableResource::getIdFromHref($entity->get_href()));
+                return $this->getOrganization()->getVAppTemplateById(
+                    IdentifiableResource::getIdFromHref($entity->get_href()),
+                    false
+                );
             case self::TYPE_MEDIA:
-                return $this->getOrganization()->getMediaById(IdentifiableResource::getIdFromHref($entity->get_href()));
+                return $this->getOrganization()->getMediaById(
+                    IdentifiableResource::getIdFromHref($entity->get_href()),
+                    false
+                );
             default:
                 throw new \RuntimeException('Unknown catalog item type ' . $type);
         }

@@ -19,7 +19,7 @@ class Entity extends IdentifiableResource
         $this->set('implementation', $implementation);
     }
 
-    protected function getImplementation()
+    public function getImplementation()
     {
         return $this->get('implementation', 'createImplementation');
     }
@@ -33,7 +33,7 @@ class Entity extends IdentifiableResource
         }
     }
 
-    protected function getModel()
+    public function getModel()
     {
         return $this->get('model', 'createModelFromImplementation');
     }

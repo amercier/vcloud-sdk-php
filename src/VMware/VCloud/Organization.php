@@ -128,7 +128,6 @@ class Organization extends Entity
 
     public function getVAppTemplateById($id, $exceptionIfNotFound = true)
     {
-        echo $id . "\n";
         foreach ($this->getVirtualDataCenters() as $virtualDataCenter) {
             $vAppTemplate = $virtualDataCenter->getVAppTemplateById($id, false);
             if ($vAppTemplate !== false) {
@@ -142,4 +141,18 @@ class Organization extends Entity
         }
     }
 
+    public function getMediaById($id, $exceptionIfNotFound = true)
+    {
+        foreach ($this->getVirtualDataCenters() as $virtualDataCenter) {
+            $media = $virtualDataCenter->getMediaById($id, false);
+            if ($media !== false) {
+                return $media;
+            }
+        }
+        if ($exceptionIfNotFound) {
+            throw new Exception\ObjectNotFound('media', 'id', $id, 'Virtual Datacenter ' . $this->getName());
+        } else {
+            return false;
+        }
+    }
 }

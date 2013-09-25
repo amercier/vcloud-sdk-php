@@ -37,5 +37,4 @@ class VAppTemplate extends DeployableResourceEntity
         }
         return $virtualMachines;
     }
-
 }

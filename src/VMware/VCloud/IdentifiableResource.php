@@ -20,7 +20,8 @@ class IdentifiableResource extends Resource
         $this->set('reference', $reference);
     }
 
-    public static function getIdFromHref($href) {
+    public static function getIdFromHref($href)
+    {
         return preg_replace('/.*(' . self::ID_PATTERN . ').*/', '$1', $href);
     }
 
