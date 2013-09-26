@@ -7,6 +7,11 @@ class VApp extends DeployableResourceEntity
     protected $virtualMachines = null;
     protected $networks = null;
 
+    protected function retrieveParent()
+    {
+        throw new \Exception('Not implemented');
+    }
+
     public function getVirtualDataCenter()
     {
         return $this->get('parent');

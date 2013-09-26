@@ -8,6 +8,11 @@ class VAppNetwork extends Resource implements Network
     protected $gateway = null;
     protected $ipPool = null;
 
+    protected function retrieveParent()
+    {
+        throw new \Exception('Not implemented');
+    }
+
     public function getName()
     {
         return $this->getModel()->get_networkName();

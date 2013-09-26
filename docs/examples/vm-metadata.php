@@ -14,12 +14,7 @@ if ($service->isLoggedIn()) {
 
     echo "\n";
 
-    // die(print_r($service->queryReferences('adminVM'), true));
-
     $vms =  $service->getAllVirtualMachines();
-    // die(get_class($vms[0]));
-    // die(count($vms) . "\n");
-    // die(print_r($vms[0]->getMetadataSet(), true));
 
     foreach ($vms as $vm) {
         if (count($vm->getMetadata()->getEntries()) === 0) {
