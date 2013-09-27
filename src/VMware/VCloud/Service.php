@@ -237,14 +237,79 @@ class Service extends Object
         return $references;
     }
 
-    public function getAllVirtualMachines($includeVAppTemplateVMs = false)
+    public function getAllVirtualMachines()
     {
         $virtualMachines = array();
         foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_VM) as $record) {
-            if ($includeVAppTemplateVMs || $record->get_isVAppTemplate() !== "1") {
+            if ($record->get_isVAppTemplate() !== "1") {
                 array_push($virtualMachines, VirtualMachine::factory($record, $this));
             }
         }
         return $virtualMachines;
+    }
+
+    public function getAllOrganizations()
+    {
+        // $Organizations = array();
+        // foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ORGANIZATION) as $record) {
+        //     array_push($Organizations, Organization::factory($record, $this));
+        // }
+        // return $Organizations;
+        return $this->getOrganizations();
+    }
+
+    public function getAllVirtualDataCenters()
+    {
+        $virtualDataCenters = array();
+        foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_ORG_VDC) as $record) {
+            array_push($virtualDataCenters, VirtualDataCenter::factory($record, $this));
+        }
+        return $virtualDataCenters;
+    }
+
+    public function getAllExternalNetworks()
+    {
+        $externalNetworks = array();
+        foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::EXTERNAL_NETWORK) as $record) {
+            array_push($externalNetworks, ExternalNetwork::factory($record, $this));
+        }
+        return $externalNetworks;
+    }
+
+    public function getAllVApps()
+    {
+        $vApps = array();
+        foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_VAPP) as $record) {
+            array_push($vApps, VApp::factory($record, $this));
+        }
+        return $vApps;
+    }
+
+    public function getAllVAppTemplates()
+    {
+        $vAppTemplates = array();
+        foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_VAPP_TEMPLATE) as $record) {
+            array_push($vAppTemplates, VAppTemplate::factory($record, $this));
+        }
+        return $vAppTemplates;
+    }
+
+    public function getAllOrganizationNetworks()
+    {
+        $organizationNetworks = array();
+        foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_ORG_NETWORK) as $record) {
+            array_push($organizationNetworks, OrganizationNetwork::factory($record, $this));
+        }
+        return $organizationNetworks;
+    }
+
+
+    public function getAllCatalogs()
+    {
+        $catalogs = array();
+        foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_CATALOG) as $record) {
+            array_push($catalogs, Catalog::factory($record, $this));
+        }
+        return $catalogs;
     }
 }

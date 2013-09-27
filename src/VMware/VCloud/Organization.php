@@ -165,4 +165,17 @@ class Organization extends Entity
             return false;
         }
     }
+
+    public static function factory(\VMware_VCloud_API_QueryResultOrgRecordType $record, Object $parent)
+    {
+        $ref = new \VMware_VCloud_API_ReferenceType();
+        $ref->set_href($record->get_href());
+        $ref->set_id('urn:vcloud:org:' . IdentifiableResource::getIdFromHref($record->get_href()));
+        $ref->set_name($record->get_name());
+        $ref->set_type('application/vnd.vmware.vcloud.org+xml');
+
+        $organization = new self($parent, null, $ref);
+
+        return $organization;
+    }
 }

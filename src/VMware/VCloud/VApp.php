@@ -60,4 +60,17 @@ class VApp extends DeployableResourceEntity
 
         return $networks;
     }
+
+    public static function factory(\VMware_VCloud_API_QueryResultAdminVAppRecordType $record, Object $parent)
+    {
+        $ref = new \VMware_VCloud_API_ReferenceType();
+        $ref->set_href($record->get_href());
+        $ref->set_id('urn:vcloud:vapp:' . IdentifiableResource::getIdFromHref($record->get_href()));
+        $ref->set_name($record->get_name());
+        $ref->set_type('application/vnd.vmware.vcloud.vApp+xml');
+
+        $vApp = new self($parent, null, $ref);
+
+        return $vApp;
+    }
 }
