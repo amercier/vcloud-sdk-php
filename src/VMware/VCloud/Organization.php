@@ -151,6 +151,15 @@ class Organization extends Entity
         }
     }
 
+    public function getVAppTemplates()
+    {
+        $vAppTemplates = array();
+        foreach ($this->getVirtualDataCenters() as $virtualDataCenter) {
+            $vAppTemplates = array_merge($vAppTemplates, $virtualDataCenter->getVAppTemplates());
+        }
+        return $vAppTemplates;
+    }
+
     public function getMediaById($id, $exceptionIfNotFound = true)
     {
         foreach ($this->getVirtualDataCenters() as $virtualDataCenter) {
