@@ -96,6 +96,15 @@ class Organization extends Entity
         }
     }
 
+    public function getVApps()
+    {
+        $vApps = array();
+        foreach ($this->getVirtualDataCenters() as $virtualDataCenter) {
+            $vApps = array_merge($vApps, $virtualDataCenter->getVApps());
+        }
+        return $vApps;
+    }
+
     public function getCatalogs()
     {
         return $this->get('catalogs', 'retrieveCatalogs');
