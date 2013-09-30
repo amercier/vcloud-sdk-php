@@ -85,6 +85,11 @@ class Service extends Object
         $this->set('loggedIn', false);
     }
 
+    public function getAuthenticationToken()
+    {
+        return $this->getImplementation()->getToken();
+    }
+
     public function createImplementationFromReference(\VMware_VCloud_API_ReferenceType $reference)
     {
         return $this->getImplementation()->createSdkObj($reference);
