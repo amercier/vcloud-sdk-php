@@ -17,6 +17,7 @@ if ($service->isLoggedIn()) {
         echo " Organization " . strtoupper($org) . "\n";
         echo "================================================================================\n";
         echo "\n";
+
         foreach ($org->getCatalogs() as $catalog) {
             echo "--------------------------------------------------------------------------------\n";
             echo " Catalog " . strtoupper($catalog) . "\n";
@@ -42,8 +43,8 @@ if ($service->isLoggedIn()) {
                         }, $virtualMachines));
                         foreach ($virtualMachines as $virtualMachine) {
                             try {
-                                echo "       ▸ " . str_pad($virtualMachine, $maxVMNameLength) . " ";
-                                echo $virtualMachine->getHref() . "\n";
+                                echo "       ▸ " . str_pad($virtualMachine, $maxVMNameLength) . "\n";
+                                // echo $virtualMachine->getHref() . "\n";
                                 // echo str_pad($virtualMachine->getVirtualCpu()->getQuantity(), 2, ' ', STR_PAD_LEFT) . " vCPU" . ($virtualMachine->getVirtualCpu()->getQuantity() === 1 ? ' ' : 's') . " / ";
                                 // echo str_pad($virtualMachine->getVirtualMemory()->getQuantity(), 5, ' ', STR_PAD_LEFT) . " MB\n";
                             }

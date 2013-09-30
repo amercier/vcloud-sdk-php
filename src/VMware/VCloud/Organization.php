@@ -117,7 +117,7 @@ class Organization extends Entity
                 return $link;
             }
         }
-        return $link;
+        return null;
     }
 
     protected function retrieveCatalogs()
@@ -125,10 +125,11 @@ class Organization extends Entity
         $catalogs = array();
         foreach ($this->getImplementation()->getCatalogs() as $catalog) {
             $link = $this->getCatalogOrgLink($catalog);
-            $organization = $link === null ? null : $this->getService()->getOrganizationById(
-                IdentifiableResource::getIdFromHref($link->get_href())
-            );
-            array_push($catalogs, new Catalog($organization, $catalog));
+            if ($link !== null) {
+                if (IdentifiableResource::getIdFromHref($link->get_href()) === $this->getId()) {
+                    array_push($catalogs, new Catalog($this, $catalog));
+                }
+            }
         }
         return $catalogs;
     }
