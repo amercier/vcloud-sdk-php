@@ -34,8 +34,11 @@ class VApp extends DeployableResourceEntity
     public function retrieveVirtualMachines()
     {
         $virtualMachines = array();
-        foreach ($this->getModel()->getChildren()->getVm() as $vm) {
-            array_push($virtualMachines, new VirtualMachine($this, $vm));
+        $children = $this->getModel()->getChildren();
+        if ($children) {
+            foreach ($children->getVm() as $vm) {
+                array_push($virtualMachines, new VirtualMachine($this, $vm));
+            }
         }
         return $virtualMachines;
     }
