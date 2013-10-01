@@ -53,7 +53,7 @@ class Service extends Object
         return $this->loggedIn;
     }
 
-    public function login($credentials)
+    public function login($credentials, $apiVersion = '5.1')
     {
         if (!($credentials instanceof Credentials)) {
             $credentials = new Credentials($credentials);
@@ -64,7 +64,8 @@ class Service extends Object
         $orgList = $this->getImplementation()->login(
             $this->get('host')->getUrl(),
             $this->get('credentials')->toArray(),
-            $this->get('httpConfiguration')->toArray()
+            $this->get('httpConfiguration')->toArray(),
+            $apiVersion
         );
 
         $this->set('loggedIn', true);
