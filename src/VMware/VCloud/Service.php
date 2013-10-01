@@ -63,8 +63,7 @@ class Service extends Object
 
         if ($apiVersion === '1.0') {
             $this->getImplementation()->setLoginUrl($this->get('host')->getUrl() . '/api/v1.0/login');
-        }
-        elseif($apiVersion === '1.5') {
+        } elseif ($apiVersion === '1.5') {
             $this->getImplementation()->setLoginUrl($this->get('host')->getUrl() . '/api/sessions');
         }
 
