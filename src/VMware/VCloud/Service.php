@@ -266,6 +266,18 @@ class Service extends Object
         return $virtualMachines;
     }
 
+    public function getVirtualMachineById($id)
+    {
+        return $this->getBy(
+            'virtualMachines',
+            'id',
+            $id,
+            'Virtual Machine',
+            'vCloud Director ' . $this->getHost(),
+            $exceptionIfNotFound
+        );
+    }
+
     public function getAllOrganizations()
     {
         // $Organizations = array();
