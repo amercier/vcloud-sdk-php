@@ -266,10 +266,10 @@ class Service extends Object
         return $virtualMachines;
     }
 
-    public function getVirtualMachineById($id)
+    public function getVirtualMachineById($id, $exceptionIfNotFound = true)
     {
         return $this->getBy(
-            'virtualMachines',
+            'allVirtualMachines',
             'id',
             $id,
             'Virtual Machine',
