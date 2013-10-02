@@ -1,25 +1,64 @@
 @startuml
 
-class Service {
+class Object {
+}
+
+class Map {
+}
+
+class Entry {
+}
+
+class Resource {
+  # id: string
+  # href: string
+  # type: string
+}
+
+class ResourceFactory {
+  +__construct($className:string, $client:Client)
+  +factory($resource:VMware_VCloud_API_EntityType): Resource
+}
+
+class ResourceRegistry {
+}
+
+class Client {
   +getOrganizations(): Organization[]
 }
 
 class Organization {
-
+  +getVirtualDatacenters()
 }
 
-Service "1" *-- "*" Organization
+Client "1" *-- "*" Organization
 Organization "1" o-- "*" VirtualDataCenter
 VirtualDataCenter "1" o-- "*" ResourceEntity
 
-ResourceEntity <|-- AbstractVApp
+Map <|-- ResourceRegistry
+
+Object <|-- Client
+
+ResourceRegistry "1" <-- "*" Client : dataObjectsRegistry
+
+ResourceFactory ..> Resource : <<creates>>
+
+Resource <|-- Organization
+Resource <|-- VirtualDataCenter
+Resource <|-- ResourceEntity
+
+ResourceEntity <|-- DeployedEntity
 ResourceEntity <|-- VAppTemplate
 ResourceEntity <|-- Media
 
 Media <|-- CDRom
 Media <|-- Floppy
 
-AbstractVApp <|-- VApp
-AbstractVApp <|-- VirtualMachine
+DeployedEntity <|-- VApp
+DeployedEntity <|-- VirtualMachine
+
+ResourceFactory "1" <-- "*" Organization : virtualDatacenterFactory
+ResourceFactory "1" <-- "*" VirtualDataCenter : vAppTemplateFactory
+ResourceFactory "1" <-- "*" VApp : virtualMachineFactory
 
 @enduml
