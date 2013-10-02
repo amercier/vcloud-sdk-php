@@ -70,6 +70,19 @@ abstract class Entity extends IdentifiableResource
         return new Metadata($this, $this->getImplementation()->getMetadata(), null);
     }
 
+    protected function getLinkByRel($rel)
+    {
+        $links = $this->getModel()->getLink();
+        if ($links !== null) {
+            foreach ($links as $link) {
+                if ($link->get_rel() === $rel) {
+                    return $link;
+                }
+            }
+        }
+        return null;
+    }
+
     public function __toString()
     {
         return $this->getName();

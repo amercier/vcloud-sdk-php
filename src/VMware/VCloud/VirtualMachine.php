@@ -20,7 +20,17 @@ class VirtualMachine extends DeployableResourceEntity
 
     public function getVApp()
     {
-        return $this->get('parent');
+        $parent = $this->get('parent');
+        if ($parent instanceof VApp) {
+            return $parent;
+        }
+        else { // Service
+            $service = $parent;
+            $implementation = $service->createImplementationFromReference($this->getLinkByRel('up'));
+            $vApp = new VApp($service, null, null, $implementation);
+            $this->set('parent', $vApp);
+            return $vApp;
+        }
     }
 
     public function getVirtualCpu()
