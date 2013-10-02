@@ -1,0 +1,25 @@
+@startuml
+
+class Service {
+  +getOrganizations(): Organization[]
+}
+
+class Organization {
+
+}
+
+Service "1" *-- "*" Organization
+Organization "1" o-- "*" VirtualDataCenter
+VirtualDataCenter "1" o-- "*" ResourceEntity
+
+ResourceEntity <|-- AbstractVApp
+ResourceEntity <|-- VAppTemplate
+ResourceEntity <|-- Media
+
+Media <|-- CDRom
+Media <|-- Floppy
+
+AbstractVApp <|-- VApp
+AbstractVApp <|-- VirtualMachine
+
+@enduml
