@@ -8,13 +8,14 @@ class Service extends Object
 {
     const QUERY_PAGE_SIZE = 128;
 
-    protected $implementation = null;
-    protected $host = null;
-    protected $httpConfiguration = null;
-    protected $credentials = null;
+    protected $implementation;
+    protected $host;
+    protected $httpConfiguration;
+    protected $credentials;
     protected $loggedIn = false;
     protected $organizations = array();
-    protected $externalNetworks = null;
+    protected $externalNetworks;
+    protected $virtualMachines;
 
     public function __construct($host, Http\Configuration $httpConfiguration = null)
     {
@@ -250,6 +251,11 @@ class Service extends Object
     }
 
     public function getAllVirtualMachines()
+    {
+        return $this->get('virtualMachines', 'retrieveAllVirtualMachines');
+    }
+
+    protected function retrieveAllVirtualMachines()
     {
         $virtualMachines = array();
         foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_VM) as $record) {
