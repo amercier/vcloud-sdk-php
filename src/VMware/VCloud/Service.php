@@ -259,7 +259,7 @@ class Service extends Object
     {
         $virtualMachines = array();
         foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_VM) as $record) {
-            if ($record->get_isVAppTemplate() !== "1") {
+            if (!$record->get_isVAppTemplate()) {
                 array_push($virtualMachines, VirtualMachine::factory($record, $this));
             }
         }

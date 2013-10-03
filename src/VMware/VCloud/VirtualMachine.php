@@ -23,8 +23,7 @@ class VirtualMachine extends DeployableResourceEntity
         $parent = $this->get('parent');
         if ($parent instanceof VApp) {
             return $parent;
-        }
-        else { // Service
+        } else { // Service
             $service = $parent;
             $implementation = $service->createImplementationFromReference($this->getLinkByRel('up'));
             $vApp = new VApp($service, null, null, $implementation);

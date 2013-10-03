@@ -13,13 +13,13 @@ Cli\Helpers\Job::run('Authenticating against ' . $config['host'], function() {
 if ($service->isLoggedIn()) {
 
     foreach(array(
-        // 'Virtual Machines' => 'getAllVirtualMachines',
-        // 'Organizations'       => 'getAllOrganizations',
-        // 'Virtual Datacenters' => 'getAllVirtualDataCenters',
-        // 'External Networks' => 'getAllExternalNetworks',
-        // 'vApps' => 'getAllVApps',
-        // 'vAppTemplates' => 'getAllVAppTemplates',
-        // 'Organization Networks' => 'getAllOrganizationNetworks',
+        'Virtual Machines' => 'getAllVirtualMachines',
+        'Organizations'       => 'getAllOrganizations',
+        'Virtual Datacenters' => 'getAllVirtualDataCenters',
+        'External Networks' => 'getAllExternalNetworks',
+        'vApps' => 'getAllVApps',
+        'vAppTemplates' => 'getAllVAppTemplates',
+        'Organization Networks' => 'getAllOrganizationNetworks',
         'Catalogs' => 'getAllCatalogs',
     ) as $label => $getItems) {
 
