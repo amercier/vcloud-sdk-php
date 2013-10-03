@@ -13,9 +13,23 @@ class VirtualDataCenter extends Entity
         throw new \Exception('Not implemented');
     }
 
+    protected function getImplementationGetterName()
+    {
+        return 'getVdc';
+    }
+
     public function getOrganization()
     {
-        return $this->get('parent');
+        $parent = $this->get('parent');
+        if ($parent instanceof Organization) {
+            return $parent;
+        } else { // Service
+            $service = $parent;
+            $organizationId = IdentifiableResource::getIdFromHref($this->getLinkByRel('up')->get_href());
+            $organization = $service->getOrganizationById($organizationId);
+            $this->set('parent', $organization);
+            return $organization;
+        }
     }
 
     public function getVApps()

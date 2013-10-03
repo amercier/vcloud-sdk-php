@@ -252,7 +252,8 @@ class Service extends Object
 
     public function getAllVirtualMachines()
     {
-        return $this->get('virtualMachines', 'retrieveAllVirtualMachines');
+        $result = $this->get('virtualMachines', 'retrieveAllVirtualMachines');
+        return $result;
     }
 
     protected function retrieveAllVirtualMachines()
@@ -260,7 +261,8 @@ class Service extends Object
         $virtualMachines = array();
         foreach ($this->queryRecords(\VMware_VCloud_SDK_Query_Types::ADMIN_VM) as $record) {
             if (!$record->get_isVAppTemplate()) {
-                array_push($virtualMachines, VirtualMachine::factory($record, $this));
+                $virtualMachine = VirtualMachine::factory($record, $this);
+                $virtualMachines[$virtualMachine->getId()] = $virtualMachine;
             }
         }
         return $virtualMachines;
@@ -268,14 +270,14 @@ class Service extends Object
 
     public function getVirtualMachineById($id, $exceptionIfNotFound = true)
     {
-        return $this->getBy(
-            'allVirtualMachines',
-            'id',
-            $id,
-            'Virtual Machine',
-            'vCloud Director ' . $this->getHost(),
-            $exceptionIfNotFound
-        );
+        $virtualMachines = $this->getAllVirtualMachines();
+        return array_key_exists($id, $virtualMachines) ? $virtualMachines[$id] : null;
+        // foreach ($this->getAllVirtualMachines() as $virtualMachine) {
+        //     if ($virtualMachine->getId() === $id) {
+        //         return $virtualMachine;
+        //     }
+        // }
+        // return null;
     }
 
     public function getAllOrganizations()

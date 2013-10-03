@@ -12,9 +12,18 @@ class VApp extends DeployableResourceEntity
         throw new \Exception('Not implemented');
     }
 
-    public function getVirtualDataCenter()
+    public function getVirtualDatacenter()
     {
-        return $this->get('parent');
+        $parent = $this->get('parent');
+        if ($parent instanceof VirtualDatacenter) {
+            return $parent;
+        } else { // Service
+            $service = $parent;
+            $implementation = $service->createImplementationFromReference($this->getLinkByRel('up'));
+            $virtualDataCenter = new VirtualDatacenter($service, null, null, $implementation);
+            $this->set('parent', $virtualDataCenter);
+            return $virtualDataCenter;
+        }
     }
 
     public function getOwner()

@@ -39,6 +39,11 @@ abstract class Entity extends IdentifiableResource
         return $this->get('model', 'createModelFromImplementation');
     }
 
+    protected function getReferenceOrModel()
+    {
+        return $this->get('implementation') === null ? parent::getReferenceOrModel() : $this->getModel();
+    }
+
     protected function createModelFromImplementation()
     {
         $methodName = $this->getImplementationGetterName();
