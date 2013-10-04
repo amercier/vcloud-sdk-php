@@ -1,64 +1,123 @@
 @startuml
 
-class Object {
+package Model {
+
+  abstract class Resource {
+    # href
+    # type
+    # links
+  }
+
+  Resource <|-- Entity
+
+  abstract class Entity {
+    # id
+    # name
+    # description
+    # tasks
+  }
+
+  Entity <|-- VCloud
+  Entity <|-- Organization
+  Entity <|-- OrganizationNetwork
+  Entity <|-- VirtualDataCenter
+  Entity <|-- Role
+  Entity <|-- Right
+  Entity <|-- ExternalNetwork
+  Entity <|-- ProviderVirtualDataCenter
+  Entity <|-- Task
+  Entity <|-- Instance
+  Entity <|-- Template
+  Entity <|-- Network
+
+  abstract class Instance {
+  }
+
+  Instance <|-- VApp
+  Instance <|-- VirtualMachine
+
+  abstract class Template {
+  }
+
+  Template <|-- VAppTemplate
+  Template <|-- VirtualMachineTemplate
+
+  abstract class Network {
+  }
+
+  Network <|-- VAppNetwork
+  Network <|-- OrganizationNetwork
+  Network <|-- ExternalNetwork
+
+  class VCloud <<Entity>> {
+  }
+
+  VCloud *-- "*" ExternalNetwork
+  VCloud *-- "*" ProviderVirtualDataCenter
+  VCloud *-- "*" Right
+  VCloud *-- "*" Role
+  VCloud *-- "*" Organization
+
+  class Organization <<Entity>> {
+  }
+
+  Organization *-- OrganizationNetwork
+  Organization *-- VirtualDataCenter
+
+  class VirtualDataCenter <<Entity>> {
+  }
+
+  VirtualDataCenter *-- VApp
+  VirtualDataCenter *-- VAppTemplate
+  VirtualDataCenter *-- Media
+  VirtualDataCenter *-- StorageProfile
+  VirtualDataCenter ..> "*" OrganizationNetwork : "availableNetworks"
+
+  class VApp <<AbstractVApp>> {
+  }
+
+  VApp *-- VirtualMachine
+
+  class VirtualMachine <<AbstractVApp>> {
+
+  }
+
+  class VAppTemplate <<ResourceEntity>> {
+  }
+
+  VAppTemplate *-- VirtualMachineTemplate
+
+  class VirtualMachineTemplate <<AbstractVApp>> {
+  }
+
+  class Media {
+  }
+
+  Media <|-- CDRom
+  Media <|-- Floppy
+
+  class Reference {
+    # href
+    # id
+    # name
+    # type
+  }
+
+  Reference <|-- Link
+
+  class Link {
+    # rel
+  }
+
+  class Role <<Entity>> {
+  }
+
+  class Right <<Entity>> {
+  }
+
+  class Task <<Entity>> {
+  }
+
 }
-
-class Map {
-}
-
-class Entry {
-}
-
-class Resource {
-  # id: string
-  # href: string
-  # type: string
-}
-
-class ResourceFactory {
-  +__construct($className:string, $client:Client)
-  +factory($resource:VMware_VCloud_API_EntityType): Resource
-}
-
-class ResourceRegistry {
-}
-
-class Client {
-  +getOrganizations(): Organization[]
-}
-
-class Organization {
-  +getVirtualDatacenters()
-}
-
-Client "1" *-- "*" Organization
-Organization "1" o-- "*" VirtualDataCenter
-VirtualDataCenter "1" o-- "*" ResourceEntity
-
-Map <|-- ResourceRegistry
-
-Object <|-- Client
-
-ResourceRegistry "1" <-- "*" Client : dataObjectsRegistry
-
-ResourceFactory ..> Resource : <<creates>>
-
-Resource <|-- Organization
-Resource <|-- VirtualDataCenter
-Resource <|-- ResourceEntity
-
-ResourceEntity <|-- DeployedEntity
-ResourceEntity <|-- VAppTemplate
-ResourceEntity <|-- Media
-
-Media <|-- CDRom
-Media <|-- Floppy
-
-DeployedEntity <|-- VApp
-DeployedEntity <|-- VirtualMachine
-
-ResourceFactory "1" <-- "*" Organization : virtualDatacenterFactory
-ResourceFactory "1" <-- "*" VirtualDataCenter : vAppTemplateFactory
-ResourceFactory "1" <-- "*" VApp : virtualMachineFactory
 
 @enduml

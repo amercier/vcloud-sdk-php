@@ -11,6 +11,9 @@
 
 .PHONY: update clean docs
 
+build:
+	cd ./docs && make
+
 all: composer.lock
 	# Dependencies installed/upgraded successfully
 
@@ -56,5 +59,5 @@ clean:
 	rm -Rf vendor composer.phar composer.lock
 
 docs:
-	[ -d docs ] && rm -Rf docs || echo Nothing to do
+	[ -d docs/api ] && rm -Rf docs/api || echo Nothing to do
 	phpdoc --directory src/ --target docs/api --title "vCloud Director PHP SDK" --template responsive-twig
