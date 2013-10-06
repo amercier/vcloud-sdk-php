@@ -1,0 +1,16 @@
+@startuml
+
+Actor User
+Participant SDK_Service
+Participant API_OrgList
+
+User -> SDK_Service: new
+User -> SDK_Service: login($server, $auth, $config)
+SDK_Service -> API: /api/login
+SDK_Service <-- API: <OrgList>
+User <-- SDK_Service: API_OrgList
+
+User -> API_OrgList: getOrg
+User <-- API_OrgList: API_Reference
+
+@enduml
