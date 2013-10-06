@@ -1,0 +1,38 @@
+@startuml
+
+Actor User
+
+User -> Service: login(Credentials)
+
+Service -> Service: getSdkObject()
+Service -> Service: createSdkObject()
+Service <-- Service: SDK_Service
+
+Service -> SDK_Service: login($server, $auth, $config)
+SDK_Service -> API: /login
+SDK_Service <-- API: <OrgList>
+Service <-- SDK_Service: API_OrgList
+
+Service -> Service: getGatewayByType(API_Reference)
+Service <-- Service: OrganizationGateway
+
+Service -> OrganizationGateway: read(API_Org)
+OrganizationGateway -> Map: $this->dataObjectRegistry->set($href, API_Org)
+Service <-- OrganizationGateway: array
+Service -> Organization: new Organization(array)
+Service -> Organization: Organization
+
+
+User -> Service: getOrganizations()
+User <-- Service: Organization[]
+
+User -> Organization: getName()
+User <-- Organization: string
+
+User -> Organization: getVirtualDataCenters()
+Organization -> Organization: resolve()
+Organization -> Service: $this->service->getGatewayByType(API_AdminOrg)
+Organization <-- Service: AdminOrgGateway
+Organization -> AdminOrgGateway: read(API_AdminOrg)
+
+@enduml

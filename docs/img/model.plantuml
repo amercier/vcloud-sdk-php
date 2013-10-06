@@ -117,7 +117,6 @@ package Model {
 
   class Task <<Entity>> {
   }
-
 }
 
 @enduml

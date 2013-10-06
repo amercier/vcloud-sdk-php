@@ -62,3 +62,6 @@ img/%.svg: img/%.plantuml
 
 api:
 	phpdoc --directory ../library/ --target api --title "vCloud PHP SDK Documentation" --template responsive --sourcecode
+
+watch:
+	fswatch img "make && ./img/*.png"
