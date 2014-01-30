@@ -1,6 +1,9 @@
 vcloud-sdk-php
 ==============
 
+**WARNING:** this project is deprecated and no maintained anymore. Please use
+[amercier/vmware-vcloud-sdk-php-patched] instead
+
 21st century PHP SDK for vCloud Director, based on [a patched version of VMWare
 SDK for PHP](https://github.com/amercier/vmware-vcloud-sdk-php-patched).
 
