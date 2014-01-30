@@ -68,7 +68,7 @@ class Service extends Object
             $this->getImplementation()->setLoginUrl($this->get('host')->getUrl() . '/api/sessions');
         }
 
-        $orgList = $this->getImplementation()->login(
+        $this->getImplementation()->login(
             $this->get('host')->getUrl(),
             $this->get('credentials')->toArray(),
             $this->get('httpConfiguration')->toArray(),
@@ -77,7 +77,7 @@ class Service extends Object
 
         $this->set('loggedIn', true);
 
-        foreach ($orgList->getOrg() as $orgRef) {
+        foreach ($this->getImplementation()->getOrgRefs() as $orgRef) {
             $this->add('organizations', new Organization($this, null, $orgRef));
         }
 
